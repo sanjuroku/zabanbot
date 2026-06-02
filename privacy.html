@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy – Echo's Bot</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 64px;
+      color: #1a1a1a;
+      background: #fafafa;
+      line-height: 1.7;
+    }
+    nav {
+      padding: 16px 0;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 40px;
+      font-size: 0.9em;
+    }
+    nav a { color: #555; text-decoration: none; margin-right: 20px; }
+    nav a:hover { color: #1a1a1a; }
+    h1 { font-size: 1.8rem; margin-bottom: 0.2em; }
+    h2 { font-size: 1.1rem; margin-top: 2em; }
+    code {
+      background: #f0f0f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    footer { margin-top: 56px; font-size: 0.82em; color: #999; border-top: 1px solid #e0e0e0; padding-top: 16px; }
+    a { color: #0070f3; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Echo's Bot</a>
+    <a href="tos.html">Terms of Service</a>
+  </nav>
+
+  <h1>Privacy Policy</h1>
+  <p>This Privacy Policy describes how Echo's Bot (also referred to as "咋办Bot") collects, uses, and protects your information when you interact with the bot on Discord.</p>
+
+  <h2>1. Information Collected</h2>
+  <p>The bot collects the following types of data:</p>
+  <ul>
+    <li>Your Discord user ID and username</li>
+    <li>Your input (e.g., prompts or command options) and the corresponding GPT responses</li>
+    <li>Custom AI role settings set via <code>/setrole</code></li>
+    <li>Profile card data provided via <code>/mycard</code>, including nickname, pronouns, bio, location/timezone, and linked game accounts (Steam, Nintendo, PlayStation)</li>
+    <li>Trivia quiz statistics (correct and incorrect answer counts)</li>
+    <li>Daily fortune check-in data, including consecutive check-in streaks and personal records</li>
+    <li>Virtual currency balances (Zacoins / 咋办币) and gacha-related data, including fragment counts, collected items, and pity counters</li>
+    <li>Timestamps and context of interactions (server name, channel name, command used)</li>
+  </ul>
+
+  <h2>2. Data Storage</h2>
+  <p>Collected data is stored as follows:</p>
+  <ul>
+    <li>Conversation histories, summaries, role settings, and profile card data are stored persistently until deleted by the user or developer.</li>
+    <li>Trivia statistics are stored persistently until reset by the user.</li>
+    <li>Daily fortune check-in data (streak counts, personal records) and gacha data (Zacoin balances, fragment counts, collected items, pity counters) are stored persistently until deleted upon user request.</li>
+    <li>Temporary query cache (e.g., Reddit post cache, NeoDB query cache, cold-knowledge content cache from Reddit / Wikipedia / Futility Closet) may be stored server-side for up to 24 hours to improve response performance. This cache is non-personal and not linked to individual user identities.</li>
+    <li>Your Discord user ID may be temporarily stored in memory (not on disk) during an active bot session for rate-limiting purposes — for example, to enforce cooldowns on interactive buttons such as the "再来一条" (fetch again) button in <code>/dailyfact</code>. This data is cleared when the bot restarts.</li>
+    <li>Bot activity logs are retained under the following schedule:
+      <ul>
+        <li>Within the past 1 month: all log entries are retained.</li>
+        <li>Between 1 and 6 months ago: only WARNING-level (and higher) entries and user interaction records are retained.</li>
+        <li>Older than 6 months: only user interaction records are retained.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>3. Use of Data</h2>
+  <p>Data is used solely for the following purposes:</p>
+  <ul>
+    <li>Providing personalized responses</li>
+    <li>Maintaining user history and summaries</li>
+    <li>Displaying profile cards and trivia statistics</li>
+    <li>Operating the daily fortune check-in system and virtual currency economy</li>
+    <li>Debugging and ensuring bot performance</li>
+  </ul>
+
+  <h2>4. Data Sharing</h2>
+  <p>Your conversation input is transmitted to <strong>OpenAI's API</strong> for generating responses, and is subject to <a href="https://openai.com/policies/privacy-policy">OpenAI's Privacy Policy</a>.</p>
+  <p>In addition, certain commands send query requests to the following third-party services. These requests may include search terms or command options you provide, but do not include personal profile data:</p>
+  <ul>
+    <li><strong>Reddit</strong> – for the <code>/aww</code> command (fetches public hot posts from curated animal-themed subreddits; only non-NSFW, non-stickied posts are used) and <code>/dailyfact</code> (fetches public top posts from r/todayilearned and r/mildlyinteresting; only non-NSFW posts are used)</li>
+    <li><strong>Steam</strong> – for the <code>/steam</code> command</li>
+    <li><strong>NeoDB</strong> – for the <code>/neodb</code> and <code>/roll media</code> commands</li>
+    <li><strong>Wikipedia</strong> – for the <code>/roll wiki</code> command and <code>/dailyfact</code> (fetches article summaries and thumbnails from the Wikipedia REST API)</li>
+    <li><strong>Futility Closet</strong> – for the <code>/dailyfact</code> command (fetches public RSS feed entries from futilitycloset.com)</li>
+    <li><strong>Open Trivia Database</strong> – for the <code>/trivia</code> command</li>
+    <li><strong>萌娘百科 (MoeGirl, moegirl.icu)</strong> – for the <code>/moewiki</code> and <code>/roll moewiki</code> commands</li>
+  </ul>
+  <p>No personal data is sold or shared with any third party beyond what is described above. All other data is stored on the developer's private server.</p>
+
+  <h2>5. Data Deletion</h2>
+  <p>You may request deletion of your stored data as follows:</p>
+  <ul>
+    <li><strong>Conversation history, summaries, and role settings:</strong> Use the <code>/reset</code> command at any time.</li>
+    <li><strong>Trivia statistics:</strong> Use the <code>/resettrivia</code> command at any time.</li>
+    <li><strong>Profile card data, fortune check-in records, Zacoin balances, and gacha data:</strong> Contact the developer directly (see Section 8) to request deletion. These cannot currently be deleted via bot command.</li>
+    <li><strong>Activity logs:</strong> Logs are automatically pruned according to the retention schedule described in Section 2. Individual log entries cannot be deleted on request.</li>
+  </ul>
+
+  <h2>6. Disclaimer</h2>
+  <p>Echo's Bot is provided "as is." While reasonable efforts are made to protect your data, the developer does not guarantee complete security and is not liable for any unintended data loss or exposure.</p>
+
+  <h2>7. Changes to This Policy</h2>
+  <p>This Privacy Policy may be updated from time to time. You are advised to review it periodically. Continued use of the bot after changes are made constitutes your acceptance of the revised policy.</p>
+
+  <h2>8. Contact</h2>
+  <p>If you have any questions or concerns about this Privacy Policy, or to request deletion of your data, please contact the developer at:</p>
+  <ul>
+    <li>Email: <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a></li>
+  </ul>
+
+  <footer>Echo's Bot &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="tos.html">Terms of Service</a></footer>
+</body>
+</html>
