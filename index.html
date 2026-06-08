@@ -1,57 +1,358 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Echo's Bot</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>咋办 Bot — 你的 Discord 多功能魔法少女</title>
+  <meta name="description" content="咋办 Bot：AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡……把快乐带进你的 Discord 服务器！" />
   <style>
+    :root {
+      --bg: #fffcf5;
+      --surface: #fff8e7;
+      --card: #ffffff;
+      --accent: #c4900a;
+      --accent2: #8b6000;
+      --text: #1a1000;
+      --muted: #7a6520;
+      --border: #ffe58a;
+      --invite: #ffc91e;
+      --invite-hover: #e6a800;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      max-width: 640px;
-      margin: 80px auto;
-      padding: 0 24px;
-      color: #1a1a1a;
-      background: #fafafa;
+      font-family: "Segoe UI", "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
     }
-    h1 { font-size: 2rem; margin-bottom: 0.25em; }
-    p.subtitle { color: #555; margin-top: 0; margin-bottom: 2.5em; }
-    .links { display: flex; flex-direction: column; gap: 12px; }
-    .links a {
-      display: block;
-      padding: 16px 20px;
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #1a1a1a;
-      font-weight: 500;
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent2); text-decoration: underline; }
+
+    /* ── 顶部导航 ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,252,245,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; gap: 1.5rem; height: 56px;
     }
-    .links a:hover { border-color: #999; }
-    .links a span { display: block; font-size: 0.85em; font-weight: 400; color: #666; margin-top: 2px; }
-    footer { margin-top: 48px; font-size: 0.82em; color: #999; }
-    .bot-gif { display: block; margin: 0 0 16px; height: 80px; }
+    nav .brand { font-weight: 700; font-size: 1.1rem; color: var(--accent2); }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; margin-left: auto; }
+    nav ul a { color: var(--muted); font-size: 0.9rem; }
+    nav ul a:hover { color: var(--accent); text-decoration: none; }
+
+    /* ── 英雄区 ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2.5rem;
+      background: linear-gradient(160deg, #fff3c8 0%, #fffcf5 60%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero img.bot-gif {
+      width: 120px; height: 120px;
+      margin-bottom: 1.2rem;
+      object-fit: cover;
+    }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; color: var(--accent2); }
+    .hero .tagline {
+      margin-top: 0.6rem; font-size: 1.05rem;
+      color: var(--muted); max-width: 540px; margin-inline: auto;
+    }
+    .hero .btns { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 0.65rem 1.8rem;
+      background: var(--invite);
+      color: #1a1000; border-radius: 8px;
+      font-weight: 700; font-size: 1rem;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--invite-hover); color: #1a1000; text-decoration: none; }
+    .btn-secondary {
+      padding: 0.65rem 1.6rem;
+      border: 1.5px solid var(--border);
+      color: var(--accent); border-radius: 8px;
+      font-size: 1rem; background: var(--card);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: #fff8e0; color: var(--accent2); text-decoration: none; }
+
+    /* ── 通用 section ── */
+    section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+    section h2 {
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--accent2); margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem; border-bottom: 2px solid var(--border);
+    }
+
+    /* ── 功能卡片 ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.3rem 1.1rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 1px 4px rgba(196,144,10,0.05);
+    }
+    .card:hover {
+      border-color: var(--invite);
+      box-shadow: 0 4px 16px rgba(196,144,10,0.12);
+      transform: translateY(-2px);
+    }
+    .card .icon { font-size: 1.7rem; margin-bottom: 0.4rem; }
+    .card h3 { font-size: 0.97rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.25rem; }
+    .card p { font-size: 0.86rem; color: var(--muted); }
+
+    /* ── 指令表 ── */
+    .cmd-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .cmd-table th {
+      text-align: left; padding: 0.5rem 0.75rem;
+      color: var(--muted); font-weight: 600;
+      border-bottom: 2px solid var(--border);
+    }
+    .cmd-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .cmd-table tr.group-header td {
+      padding: 0.75rem 0.75rem 0.3rem;
+      font-weight: 700; font-size: 0.82rem;
+      color: var(--accent2); background: var(--surface);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .cmd-table tr:not(.group-header):hover td { background: #fffbe8; }
+    .cmd-table code {
+      background: #fff3c2;
+      padding: 0.1rem 0.4rem; border-radius: 4px;
+      font-size: 0.85rem; color: var(--accent2);
+      font-family: "Consolas", monospace;
+    }
+
+    /* ── 法律链接区 ── */
+    .legal-section {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .legal-section .inner {
+      max-width: 600px; margin: 0 auto;
+      padding: 2.5rem 2rem; text-align: center;
+    }
+    .legal-section h2 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--muted); margin-bottom: 1.2rem;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      border: none; padding: 0;
+    }
+    .legal-links {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .legal-links a {
+      display: block; min-width: 200px;
+      padding: 1rem 1.4rem;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text); font-weight: 600;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .legal-links a:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(196,144,10,0.1);
+      text-decoration: none; color: var(--accent2);
+    }
+    .legal-links a span {
+      display: block; font-size: 0.82em;
+      font-weight: 400; color: var(--muted); margin-top: 3px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      text-align: center;
+      padding: 2rem 2rem;
+      color: var(--muted); font-size: 0.88rem;
+    }
+    footer .footer-gif { margin-bottom: 1rem; }
+    footer .footer-gif img { height: 72px; opacity: 0.85; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+    footer p + p { margin-top: 0.35rem; }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 1.8rem; }
+      nav ul { display: none; }
+      .cards { grid-template-columns: 1fr; }
+      .legal-links a { min-width: 0; width: 100%; }
+    }
+    @media (min-width: 701px) and (max-width: 900px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
-  <h1>Echo's Bot</h1>
-  <p class="subtitle">也叫「咋办Bot」— Discord 上的 AI 聊天、塔罗、游戏查询、占卜小助手</p>
 
-  <div class="links">
-    <a href="privacy.html">
-      Privacy Policy
-      <span>数据收集、存储与删除说明</span>
-    </a>
-    <a href="tos.html">
-      Terms of Service
-      <span>使用条款与限制</span>
-    </a>
+<nav>
+  <span class="brand">✨ 咋办 Bot</span>
+  <ul>
+    <li><a href="#features">功能</a></li>
+    <li><a href="#commands">指令</a></li>
+    <li><a href="#legal">法律</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <img class="bot-gif" src="zabanwalk.gif" alt="咋办 Bot" />
+  <h1>✨ 咋办 Bot</h1>
+  <p class="tagline">AI 对话 · 塔罗占卜 · 今日运势 · 书影音游 · 扭蛋抽卡 · ……把快乐带进你的 Discord 服务器 /ᐠ｡ꞈ｡ᐟ\</p>
+  <div class="btns">
+    <a class="btn-primary" href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">➕ 邀请咋办</a>
+    <a class="btn-secondary" href="https://top.gg/bot/1247835257189957673" target="_blank" rel="noopener">⭐ Top.gg 投票</a>
+    <a class="btn-secondary" href="https://ko-fi.com/G2G11H5VMC" target="_blank" rel="noopener">☕ Ko-fi</a>
   </div>
+</div>
 
-  <footer>
-    <img class="bot-gif" src="zabanwalk.gif" alt="咋办 Bot">
-    Avatar by <a href="https://misskey.io/@ikkiiki1104">@ikkiiki1104@misskey.io</a><br>
-    Contact: <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a><br><br>
-    <a href="https://ko-fi.com/G2G11H5VMC" target="_blank"><img height="36" style="border:0px;height:36px;" src="https://storage.ko-fi.com/cdn/kofi2.png?v=6" border="0" alt="Buy Me a Coffee at ko-fi.com"></a>
-  </footer>
+<!-- 功能亮点 -->
+<section id="features">
+  <h2>✨ 功能亮点</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">💬</div>
+      <h3>AI 对话</h3>
+      <p>基于 GPT-4.1，支持多轮对话、图片分析、翻译。说「咋办」自动触发，个性角色可自定义。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔮</div>
+      <h3>塔罗 · 运势</h3>
+      <p>每日占卜神社签 + 塔罗牌，精美图卡渲染。连签有惊喜！</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎰</div>
+      <h3>扭蛋机</h3>
+      <p>用咋办币抽奖，SSR / SR / R 三稀有度，十连保底 SR。收集完整图鉴，碎片可兑换。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎬</div>
+      <h3>书影音游</h3>
+      <p>整合 NeoDB 与 Bangumi 搜索书籍、动画、游戏与音乐，带评分和封面。Steam 价格查询，萌娘百科 infobox 截图，一站搞定。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🐾</div>
+      <h3>可爱 &amp; 艺术</h3>
+      <p>从 Reddit 随机抽取可爱动物图片 / 视频（NSFW 自动过滤），或欣赏随机艺术品。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🛠️</div>
+      <h3>实用工具</h3>
+      <p>图片格式转换、读音查询（拼音 / 假名 / IPA）、世界时钟、投票、冷知识、知识问答……</p>
+    </div>
+  </div>
+</section>
+
+<!-- 指令速查 -->
+<section id="commands">
+  <h2>📋 指令速查</h2>
+  <table class="cmd-table">
+    <thead>
+      <tr>
+        <th style="width:30%">指令</th>
+        <th>功能</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="group-header"><td colspan="2">💬 AI &amp; 对话</td></tr>
+      <tr><td><code>/ask</code></td><td>AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发</td></tr>
+      <tr><td><code>/choose</code></td><td>AI 辅助决策，帮你在纠结选项中做出选择；也可自己点按钮揭晓命运</td></tr>
+      <tr><td><code>/setrole</code></td><td>自定义 AI 人格设定与专属记忆</td></tr>
+      <tr><td><code>/rolecheck</code></td><td>查看当前角色设定内容</td></tr>
+      <tr><td><code>/resetrole</code></td><td>重置 AI 角色为默认</td></tr>
+      <tr><td><code>/summary</code></td><td>生成当前对话历史摘要</td></tr>
+      <tr><td><code>/summarycheck</code></td><td>查看已保存的对话摘要</td></tr>
+
+      <tr class="group-header"><td colspan="2">🔮 占卜 &amp; 运势</td></tr>
+      <tr><td><code>/fortune</code></td><td>每日运势签到，连签领咋办币与补签卡</td></tr>
+      <tr><td><code>/tarot</code></td><td>塔罗牌占卜（1 / 3 / 5 张牌阵）</td></tr>
+
+      <tr class="group-header"><td colspan="2">🎰 扭蛋</td></tr>
+      <tr><td><code>/gacha</code></td><td>咋办扭蛋机，单抽 1 币 / 十连 10 币，SSR / SR / R 三稀有度</td></tr>
+
+      <tr class="group-header"><td colspan="2">🎬 书影音游</td></tr>
+      <tr><td><code>/neodb</code></td><td>NeoDB 书影音游戏搜索，含评分、封面与条目详情</td></tr>
+      <tr><td><code>/bangumi</code></td><td>Bangumi 动画、书籍、游戏、音乐等条目搜索</td></tr>
+      <tr><td><code>/steam</code></td><td>Steam 游戏当前价格与折扣信息</td></tr>
+      <tr><td><code>/moewiki</code></td><td>萌娘百科条目查询，自动截图 infobox</td></tr>
+
+      <tr class="group-header"><td colspan="2">🎲 随机 /roll</td></tr>
+      <tr><td><code>/roll number</code></td><td>随机整数（自定范围与次数）</td></tr>
+      <tr><td><code>/roll dish</code></td><td>随机中国料理推荐</td></tr>
+      <tr><td><code>/roll fortune</code></td><td>随机神社签</td></tr>
+      <tr><td><code>/roll wiki</code></td><td>随机维基百科页面（中文 / 英文）</td></tr>
+      <tr><td><code>/roll media</code></td><td>随机 NeoDB 书影音游戏条目</td></tr>
+      <tr><td><code>/roll moewiki</code></td><td>随机萌娘百科条目与 infobox 截图</td></tr>
+      <tr><td><code>/roll bangumi</code></td><td>随机 Bangumi 全媒体条目（动画 / 书籍 / 游戏 / 音乐 / 三次元）</td></tr>
+
+      <tr class="group-header"><td colspan="2">🐾 娱乐</td></tr>
+      <tr><td><code>/aww</code></td><td>随机可爱动物图片或视频（Reddit，NSFW 自动过滤）</td></tr>
+      <tr><td><code>/art</code></td><td>随机艺术品欣赏</td></tr>
+      <tr><td><code>/dailyfact</code></td><td>随机冷知识</td></tr>
+      <tr><td><code>/trivia</code></td><td>知识问答小游戏（多分类 · 多难度）</td></tr>
+      <tr><td><code>/triviarank</code></td><td>查看本服务器问答排行榜</td></tr>
+      <tr><td><code>/resettrivia</code></td><td>清空个人问答战绩</td></tr>
+
+      <tr class="group-header"><td colspan="2">🛠️ 实用工具</td></tr>
+      <tr><td><code>/imageconvert</code></td><td>图片格式转换（PNG / JPEG / WEBP / BMP）</td></tr>
+      <tr><td><code>/reading</code></td><td>读音查询（中文拼音 / 日文假名 / 英文 IPA）</td></tr>
+      <tr><td><code>/timezone</code></td><td>全球 15 城市时区一览</td></tr>
+      <tr><td><code>/poll</code></td><td>创建 Discord 原生投票</td></tr>
+
+      <tr class="group-header"><td colspan="2">👤 个人设置</td></tr>
+      <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡（喜好、心情、今日状态等）</td></tr>
+      <tr><td><code>/mycard</code></td><td>查看个人信息卡片</td></tr>
+      <tr><td><code>/trigger</code></td><td>开关关键词「咋办」自动触发 AI 回复</td></tr>
+      <tr><td><code>/reset</code></td><td>清空个人全部数据（对话历史 / 设定 / 统计）</td></tr>
+
+      <tr class="group-header"><td colspan="2">📌 其他</td></tr>
+      <tr><td><code>/menu</code></td><td>图形化按钮式命令启动器</td></tr>
+      <tr><td><code>/help</code></td><td>完整指令列表与说明</td></tr>
+      <tr><td><code>/buymeacoffee</code></td><td>支持开发者</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 法律文件 -->
+<div class="legal-section" id="legal">
+  <div class="inner">
+    <h2>法律文件</h2>
+    <div class="legal-links">
+      <a href="privacy.html">
+        Privacy Policy
+        <span>数据收集、存储与删除说明</span>
+      </a>
+      <a href="tos.html">
+        Terms of Service
+        <span>使用条款与限制</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-gif">
+    <img src="zabanwalk.gif" alt="咋办走路" />
+  </div>
+  <p>✨ 咋办 Bot 由 <a href="https://github.com/kuroniko0707" target="_blank" rel="noopener">@kuroniko0707</a> 开发</p>
+  <p>🎨 Avatar by <a href="https://misskey.io/@ikkiiki1104" target="_blank" rel="noopener">@ikkiiki1104@misskey.io</a></p>
+  <p style="margin-top:0.5rem;">
+    <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a>
+  </p>
+</footer>
+
 </body>
 </html>
