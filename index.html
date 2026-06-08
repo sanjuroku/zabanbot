@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>咋办 Bot — 你的 Discord 多功能魔法少女</title>
-  <meta name="description" content="咋办 Bot：AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡……把快乐带进你的 Discord 服务器！" />
+  <meta name="description" content="咋办 Bot：AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡，把快乐带进你的 Discord 服务器！" />
   <style>
     :root {
-      --bg: #fffcf5;
-      --surface: #fff8e7;
-      --card: #ffffff;
-      --accent: #c4900a;
-      --accent2: #8b6000;
-      --text: #1a1000;
-      --muted: #7a6520;
-      --border: #ffe58a;
+      --bg: #fffbee;
+      --surface: #fff3c2;
+      --card: #fffef8;
+      --accent: #b07800;
+      --accent2: #6b4600;
+      --text: #1a0f00;
+      --muted: #8a6820;
+      --border: #f0c020;
       --invite: #ffc91e;
-      --invite-hover: #e6a800;
+      --invite-hover: #e0a800;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -31,7 +31,7 @@
     /* ── 顶部导航 ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(255,252,245,0.92);
+      background: rgba(255,251,238,0.94);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
@@ -46,8 +46,8 @@
     .hero {
       text-align: center;
       padding: 4rem 2rem 2.5rem;
-      background: linear-gradient(160deg, #fff3c8 0%, #fffcf5 60%);
-      border-bottom: 1px solid var(--border);
+      background: linear-gradient(160deg, #ffe680 0%, #fffbee 60%);
+      border-bottom: 1.5px solid var(--border);
     }
     .hero img.bot-gif {
       width: 120px; height: 120px;
@@ -59,15 +59,19 @@
       margin-top: 0.6rem; font-size: 1.05rem;
       color: var(--muted); max-width: 540px; margin-inline: auto;
     }
+    .hero .tagline .tagline-sub {
+      display: block; margin-top: 0.25rem;
+      font-size: 0.95rem; color: var(--accent);
+    }
     .hero .btns { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       padding: 0.65rem 1.8rem;
       background: var(--invite);
-      color: #1a1000; border-radius: 8px;
+      color: #120900; border-radius: 8px;
       font-weight: 700; font-size: 1rem;
       transition: background 0.15s;
     }
-    .btn-primary:hover { background: var(--invite-hover); color: #1a1000; text-decoration: none; }
+    .btn-primary:hover { background: var(--invite-hover); color: #120900; text-decoration: none; }
     .btn-secondary {
       padding: 0.65rem 1.6rem;
       border: 1.5px solid var(--border);
@@ -75,7 +79,7 @@
       font-size: 1rem; background: var(--card);
       transition: border-color 0.15s, background 0.15s;
     }
-    .btn-secondary:hover { border-color: var(--accent); background: #fff8e0; color: var(--accent2); text-decoration: none; }
+    .btn-secondary:hover { border-color: var(--accent); background: #fff3c2; color: var(--accent2); text-decoration: none; }
 
     /* ── 通用 section ── */
     section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
@@ -97,11 +101,11 @@
       border-radius: 12px;
       padding: 1.3rem 1.1rem;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-      box-shadow: 0 1px 4px rgba(196,144,10,0.05);
+      box-shadow: 0 2px 6px rgba(180,130,0,0.08);
     }
     .card:hover {
       border-color: var(--invite);
-      box-shadow: 0 4px 16px rgba(196,144,10,0.12);
+      box-shadow: 0 5px 18px rgba(180,130,0,0.15);
       transform: translateY(-2px);
     }
     .card .icon { font-size: 1.7rem; margin-bottom: 0.4rem; }
@@ -127,9 +131,9 @@
       letter-spacing: 0.04em; text-transform: uppercase;
       border-bottom: 1px solid var(--border);
     }
-    .cmd-table tr:not(.group-header):hover td { background: #fffbe8; }
+    .cmd-table tr:not(.group-header):hover td { background: #fff3c2; }
     .cmd-table code {
-      background: #fff3c2;
+      background: #ffe87a;
       padding: 0.1rem 0.4rem; border-radius: 4px;
       font-size: 0.85rem; color: var(--accent2);
       font-family: "Consolas", monospace;
@@ -137,18 +141,12 @@
 
     /* ── 法律链接区 ── */
     .legal-section {
-      border-top: 1px solid var(--border);
+      border-top: 1.5px solid var(--border);
       background: var(--surface);
     }
     .legal-section .inner {
       max-width: 600px; margin: 0 auto;
-      padding: 2.5rem 2rem; text-align: center;
-    }
-    .legal-section h2 {
-      font-size: 1rem; font-weight: 700;
-      color: var(--muted); margin-bottom: 1.2rem;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      border: none; padding: 0;
+      padding: 2rem 2rem; text-align: center;
     }
     .legal-links {
       display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
@@ -164,7 +162,7 @@
     }
     .legal-links a:hover {
       border-color: var(--accent);
-      box-shadow: 0 2px 8px rgba(196,144,10,0.1);
+      box-shadow: 0 2px 10px rgba(180,130,0,0.15);
       text-decoration: none; color: var(--accent2);
     }
     .legal-links a span {
@@ -174,7 +172,7 @@
 
     /* ── Footer ── */
     footer {
-      border-top: 1px solid var(--border);
+      border-top: none;
       background: var(--bg);
       text-align: center;
       padding: 2rem 2rem;
@@ -211,7 +209,10 @@
 <div class="hero">
   <img class="bot-gif" src="zabanwalk.gif" alt="咋办 Bot" />
   <h1>✨ 咋办 Bot</h1>
-  <p class="tagline">AI 对话 · 塔罗占卜 · 今日运势 · 书影音游 · 扭蛋抽卡 · ……把快乐带进你的 Discord 服务器 /ᐠ｡ꞈ｡ᐟ\</p>
+  <p class="tagline">
+    AI 对话 · 塔罗占卜 · 今日运势 · 书影音游 · 扭蛋抽卡
+    <span class="tagline-sub">把快乐带进你的 Discord 服务器 /ᐠ｡ꞈ｡ᐟ\</span>
+  </p>
   <div class="btns">
     <a class="btn-primary" href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">➕ 邀请咋办</a>
     <a class="btn-secondary" href="https://top.gg/bot/1247835257189957673" target="_blank" rel="noopener">⭐ Top.gg 投票</a>
@@ -285,9 +286,9 @@
 
       <tr class="group-header"><td colspan="2">🎬 书影音游</td></tr>
       <tr><td><code>/neodb</code></td><td>NeoDB 书影音游戏搜索，含评分、封面与条目详情</td></tr>
-      <tr><td><code>/bangumi</code></td><td>Bangumi 动画、书籍、游戏、音乐等条目搜索</td></tr>
-      <tr><td><code>/steam</code></td><td>Steam 游戏当前价格与折扣信息</td></tr>
-      <tr><td><code>/moewiki</code></td><td>萌娘百科条目查询，自动截图 infobox</td></tr>
+      <tr><td><code>/bangumi</code></td><td>Bangumi 动画、书籍、游戏与音乐搜索，含评分与封面</td></tr>
+      <tr><td><code>/steam</code></td><td>Steam 游戏搜索，含当前价格与折扣信息</td></tr>
+      <tr><td><code>/moewiki</code></td><td>萌娘百科条目搜索，含 infobox 自动截图</td></tr>
 
       <tr class="group-header"><td colspan="2">🎲 随机 /roll</td></tr>
       <tr><td><code>/roll number</code></td><td>随机整数（自定范围与次数）</td></tr>
@@ -313,8 +314,8 @@
       <tr><td><code>/poll</code></td><td>创建 Discord 原生投票</td></tr>
 
       <tr class="group-header"><td colspan="2">👤 个人设置</td></tr>
-      <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡（喜好、心情、今日状态等）</td></tr>
-      <tr><td><code>/mycard</code></td><td>查看个人信息卡片</td></tr>
+      <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡（可以用来自我介绍哦！）</td></tr>
+      <tr><td><code>/mycard</code></td><td>同上，只是更简洁的命令名字！</td></tr>
       <tr><td><code>/trigger</code></td><td>开关关键词「咋办」自动触发 AI 回复</td></tr>
       <tr><td><code>/reset</code></td><td>清空个人全部数据（对话历史 / 设定 / 统计）</td></tr>
 
@@ -326,10 +327,20 @@
   </table>
 </section>
 
-<!-- 法律文件 -->
+<footer>
+  <div class="footer-gif">
+    <img src="zabanwalk.gif" alt="咋办走路" />
+  </div>
+  <p>✨ 咋办 Bot 由 <a href="https://github.com/sanjuroku" target="_blank" rel="noopener">@sanjuroku</a> 开发</p>
+  <p>🎨 Avatar by <a href="https://misskey.io/@ikkiiki1104" target="_blank" rel="noopener">@ikkiiki1104@misskey.io</a></p>
+  <p style="margin-top:0.5rem;">
+    <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a>
+  </p>
+</footer>
+
+<!-- 法律链接 -->
 <div class="legal-section" id="legal">
   <div class="inner">
-    <h2>法律文件</h2>
     <div class="legal-links">
       <a href="privacy.html">
         Privacy Policy
@@ -342,17 +353,6 @@
     </div>
   </div>
 </div>
-
-<footer>
-  <div class="footer-gif">
-    <img src="zabanwalk.gif" alt="咋办走路" />
-  </div>
-  <p>✨ 咋办 Bot 由 <a href="https://github.com/kuroniko0707" target="_blank" rel="noopener">@kuroniko0707</a> 开发</p>
-  <p>🎨 Avatar by <a href="https://misskey.io/@ikkiiki1104" target="_blank" rel="noopener">@ikkiiki1104@misskey.io</a></p>
-  <p style="margin-top:0.5rem;">
-    <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a>
-  </p>
-</footer>
 
 </body>
 </html>
