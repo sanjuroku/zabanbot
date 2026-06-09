@@ -63,10 +63,17 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--sans);
   font-weight: 700;
   font-size: 1rem;
   color: var(--ink2);
+}
+.nav-brand img {
+  height: 28px;
+  width: auto;
 }
 nav ul {
   list-style: none;
@@ -411,7 +418,7 @@ footer {
 <body>
 
 <nav>
-  <span class="nav-brand">咋办Bot</span>
+  <span class="nav-brand"><img src="zabanwalk.gif" alt="" />咋办Bot</span>
   <ul>
     <li><a href="#features">功能</a></li>
     <li><a href="#commands">指令</a></li>
