@@ -1169,7 +1169,7 @@ const I18N_SEL = {
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
     en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable.",
-    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけで起動、AI の人格もカスタマイズ可能。"
+    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけで起動、AI のキャラ設定もカスタマイズ可能。"
   },
   ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
   ".cards .card:nth-child(2) p": {
@@ -1178,8 +1178,8 @@ const I18N_SEL = {
   },
   ".cards .card:nth-child(3) h3": { en: "Gacha Machine", ja: "ガチャマシン" },
   ".cards .card:nth-child(3) p": {
-    en: "Spend Zaban coins on pulls — SSR / SR / R rarities, with a guaranteed SR per ten-pull. Complete the collection; duplicates convert to fragments.",
-    ja: "咋办コインでガチャ！SSR / SR / R の3レアリティ、10連でSR確定。図鑑を集めよう、かぶりはかけらに変換。"
+    en: "Spend Zacoins on pulls — SSR / SR / R rarities, with a guaranteed SR per ten-pull. Complete the collection; duplicates convert to fragments.",
+    ja: "ザバンコインでガチャ！SSR / SR / R の3レアリティ、10連でSR確定。図鑑を集めよう、かぶりはかけらに変換。"
   },
   ".cards .card:nth-child(4) h3": { en: "Books · Movies · Music · Games", ja: "本・映画・音楽・ゲーム" },
   ".cards .card:nth-child(4) p": {
@@ -1194,7 +1194,7 @@ const I18N_SEL = {
   ".cards .card:nth-child(6) h3": { en: "Utilities", ja: "便利ツール" },
   ".cards .card:nth-child(6) p": {
     en: "Image conversion, pronunciation lookup (pinyin / kana / IPA), world clock, polls, daily facts, trivia quizzes…",
-    ja: "画像変換、読み方検索（ピンイン / かな / IPA）、世界時計、投票、豆知識、クイズなど…"
+    ja: "画像変換、読み方検索（ピンイン / ふりがな / IPA）、世界時計、投票、豆知識、クイズなど…"
   },
   "#commands .section-title": { en: "Command Reference", ja: "コマンド一覧" },
   ".cmd-table th:nth-child(1)": { en: "Command", ja: "コマンド" },
@@ -1209,7 +1209,7 @@ const I18N_SEL = {
   },
   ".gg-footer p:nth-child(1)": {
     en: "Like this gacha? Come try <a href=\"https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands\" target=\"_blank\" rel=\"noopener\">咋办 Bot</a>'s gacha machine on Discord too!",
-    ja: "ガチャ気に入った？Discord の <a href=\"https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands\" target=\"_blank\" rel=\"noopener\">咋办 Bot</a> のガチャもぜひ！"
+    ja: "ガチャ気に入った？Discord の <a href=\"https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands\" target=\"_blank\" rel=\"noopener\">咋办Bot（ザバン）</a> のガチャもぜひ！"
   },
   ".gg-footer-small": {
     en: "This gacha actually grew out of a little site the author hand-built years ago:<br><a href=\"https://sanjuroku.github.io/UwU/\" target=\"_blank\" rel=\"noopener\">sanjuroku.github.io/UwU/</a> (nostalgia)",
@@ -1232,16 +1232,16 @@ const I18N_GROUPS = {
 
 // 指令描述：按 <code> 命令名匹配
 const I18N_CMDS = {
-  "/ask":          { en: "Multi-turn AI chat with image analysis and translation; also triggered by saying \"咋办\"", ja: "画像分析・翻訳対応のマルチターン AI チャット。「咋办」と言っても起動" },
-  "/choose":       { en: "Makes a random choice for you; add by:me to reveal the result yourself", ja: "ランダムに選択。by:me で自分でボタンを押して運命を確認" },
-  "/setrole":      { en: "Customize the AI's persona and dedicated memory", ja: "AI の人格設定と専用メモリをカスタマイズ" },
-  "/rolecheck":    { en: "View your current AI persona", ja: "現在の人格設定を確認" },
-  "/resetrole":    { en: "Reset the AI persona to default", ja: "人格設定をデフォルトに戻す" },
+  "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\"", ja: "ザバンに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言っても起動" },
+  "/choose":       { en: "Can't decide? Let Zaban choose for you; add by:me to reveal fate yourself", ja: "迷ったらザバンにおまかせ。by:me で自分で運命をめくることも" },
+  "/setrole":      { en: "Set a custom persona for Zaban, or things it should remember", ja: "ザバンのキャラ設定や、覚えてほしいことを設定" },
+  "/rolecheck":    { en: "View your persona settings", ja: "現在のキャラ設定を確認" },
+  "/resetrole":    { en: "Clear your persona and restore the default style", ja: "キャラ設定をリセットしてデフォルトに戻す" },
   "/summary":      { en: "Generate a summary of your conversation history", ja: "会話履歴の要約を生成" },
   "/summarycheck": { en: "View your saved conversation summary", ja: "保存された会話要約を確認" },
-  "/fortune":      { en: "Daily fortune check-in; streaks earn Zaban coins and makeup cards", ja: "毎日の運勢チェックイン。連続日数でコインや補填カードを獲得" },
-  "/tarot":        { en: "Tarot reading (1 / 3 / 5-card spreads)", ja: "タロット占い（1 / 3 / 5枚スプレッド）" },
-  "/gacha":        { en: "Zaban gacha machine — 1 coin per pull / 10 for a ten-pull, SSR / SR / R rarities", ja: "咋办ガチャ。単発1コイン / 10連10コイン、SSR / SR / R の3レアリティ" },
+  "/fortune":      { en: "Your daily fortune, read and explained; check-in streaks earn Zacoins and makeup cards", ja: "今日の運勢を占って解説。連続チェックインでザバンコインや補填カードを獲得" },
+  "/tarot":        { en: "Draw tarot cards and let Zaban read them (1 / 3 / 5-card spreads)", ja: "タロットを引いて悩みをリーディング（1 / 3 / 5枚スプレッド）" },
+  "/gacha":        { en: "The Zaban gacha machine — 1 coin per pull, ten-pull guarantees SR; SSR / SR / R rarities", ja: "ザバンのガチャマシン。単発1コイン / 10連10コイン（SR確定）、SSR / SR / R の3レアリティ" },
   "/neodb":        { en: "Search NeoDB for books, movies, music & games, with ratings and covers", ja: "NeoDB で本・映画・音楽・ゲームを検索、評価とカバー付き" },
   "/bangumi":      { en: "Search Bangumi for anime, books, games & music, with ratings and covers", ja: "Bangumi でアニメ・本・ゲーム・音楽を検索、評価とカバー付き" },
   "/steam":        { en: "Steam game search with current prices and discounts", ja: "Steam ゲーム検索、現在価格と割引情報付き" },
@@ -1254,13 +1254,13 @@ const I18N_CMDS = {
   "/roll moewiki": { en: "Random Moegirlpedia article with infobox screenshot", ja: "ランダムな萌娘百科記事と infobox スクショ" },
   "/roll bangumi": { en: "Random Bangumi entry (anime / books / games / music / real)", ja: "ランダムな Bangumi 作品（アニメ / 本 / ゲーム / 音楽 / 三次元）" },
   "/aww":          { en: "Random cute animal photos or videos (Reddit, NSFW auto-filtered)", ja: "ランダムなかわいい動物の写真・動画（Reddit、NSFW 自動フィルター）" },
-  "/art":          { en: "Random artwork appreciation", ja: "ランダムな名画鑑賞" },
-  "/dailyfact":    { en: "Random interesting fact", ja: "ランダムな豆知識" },
+  "/art":          { en: "A random artwork from museum collections", ja: "美術館の所蔵品からランダムに一点鑑賞" },
+  "/dailyfact":    { en: "A random fun fact (Reddit / Wikipedia / Futility Closet)", ja: "ランダムな豆知識（Reddit / Wikipedia / Futility Closet）" },
   "/trivia":       { en: "Trivia quiz game (multiple categories & difficulties)", ja: "クイズゲーム（カテゴリ・難易度いろいろ）" },
   "/triviarank":   { en: "View this server's trivia leaderboard", ja: "サーバーのクイズランキングを表示" },
   "/resettrivia":  { en: "Clear your trivia stats", ja: "自分のクイズ戦績をリセット" },
   "/imageconvert": { en: "Image format conversion (PNG / JPEG / WEBP / BMP)", ja: "画像形式変換（PNG / JPEG / WEBP / BMP）" },
-  "/reading":      { en: "Pronunciation lookup (pinyin / kana / IPA)", ja: "読み方検索（ピンイン / かな / IPA）" },
+  "/reading":      { en: "How do I read this?? Pinyin / kana / IPA annotations", ja: "これなんて読む？？ピンイン / ふりがな / IPA の読み注釈" },
   "/timezone":     { en: "World clock for 15 cities", ja: "世界15都市の時刻一覧" },
   "/poll":         { en: "Create a native Discord poll", ja: "Discord ネイティブ投票を作成" },
   "/hellohowareyou": { en: "Fill out your profile card (great for introductions!)", ja: "プロフィールカードを作成（自己紹介にどうぞ！）" },
