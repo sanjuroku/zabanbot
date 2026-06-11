@@ -80,7 +80,13 @@ def capture_lang(browser, lang: str, sprite):
     page.goto(URL, wait_until="networkidle")
     page.add_style_tag(content=f"""
       html, body, .hero, .hero-inner, .hero-right {{ background: transparent !important; }}
-      .hero-chat {{ box-shadow: none !important; }}
+      /* GIF 专用 Discord 深色配色（官网保持金棕主题不受影响） */
+      .hero-chat {{
+        box-shadow: none !important;
+        background: #070709 !important;
+        border-color: rgba(255,255,255,0.08) !important;
+      }}
+      .chat-input {{ background: #131416 !important; }}
       .chat-msg {{ transition: none !important; }}
       .chat-caret {{ display: inline-block !important; animation: none !important; }}
       .chat-avatar-bot img {{ display: none !important; }}
