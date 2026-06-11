@@ -99,6 +99,29 @@ nav ul a {
 }
 nav ul a:hover { color: var(--gold); text-decoration: none; }
 
+/* ─── LANG SWITCH ─── */
+.lang-switch {
+  margin-left: 1.5rem;
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lang-switch button {
+  background: transparent;
+  border: none;
+  padding: 0.28rem 0.6rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: background 0.15s, color 0.15s;
+}
+.lang-switch button + button { border-left: 1px solid var(--border); }
+.lang-switch button:hover { color: var(--gold); }
+.lang-switch button.active { background: var(--gold-pale); color: var(--ink2); font-weight: 500; }
+
 /* ─── HERO ─── */
 .hero {
   position: relative;
@@ -405,6 +428,7 @@ footer {
 @media (max-width: 720px) {
   nav ul { display: none; }
   nav { padding: 0 1.25rem; }
+  .lang-switch { margin-left: auto; }
   .hero { padding: 3rem 1.25rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; }
   .hero-right { display: none; }
@@ -557,6 +581,11 @@ footer {
     <li><a href="#commands">指令</a></li>
     <li><a href="#legal">法律</a></li>
   </ul>
+  <div class="lang-switch" id="lang-switch">
+    <button data-lang="zh" class="active">中</button>
+    <button data-lang="en">EN</button>
+    <button data-lang="ja">日</button>
+  </div>
 </nav>
 
 <div class="hero">
@@ -652,8 +681,8 @@ footer {
         <div class="gg-stats">
           <div><strong id="gg-col-text">图鉴：0 / 41</strong></div>
           <div class="gg-progress-bar"><div class="gg-progress-fill" id="gg-progress" style="width:0%"></div></div>
-          <div style="margin-top:.25rem">已抽：<strong id="gg-pulls">0</strong> 次</div>
-          <div>消耗：<strong id="gg-spent">0</strong>G</div>
+          <div style="margin-top:.25rem" id="gg-pulls-line">已抽：<strong id="gg-pulls">0</strong> 次</div>
+          <div id="gg-spent-line">消耗：<strong id="gg-spent">0</strong>G</div>
         </div>
         <p class="gg-passive-note">☕ 每 2 秒 +<span id="gg-passive">1</span>G</p>
         <button class="gg-clear-btn" onclick="ggClearSave()">🗑️ 清除存档</button>
@@ -803,16 +832,19 @@ function ggSave() {
 function ggRefresh() {
   const gpc  = ggData.goldPerClick;
   const cost = ggData.goldPerClickCost;
+  const L = ggLbl(); // 多语言文案，定义见下方 i18n 区块（函数声明提升，同一 <script> 内可用）
   document.getElementById("gg-gold").textContent     = "💰 " + ggData.gold + " Gold";
-  document.getElementById("gg-col-text").textContent = "图鉴：" + ggCol.length + " / " + GG_TOTAL;
-  document.getElementById("gg-pulls").textContent    = ggData.pulls || 0;
-  document.getElementById("gg-spent").textContent    = ggData.spent || 0;
+  document.getElementById("gg-col-text").textContent = L.col + ggCol.length + " / " + GG_TOTAL;
+  document.getElementById("gg-pulls-line").innerHTML = L.pulls(ggData.pulls || 0);
+  document.getElementById("gg-spent-line").innerHTML = L.spent(ggData.spent || 0);
   document.getElementById("gg-progress").style.width = Math.round(ggCol.length / GG_TOTAL * 100) + "%";
-  document.getElementById("gg-gpc").textContent      = gpc;
-  document.getElementById("gg-level").textContent    = gpc;
-  document.getElementById("gg-upg-cost").textContent = cost;
-  document.getElementById("gg-passive").textContent  = gpc;
-  document.getElementById("gg-upg-btn").disabled     = ggData.gold < cost;
+  const upgBtn = document.getElementById("gg-upg-btn");
+  upgBtn.innerHTML = L.upgrade(gpc, cost);
+  upgBtn.disabled  = ggData.gold < cost;
+  document.querySelector(".gg-click-btn").innerHTML = L.click(gpc);
+  document.querySelector(".gg-pull-btn").textContent = L.pull;
+  document.querySelector(".gg-passive-note").innerHTML = L.passive(gpc);
+  document.querySelector(".gg-clear-btn").textContent = L.clear;
 }
 
 function ggClick() {
@@ -879,7 +911,7 @@ function ggPull() {
 }
 
 function ggClearSave() {
-  if (!confirm("确定清除存档？Gold、升级和图鉴记录都会消失。")) return;
+  if (!confirm(ggLbl().confirm)) return;
   localStorage.removeItem("gg_save");
   localStorage.removeItem("gg_col");
   ggData = { gold: 0, pulls: 0, spent: 0, goldPerClick: 1, goldPerClickCost: 10 };
@@ -894,6 +926,224 @@ function ggClearSave() {
 
 // 被动收入：每 2 秒 +goldPerClick Gold
 setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }, 2000);
+
+// ── 多语言 i18n ──────────────────────────────────────────────────────────────
+// 原则：中文为页面原文（DOM 即字典），首次切换时把原文存入 data-zh，切回中文时还原。
+// 指令表不加任何标记，按 <code> 里的命令名匹配 I18N_CMDS，新增命令行不翻译也不会报错。
+let currentLang = "zh";
+
+const GG_LBL = {
+  zh: {
+    col: "图鉴：",
+    pulls: n => `已抽：<strong>${n}</strong> 次`,
+    spent: n => `消耗：<strong>${n}</strong>G`,
+    upgrade: (l, c) => `⬆️ 升级 Lv.${l}（${c}G）`,
+    click: g => `👆 +${g}G`,
+    pull: "🎰 扭一次（100G）",
+    passive: g => `☕ 每 2 秒 +${g}G`,
+    clear: "🗑️ 清除存档",
+    confirm: "确定清除存档？Gold、升级和图鉴记录都会消失。"
+  },
+  en: {
+    col: "Collection: ",
+    pulls: n => `Pulls: <strong>${n}</strong>`,
+    spent: n => `Spent: <strong>${n}</strong>G`,
+    upgrade: (l, c) => `⬆️ Upgrade Lv.${l} (${c}G)`,
+    click: g => `👆 +${g}G`,
+    pull: "🎰 Pull once (100G)",
+    passive: g => `☕ +${g}G every 2s`,
+    clear: "🗑️ Clear save",
+    confirm: "Clear your save? Gold, upgrades and collection will all be lost."
+  },
+  ja: {
+    col: "図鑑：",
+    pulls: n => `回数：<strong>${n}</strong> 回`,
+    spent: n => `消費：<strong>${n}</strong>G`,
+    upgrade: (l, c) => `⬆️ 強化 Lv.${l}（${c}G）`,
+    click: g => `👆 +${g}G`,
+    pull: "🎰 1回まわす（100G）",
+    passive: g => `☕ 2秒ごとに +${g}G`,
+    clear: "🗑️ セーブ削除",
+    confirm: "セーブを削除しますか？Gold・強化・図鑑の記録がすべて消えます。"
+  }
+};
+function ggLbl() { return GG_LBL[currentLang] || GG_LBL.zh; }
+
+// 静态文案：选择器 → { en, ja }（值为 innerHTML，可含标签）
+const I18N_SEL = {
+  "nav ul li:nth-child(1) a": { en: "Features", ja: "機能" },
+  "nav ul li:nth-child(2) a": { en: "Gacha", ja: "ガチャ" },
+  "nav ul li:nth-child(3) a": { en: "Commands", ja: "コマンド" },
+  "nav ul li:nth-child(4) a": { en: "Legal", ja: "法的情報" },
+  ".hero h1": {
+    en: "咋办Bot<em>Bring joy to your Discord server</em>",
+    ja: "咋办Bot<em>あなたの Discord サーバーに楽しさを</em>"
+  },
+  ".hero-tagline": {
+    en: "AI chat, tarot readings, daily fortunes, media search, and gacha pulls /ᐠ｡ꞈ｡ᐟ\\",
+    ja: "AI チャット、タロット占い、今日の運勢、本・映画・音楽・ゲーム検索、ガチャ /ᐠ｡ꞈ｡ᐟ\\"
+  },
+  ".hero-pills .pill:nth-child(1)": { en: "💬 AI Chat", ja: "💬 AI チャット" },
+  ".hero-pills .pill:nth-child(2)": { en: "🔮 Tarot", ja: "🔮 タロット占い" },
+  ".hero-pills .pill:nth-child(3)": { en: "🎰 Gacha", ja: "🎰 ガチャ" },
+  ".hero-pills .pill:nth-child(4)": { en: "🎬 Media Search", ja: "🎬 メディア検索" },
+  ".hero-pills .pill:nth-child(5)": { en: "🐾 Cute &amp; Art", ja: "🐾 かわいい＆アート" },
+  ".hero-pills .pill:nth-child(6)": { en: "🛠️ Utilities", ja: "🛠️ 便利ツール" },
+  ".hero-btns a:nth-child(1)": { en: "➕ Invite 咋办", ja: "➕ 咋办を招待" },
+  ".hero-btns a:nth-child(2)": { en: "⭐ Vote on Top.gg", ja: "⭐ Top.gg で投票" },
+  "#features .section-title": { en: "What can it do?", ja: "何ができるの？" },
+  ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
+  ".cards .card:nth-child(1) p": {
+    en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable.",
+    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけで起動、AI の人格もカスタマイズ可能。"
+  },
+  ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
+  ".cards .card:nth-child(2) p": {
+    en: "Daily shrine fortunes and tarot readings rendered as beautiful cards. Check-in streaks bring surprises!",
+    ja: "毎日のおみくじ＋タロット占いを美しいカードで。連続チェックインにはご褒美も！"
+  },
+  ".cards .card:nth-child(3) h3": { en: "Gacha Machine", ja: "ガチャマシン" },
+  ".cards .card:nth-child(3) p": {
+    en: "Spend Zaban coins on pulls — SSR / SR / R rarities, with a guaranteed SR per ten-pull. Complete the collection; duplicates convert to fragments.",
+    ja: "咋办コインでガチャ！SSR / SR / R の3レアリティ、10連でSR確定。図鑑を集めよう、かぶりはかけらに変換。"
+  },
+  ".cards .card:nth-child(4) h3": { en: "Books · Movies · Music · Games", ja: "本・映画・音楽・ゲーム" },
+  ".cards .card:nth-child(4) p": {
+    en: "Search books, anime, games and music via NeoDB and Bangumi, with ratings and covers. Steam price lookup and Moegirlpedia infobox screenshots included.",
+    ja: "NeoDB と Bangumi で本・アニメ・ゲーム・音楽を検索、評価とカバー付き。Steam 価格検索や萌娘百科 infobox スクショも。"
+  },
+  ".cards .card:nth-child(5) h3": { en: "Cute &amp; Art", ja: "かわいい＆アート" },
+  ".cards .card:nth-child(5) p": {
+    en: "Random adorable animal photos and videos from Reddit (NSFW auto-filtered), or random artwork appreciation.",
+    ja: "Reddit からランダムにかわいい動物の写真・動画（NSFW 自動フィルター）、ランダムな名画鑑賞も。"
+  },
+  ".cards .card:nth-child(6) h3": { en: "Utilities", ja: "便利ツール" },
+  ".cards .card:nth-child(6) p": {
+    en: "Image conversion, pronunciation lookup (pinyin / kana / IPA), world clock, polls, daily facts, trivia quizzes…",
+    ja: "画像変換、読み方検索（ピンイン / かな / IPA）、世界時計、投票、豆知識、クイズなど…"
+  },
+  "#commands .section-title": { en: "Command Reference", ja: "コマンド一覧" },
+  ".cmd-table th:nth-child(1)": { en: "Command", ja: "コマンド" },
+  ".cmd-table th:nth-child(2)": { en: "Description", ja: "説明" },
+  ".legal-left p": { en: "Usage Notice", ja: "ご利用にあたって" },
+  ".legal-left small": { en: "Data policy &amp; terms of service", ja: "データポリシー＆利用規約" },
+  ".legal-link[href=\"privacy.html\"] span": { en: "How data is collected, stored &amp; deleted", ja: "データの収集・保存・削除について" },
+  ".legal-link[href=\"tos.html\"] span": { en: "Terms and restrictions", ja: "利用条件と制限" },
+  "footer .footer-text p:nth-child(4)": {
+    en: "✨ 咋办 Bot is developed by <a href=\"https://github.com/sanjuroku\" target=\"_blank\" rel=\"noopener\">@sanjuroku</a>",
+    ja: "✨ 咋办 Bot 開発者：<a href=\"https://github.com/sanjuroku\" target=\"_blank\" rel=\"noopener\">@sanjuroku</a>"
+  },
+  ".gg-footer p:nth-child(1)": {
+    en: "Like this gacha? Come try <a href=\"https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands\" target=\"_blank\" rel=\"noopener\">咋办 Bot</a>'s gacha machine on Discord too!",
+    ja: "ガチャ気に入った？Discord の <a href=\"https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands\" target=\"_blank\" rel=\"noopener\">咋办 Bot</a> のガチャもぜひ！"
+  },
+  ".gg-footer-small": {
+    en: "This gacha actually grew out of a little site the author hand-built years ago:<br><a href=\"https://sanjuroku.github.io/UwU/\" target=\"_blank\" rel=\"noopener\">sanjuroku.github.io/UwU/</a> (nostalgia)",
+    ja: "実はこのガチャ、数年前に作者が手作りした小さなサイトが原型です：<br><a href=\"https://sanjuroku.github.io/UwU/\" target=\"_blank\" rel=\"noopener\">sanjuroku.github.io/UwU/</a>（懐かしい）"
+  }
+};
+
+// 指令表组标题：按原文匹配
+const I18N_GROUPS = {
+  "💬 AI & 对话":   { en: "💬 AI & Chat",            ja: "💬 AI＆チャット" },
+  "🔮 占卜 & 运势": { en: "🔮 Divination & Fortune", ja: "🔮 占い＆運勢" },
+  "🎰 扭蛋":        { en: "🎰 Gacha",                ja: "🎰 ガチャ" },
+  "🎬 书影音游":    { en: "🎬 Media",                ja: "🎬 メディア" },
+  "🎲 随机 /roll":  { en: "🎲 Random /roll",         ja: "🎲 ランダム /roll" },
+  "🐾 娱乐":        { en: "🐾 Fun",                  ja: "🐾 エンタメ" },
+  "🛠️ 实用工具":    { en: "🛠️ Utilities",            ja: "🛠️ 便利ツール" },
+  "👤 个人设置":    { en: "👤 Personal",             ja: "👤 個人設定" },
+  "📌 其他":        { en: "📌 Misc",                 ja: "📌 その他" }
+};
+
+// 指令描述：按 <code> 命令名匹配
+const I18N_CMDS = {
+  "/ask":          { en: "Multi-turn AI chat with image analysis and translation; also triggered by saying \"咋办\"", ja: "画像分析・翻訳対応のマルチターン AI チャット。「咋办」と言っても起動" },
+  "/choose":       { en: "Makes a random choice for you; add by:me to reveal the result yourself", ja: "ランダムに選択。by:me で自分でボタンを押して運命を確認" },
+  "/setrole":      { en: "Customize the AI's persona and dedicated memory", ja: "AI の人格設定と専用メモリをカスタマイズ" },
+  "/rolecheck":    { en: "View your current AI persona", ja: "現在の人格設定を確認" },
+  "/resetrole":    { en: "Reset the AI persona to default", ja: "人格設定をデフォルトに戻す" },
+  "/summary":      { en: "Generate a summary of your conversation history", ja: "会話履歴の要約を生成" },
+  "/summarycheck": { en: "View your saved conversation summary", ja: "保存された会話要約を確認" },
+  "/fortune":      { en: "Daily fortune check-in; streaks earn Zaban coins and makeup cards", ja: "毎日の運勢チェックイン。連続日数でコインや補填カードを獲得" },
+  "/tarot":        { en: "Tarot reading (1 / 3 / 5-card spreads)", ja: "タロット占い（1 / 3 / 5枚スプレッド）" },
+  "/gacha":        { en: "Zaban gacha machine — 1 coin per pull / 10 for a ten-pull, SSR / SR / R rarities", ja: "咋办ガチャ。単発1コイン / 10連10コイン、SSR / SR / R の3レアリティ" },
+  "/neodb":        { en: "Search NeoDB for books, movies, music & games, with ratings and covers", ja: "NeoDB で本・映画・音楽・ゲームを検索、評価とカバー付き" },
+  "/bangumi":      { en: "Search Bangumi for anime, books, games & music, with ratings and covers", ja: "Bangumi でアニメ・本・ゲーム・音楽を検索、評価とカバー付き" },
+  "/steam":        { en: "Steam game search with current prices and discounts", ja: "Steam ゲーム検索、現在価格と割引情報付き" },
+  "/moewiki":      { en: "Search Moegirlpedia with automatic infobox screenshots", ja: "萌娘百科を検索、infobox の自動スクショ付き" },
+  "/roll number":  { en: "Random integers (custom range and count)", ja: "ランダムな整数（範囲・回数指定可）" },
+  "/roll dish":    { en: "Random Chinese dish recommendation", ja: "ランダムな中華料理のおすすめ" },
+  "/roll fortune": { en: "Random shrine fortune slip", ja: "ランダムなおみくじ" },
+  "/roll wiki":    { en: "Random Wikipedia article (Chinese / English)", ja: "ランダムな Wikipedia 記事（中 / 英）" },
+  "/roll media":   { en: "Random NeoDB media entry", ja: "ランダムな NeoDB 作品" },
+  "/roll moewiki": { en: "Random Moegirlpedia article with infobox screenshot", ja: "ランダムな萌娘百科記事と infobox スクショ" },
+  "/roll bangumi": { en: "Random Bangumi entry (anime / books / games / music / real)", ja: "ランダムな Bangumi 作品（アニメ / 本 / ゲーム / 音楽 / 三次元）" },
+  "/aww":          { en: "Random cute animal photos or videos (Reddit, NSFW auto-filtered)", ja: "ランダムなかわいい動物の写真・動画（Reddit、NSFW 自動フィルター）" },
+  "/art":          { en: "Random artwork appreciation", ja: "ランダムな名画鑑賞" },
+  "/dailyfact":    { en: "Random interesting fact", ja: "ランダムな豆知識" },
+  "/trivia":       { en: "Trivia quiz game (multiple categories & difficulties)", ja: "クイズゲーム（カテゴリ・難易度いろいろ）" },
+  "/triviarank":   { en: "View this server's trivia leaderboard", ja: "サーバーのクイズランキングを表示" },
+  "/resettrivia":  { en: "Clear your trivia stats", ja: "自分のクイズ戦績をリセット" },
+  "/imageconvert": { en: "Image format conversion (PNG / JPEG / WEBP / BMP)", ja: "画像形式変換（PNG / JPEG / WEBP / BMP）" },
+  "/reading":      { en: "Pronunciation lookup (pinyin / kana / IPA)", ja: "読み方検索（ピンイン / かな / IPA）" },
+  "/timezone":     { en: "World clock for 15 cities", ja: "世界15都市の時刻一覧" },
+  "/poll":         { en: "Create a native Discord poll", ja: "Discord ネイティブ投票を作成" },
+  "/hellohowareyou": { en: "Fill out your profile card (great for introductions!)", ja: "プロフィールカードを作成（自己紹介にどうぞ！）" },
+  "/mycard":       { en: "Same as above, just a shorter command name!", ja: "同上、短いコマンド名バージョン！" },
+  "/trigger":      { en: "Toggle the \"咋办\" keyword auto-response", ja: "「咋办」キーワード自動応答のオン / オフ" },
+  "/reset":        { en: "Clear all your personal data (history / settings / stats)", ja: "個人データを全消去（履歴 / 設定 / 統計）" },
+  "/menu":         { en: "Graphical button-based command launcher", ja: "ボタン式コマンドランチャー" },
+  "/help":         { en: "Full command list and descriptions", ja: "全コマンド一覧と説明" },
+  "/buymeacoffee": { en: "Support the developer", ja: "開発者を応援" }
+};
+
+const PAGE_TITLES = {
+  zh: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
+  en: "咋办Bot (Zaban Bot) /ᐠ｡ꞈ｡ᐟ\\",
+  ja: "咋办Bot（ザバンBot）/ᐠ｡ꞈ｡ᐟ\\"
+};
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("site_lang", lang);
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+  document.title = PAGE_TITLES[lang];
+
+  for (const [sel, tr] of Object.entries(I18N_SEL)) {
+    const el = document.querySelector(sel);
+    if (!el) continue;
+    if (el.dataset.zh === undefined) el.dataset.zh = el.innerHTML;
+    el.innerHTML = lang === "zh" ? el.dataset.zh : (tr[lang] || el.dataset.zh);
+  }
+
+  document.querySelectorAll(".cmd-table tr.group-header td").forEach(td => {
+    if (td.dataset.zh === undefined) td.dataset.zh = td.textContent;
+    const tr = I18N_GROUPS[td.dataset.zh];
+    td.textContent = lang === "zh" ? td.dataset.zh : (tr && tr[lang]) || td.dataset.zh;
+  });
+
+  document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
+    const code = row.querySelector("code");
+    const td = row.querySelectorAll("td")[1];
+    if (!code || !td) return;
+    if (td.dataset.zh === undefined) td.dataset.zh = td.innerHTML;
+    const tr = I18N_CMDS[code.textContent.trim()];
+    td.innerHTML = lang === "zh" ? td.dataset.zh : (tr && tr[lang]) || td.dataset.zh;
+  });
+
+  document.querySelectorAll("#lang-switch button").forEach(b =>
+    b.classList.toggle("active", b.dataset.lang === lang)
+  );
+  ggRefresh();
+}
+
+document.querySelectorAll("#lang-switch button").forEach(b =>
+  b.addEventListener("click", () => applyLang(b.dataset.lang))
+);
+
+const savedLang = localStorage.getItem("site_lang");
+if (savedLang === "en" || savedLang === "ja") applyLang(savedLang);
 
 ggLoad();
 </script>
