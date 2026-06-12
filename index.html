@@ -214,19 +214,11 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 @media (max-width: 380px) {
   .hero h1 em { white-space: normal; } /* Allow wrapping on very small screens to avoid overflow */
 }
-.hero-tagline {
-  /* Now the secondary small text below the quip line; wraps naturally, 12px font-size floor */
-  font-size: clamp(0.75rem, 1.3vw, 0.85rem);
-  color: var(--muted);
-  opacity: 0.75;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
 /* Top.gg-style one-line quip: first line under the h1 */
 .hero-quip {
   font-size: clamp(0.78rem, 1.5vw, 1rem);
   color: var(--muted);
-  margin-bottom: 0.4rem;
+  margin-bottom: 2rem;
 }
 .hero-pills {
   display: flex;
@@ -1023,9 +1015,6 @@ footer .paw-pop { color: var(--gold-light); }
       <div class="hero-eyebrow">✨ Discord Bot</div>
       <h1><span class="h1-brand">咋办Bot</span><em>把快乐带进你的 Discord 服务器</em></h1>
       <p class="hero-quip">咋办! Zaban! ザバンにゃん! —— 关注我，每天也学不到什么知识</p>
-      <p class="hero-tagline">
-      AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡 /ᐠ｡ꞈ｡ᐟ\
-      </p>
       <div class="hero-pills">
         <span class="pill">💬 AI 对话</span>
         <span class="pill">🔮 塔罗占卜</span>
@@ -1670,10 +1659,6 @@ const I18N_SEL = {
   ".hero h1": {
     en: "<span class=\"h1-brand\">咋办Bot</span><em>Bring joy to your Discord server</em>",
     ja: "<span class=\"h1-brand\">咋办Bot</span><em>あなたの Discord サーバーに楽しさを</em>"
-  },
-  ".hero-tagline": {
-    en: "AI chat, tarot, daily fortunes, media search &amp; gacha /ᐠ｡ꞈ｡ᐟ\\",
-    ja: "AIチャット・タロット・今日の運勢・メディア検索・ガチャ /ᐠ｡ꞈ｡ᐟ\\"
   },
   ".hero-quip": {
     en: "咋办! Zaban! ザバンにゃん! — Follow me and learn nothing new every day",
