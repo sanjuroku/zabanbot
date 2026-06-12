@@ -23,13 +23,14 @@
   --paper: #fdf8f0;
   --cream: #f5ede0;
   --gold: #c8920a;
+  --gold-text: #b45309; /* 文字专用琥珀色：偏暖橙的金，浅色纸面上满足 WCAG AA 对比度 */
+  --gold-bright: #ffc91e;
   --gold-light: #f5d472;
   --gold-pale: #faeec8;
   --muted: #8c7a5e;
   --border: rgba(180,140,60,0.22);
   --border-strong: rgba(180,140,60,0.45);
   --tag-bg: #f0e4c8;
-  --serif: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
   --sans: 'Noto Sans SC', 'DM Sans', 'Microsoft YaHei', sans-serif;
 }
 
@@ -44,6 +45,14 @@ body {
   line-height: 1.65;
   font-size: 15px;
   overflow-x: hidden;
+  /* 猫猫颜文字光标（重绘自 logo 图，48px 内联 SVG，热点在中心）；不支持时回退系统箭头
+     脸那行用 textLength 强制收进 44px，保证两侧脸颊括号不被画布裁掉 */
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+
+/* 链接/按钮悬停：歪头版猫猫光标（整只猫右倾 18°） */
+a, button, [onclick] {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
 }
 
 /* ─── NOISE TEXTURE ─── */
@@ -57,7 +66,7 @@ body::before {
   z-index: 0;
 }
 
-a { color: var(--gold); text-decoration: none; }
+a { color: var(--gold-text); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ─── NAV ─── */
@@ -79,6 +88,8 @@ nav {
   font-size: 1rem;
   color: var(--ink2);
   text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .nav-brand:hover { text-decoration: none; }
 .nav-brand img {
@@ -98,7 +109,7 @@ nav ul a {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-nav ul a:hover { color: var(--gold); text-decoration: none; }
+nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 
 /* ─── LANG SWITCH ─── */
 .lang-switch {
@@ -112,15 +123,16 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
 .lang-switch button {
   background: transparent;
   border: none;
-  padding: 0.28rem 0.6rem;
-  font-size: 0.72rem;
+  /* 加大 padding 把点击区域撑到约 40px 高，方便触控 */
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
   color: var(--muted);
   cursor: pointer;
   font-family: var(--sans);
   transition: background 0.15s, color 0.15s;
 }
 .lang-switch button + button { border-left: 1px solid var(--border); }
-.lang-switch button:hover { color: var(--gold); }
+.lang-switch button:hover { color: var(--gold-text); }
 .lang-switch button.active { background: var(--gold-pale); color: var(--ink2); font-weight: 500; }
 
 /* ─── HERO ─── */
@@ -147,7 +159,7 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
   border: 1px solid var(--border-strong);
   background: var(--gold-pale);
   padding: 0.3rem 0.75rem;
@@ -159,9 +171,28 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   font-weight: 900;
   font-size: clamp(2.8rem, 6vw, 5rem);
   line-height: 1.15;
-  color: var(--gold);
   letter-spacing: -0.01em;
   margin-bottom: 1.2rem;
+}
+/* 品牌字「咋办Bot」：亮金 + 暖棕投影，悬停轻轻弹跳 */
+.h1-brand {
+  display: inline-block;
+  color: var(--gold-bright);
+  text-shadow: 2px 3px 0 rgba(180, 83, 9, 0.35);
+}
+.h1-brand:hover {
+  animation: h1-bounce 0.55s ease-out;
+}
+@keyframes h1-bounce {
+  0%   { transform: none; }
+  30%  { transform: translateY(-8px) scale(1.03, 0.97); }
+  55%  { transform: translateY(3px) scale(0.98, 1.02); }
+  75%  { transform: translateY(-2px); }
+  100% { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h1-brand, .h1-brand:hover { animation: none; }
+  .cat-pop { animation: none; }
 }
 .hero h1 em {
   font-style: normal;
@@ -177,29 +208,18 @@ nav ul a:hover { color: var(--gold); text-decoration: none; }
   .hero h1 em { white-space: normal; } /* 超小屏放开换行，避免溢出 */
 }
 .hero-tagline {
-  /* 现为吐槽行下方的次要小字 */
-  font-size: clamp(0.7rem, 1.3vw, 0.85rem);
+  /* 现为吐槽行下方的次要小字；自然换行，字号底线 12px */
+  font-size: clamp(0.75rem, 1.3vw, 0.85rem);
   color: var(--muted);
   opacity: 0.75;
   line-height: 1.7;
   margin-bottom: 2rem;
-  white-space: nowrap;
 }
-/* Top.gg 同款一句话吐槽：h1 下方第一行，沿用原 tagline 的字号策略 */
+/* Top.gg 同款一句话吐槽：h1 下方第一行 */
 .hero-quip {
   font-size: clamp(0.78rem, 1.5vw, 1rem);
   color: var(--muted);
   margin-bottom: 0.4rem;
-  white-space: nowrap;
-}
-@media (max-width: 380px) {
-  .hero-quip { white-space: normal; }
-}
-/* EN/日 文案更长，字号上限略低、缩放更快；tagline 再低一档保持「吐槽行 > tagline」层级 */
-html:not([lang^="zh"]) .hero-quip { font-size: clamp(0.62rem, 1.37vw, 0.95rem); }
-html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem); }
-@media (max-width: 380px) {
-  .hero-tagline { white-space: normal; }
 }
 .hero-pills {
   display: flex;
@@ -225,16 +245,17 @@ html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem);
   align-items: center;
   gap: 0.4rem;
   padding: 0.65rem 1.6rem;
-  background: var(--gold-pale);
-  color: var(--ink2);
-  border: 1px solid var(--gold);
+  /* 亮金实心底 + 深色文字：主 CTA 明确压过次按钮，且对比度达标 */
+  background: var(--gold-bright);
+  color: var(--ink);
+  border: 1px solid var(--gold-bright);
   border-radius: 4px;
   font-size: 0.88rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.01em;
   transition: background 0.15s, border-color 0.15s;
 }
-.btn-primary:hover { background: var(--gold-light); border-color: var(--gold); text-decoration: none; color: var(--ink2); }
+.btn-primary:hover { background: #f0b400; border-color: #f0b400; text-decoration: none; color: var(--ink); }
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -247,7 +268,27 @@ html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem);
   background: transparent;
   transition: border-color 0.15s, color 0.15s;
 }
-.btn-secondary:hover { border-color: var(--gold); color: var(--gold); text-decoration: none; }
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold-text); text-decoration: none; }
+
+/* 悬停时从按钮上四散蹦出的随机猫猫颜文字（由 JS 生成，方向/旋转/颜文字均随机） */
+.btn-primary, .btn-secondary { position: relative; }
+.cat-pop {
+  position: absolute;
+  top: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold-text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  animation: cat-jump 0.85s cubic-bezier(0.25, 0.6, 0.4, 1) forwards;
+}
+@keyframes cat-jump {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+  15%  { opacity: 1; }
+  55%  { opacity: 1; transform: translate(calc(-50% + var(--dx)), var(--peak)) rotate(var(--rot)) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx) * 1.5), calc(var(--peak) * 0.3)) rotate(var(--rot)) scale(0.9); }
+}
 
 .hero-right {
   text-align: center;
@@ -257,6 +298,12 @@ html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem);
   width: 100px;
   height: 100px;
   object-fit: cover;
+  /* 用系统小手 + hover 放大提示可点击：颜文字光标在这里不够明显 */
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+}
+.hero-right > img:hover {
+  transform: scale(1.12);
 }
 
 /* ─── HERO CHAT（对话实录卡片）─── */
@@ -295,7 +342,7 @@ html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem);
 .chat-name {
   font-size: 0.78rem;
   font-weight: 500;
-  color: #fec81e;
+  color: var(--gold-bright);
   line-height: 1.3;
 }
 .chat-name-mom { color: var(--cream); }
@@ -334,17 +381,16 @@ html:not([lang^="zh"]) .hero-tagline { font-size: clamp(0.56rem, 1.2vw, 0.8rem);
   white-space: nowrap;
   overflow: hidden;
 }
-/* EN/日 占位文案更长，略缩字号保证单行；万一仍超出则省略号兜底 */
-html:not([lang^="zh"]) .chat-input { font-size: 0.72rem; }
-/* 日文最长且各浏览器字体度量不一，再缩一档留余量 */
-html[lang="ja"] .chat-input { font-size: 0.67rem; }
-.chat-placeholder { overflow: hidden; text-overflow: ellipsis; }
+.chat-placeholder {
+  color: rgba(255,255,255,0.25);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .chat-input-plus {
   color: rgba(255,255,255,0.4);
   font-weight: 700;
   flex-shrink: 0;
 }
-.chat-placeholder { color: rgba(255,255,255,0.25); }
 .chat-caret {
   width: 1.5px;
   height: 1.05em;
@@ -365,15 +411,15 @@ html[lang="ja"] .chat-input { font-size: 0.67rem; }
   padding: 4rem 2.5rem;
 }
 .section-label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
   margin-bottom: 0.6rem;
 }
 .section-title {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   color: var(--ink2);
   letter-spacing: -0.01em;
@@ -488,7 +534,7 @@ section { border-bottom: 1px solid var(--border); }
   flex-wrap: wrap;
 }
 .legal-left p {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-style: italic;
   font-size: 1.4rem;
   color: var(--gold-light);
@@ -554,9 +600,19 @@ footer {
   .hero-chat { margin: 1.2rem auto 0; }
 }
 @media (max-width: 720px) {
-  nav ul { display: none; }
   nav { padding: 0 1.25rem; }
-  .lang-switch { margin-left: auto; }
+  /* 窄屏保留导航：可横向滚动的链接行，隐藏滚动条 */
+  nav ul {
+    gap: 1.1rem;
+    margin-left: 1rem; /* 链接行可能占满剩余空间，auto 边距会塌掉，手动留出与品牌的间距 */
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav ul::-webkit-scrollbar { display: none; }
+  nav ul a { white-space: nowrap; }
+  .lang-switch { margin-left: 0.75rem; }
   .hero { padding: 3rem 1.25rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; }
   /* 移动端隐藏大 GIF，但保留对话实录卡片（居中展示） */
@@ -579,14 +635,25 @@ footer {
 /* ── Mi-chan 扭蛋浮窗 ─────────────────────────────────────────────────────── */
 .gg-fab {
   position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: #ffc91e; color: #fff8e8; font-size: 1.4rem;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--gold-bright);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; user-select: none; border: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  cursor: pointer; user-select: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
   transition: transform .15s, box-shadow .15s;
 }
-.gg-fab:hover { transform: scale(1.1); box-shadow: 0 6px 22px rgba(0,0,0,.3); }
+.gg-fab img { width: 38px; height: 38px; object-fit: contain; pointer-events: none; }
+/* 右上角小角标：提示这是扭蛋入口 */
+.gg-fab::after {
+  content: '🎰';
+  position: absolute; top: -5px; right: -5px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold-bright); font-size: 0.7rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+.gg-fab:hover { transform: scale(1.08) rotate(-6deg); box-shadow: 0 6px 22px rgba(0,0,0,.26); }
 
 .gg-widget {
   position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 9998;
@@ -612,13 +679,13 @@ footer {
 }
 .gg-w-title { font-weight: 700; font-size: 0.95rem; color: var(--ink2); flex: 1; }
 .gg-gold-count {
-  font-size: 0.82rem; font-weight: 700; color: var(--gold);
+  font-size: 0.82rem; font-weight: 700; color: var(--gold-text);
   background: var(--gold-pale); border: 1px solid var(--border-strong);
   padding: 0.25rem 0.85rem; border-radius: 20px; white-space: nowrap;
 }
 .gg-w-close {
   background: none; border: none; cursor: pointer; font-size: 1rem;
-  color: var(--muted); padding: 0.15rem 0.5rem; border-radius: 4px;
+  color: var(--muted); padding: 0.7rem 0.75rem; border-radius: 4px; /* 撑大触控区域 */
   transition: color .15s; line-height: 1;
 }
 .gg-w-close:hover { color: var(--ink); }
@@ -657,7 +724,7 @@ footer {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .gg-log {
-  font-size: 0.62rem; font-weight: 700; color: var(--gold);
+  font-size: 0.75rem; font-weight: 700; color: var(--gold-text);
   text-align: center; white-space: nowrap; min-height: 1.2em;
 }
 .gg-placeholder { font-size: 2.4rem; opacity: .2; }
@@ -679,10 +746,10 @@ footer {
   height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 3px;
 }
 .gg-progress-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width .4s ease; }
-.gg-passive-note { font-size: 0.72rem; color: var(--muted); opacity: .7; margin: 0; }
+.gg-passive-note { font-size: 0.75rem; color: var(--muted); opacity: .7; margin: 0; }
 .gg-clear-btn {
   background: none; border: 1px solid var(--border); border-radius: 6px;
-  padding: 0.25rem 0.65rem; font-size: 0.72rem; color: var(--muted);
+  padding: 0.25rem 0.65rem; font-size: 0.75rem; color: var(--muted);
   cursor: pointer; font-family: var(--sans); transition: color .15s, border-color .15s;
 }
 .gg-clear-btn:hover { color: #dc2626; border-color: #dc2626; }
@@ -696,9 +763,9 @@ footer {
 }
 .gg-footer p:last-child { margin-bottom: 0; }
 .gg-footer-small {
-  font-size: 0.69rem !important; color: var(--muted) !important; opacity: .75;
+  font-size: 0.75rem !important; color: var(--muted) !important; opacity: .75;
 }
-.gg-footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
+.gg-footer a { color: var(--gold-text); text-decoration: none; font-weight: 600; }
 .gg-footer a:hover { text-decoration: underline; }
 </style>
 </head>
@@ -708,7 +775,6 @@ footer {
   <a class="nav-brand" href="https://sanjuroku.github.io/zabanbot/"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
   <ul>
     <li><a href="#features">功能</a></li>
-    <li><a href="#" onclick="ggToggle(); return false;">扭蛋</a></li>
     <li><a href="#commands">指令</a></li>
     <li><a href="#legal">法律</a></li>
   </ul>
@@ -725,7 +791,7 @@ footer {
   <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-eyebrow">✨ Discord Bot</div>
-      <h1>咋办Bot<em>把快乐带进你的 Discord 服务器</em></h1>
+      <h1><span class="h1-brand">咋办Bot</span><em>把快乐带进你的 Discord 服务器</em></h1>
       <p class="hero-quip">咋办! Zaban! ザバンにゃん! —— 关注我，每天也学不到什么知识</p>
       <p class="hero-tagline">
       AI 对话、塔罗占卜、今日运势、书影音游、扭蛋抽卡 /ᐠ｡ꞈ｡ᐟ\
@@ -746,7 +812,7 @@ footer {
       </div>
     </div>
     <div class="hero-right">
-      <img src="zabanwalk.gif" alt="咋办 Bot" onclick="ggToggle()" style="cursor:pointer" title="点击试试扭蛋机！" />
+      <img src="zabanwalk.gif" alt="咋办 Bot" onclick="ggToggle()" title="点击试试扭蛋机！" />
       <div class="hero-chat">
         <div class="chat-msg" id="chat-msg-mom">
           <span class="chat-avatar"><img src="zabanma.png" alt="咋办妈" /></span>
@@ -811,7 +877,7 @@ footer {
 </section>
 
 <!-- mi-chan 扭蛋浮窗 -->
-<button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha">🎰</button>
+<button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha"><img src="zabanwalk.gif" alt="扭蛋机" /></button>
 <div class="gg-widget" id="gg-widget">
   <div class="gg-w-header">
     <span class="gg-w-title">🎰 mi-chan gacha</span>
@@ -1081,6 +1147,31 @@ function ggClearSave() {
 // 被动收入：每 2 秒 +goldPerClick Gold
 setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }, 2000);
 
+// ── 按钮蹦猫猫：悬停时随机颜文字向随机方向跳出 ──────────────────────────────
+const CAT_FACES = ["(=^ω^=)", "(=•ω•=)", "(=˙ᆺ˙=)", "∧,,,∧", "(=ＴωＴ=)", "(=｀ω´=)", "/ᐠ｡ꞈ｡ᐟ\\"];
+function catPop(btn) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const s = document.createElement("span");
+  s.className = "cat-pop";
+  s.textContent = CAT_FACES[Math.floor(Math.random() * CAT_FACES.length)];
+  s.style.left = (20 + Math.random() * 60) + "%";                       // 起跳点沿按钮顶边随机
+  s.style.setProperty("--dx",   (Math.random() * 90 - 45).toFixed(0) + "px");   // 水平方向随机
+  s.style.setProperty("--peak", -(28 + Math.random() * 38).toFixed(0) + "px");  // 跳跃高度随机
+  s.style.setProperty("--rot",  (Math.random() * 44 - 22).toFixed(0) + "deg");  // 旋转随机
+  s.addEventListener("animationend", () => s.remove());
+  btn.appendChild(s);
+}
+// 光标在按钮上每移动一段就蹦一只（180ms 冷却），来回扫过就是一串猫猫
+const _catLast = new WeakMap();
+document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
+  b.addEventListener("mousemove", () => {
+    const now = performance.now();
+    if (now - (_catLast.get(b) || 0) < 180) return;
+    _catLast.set(b, now);
+    catPop(b);
+  })
+);
+
 // ── Hero 对话实录动画 ─────────────────────────────────────────────────────────
 // 时间线：光标空闪两下 → 输入框打出「咋办」→ 发送（咋办妈消息浮现）→ 咋办回复浮现 → 停留后循环
 (function chatAnim() {
@@ -1111,7 +1202,10 @@ setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }
     at(3900, () => { bot.classList.add("show"); });
     at(6900, play); // 停留约 3 秒后重播
   }
-  play();
+  // 首帧先静态展示完整对话，避免加载时只看到一个空黑盒；停留片刻再进入打字循环
+  mom.classList.add("show");
+  bot.classList.add("show");
+  at(2600, play);
 })();
 
 // ── 多语言 i18n ──────────────────────────────────────────────────────────────
@@ -1159,12 +1253,11 @@ function ggLbl() { return GG_LBL[currentLang] || GG_LBL.zh; }
 // 静态文案：选择器 → { en, ja }（值为 innerHTML，可含标签）
 const I18N_SEL = {
   "nav ul li:nth-child(1) a": { en: "Features", ja: "機能" },
-  "nav ul li:nth-child(2) a": { en: "Gacha", ja: "ガチャ" },
-  "nav ul li:nth-child(3) a": { en: "Commands", ja: "コマンド" },
-  "nav ul li:nth-child(4) a": { en: "Legal", ja: "法的情報" },
+  "nav ul li:nth-child(2) a": { en: "Commands", ja: "コマンド" },
+  "nav ul li:nth-child(3) a": { en: "Legal", ja: "法的情報" },
   ".hero h1": {
-    en: "咋办Bot<em>Bring joy to your Discord server</em>",
-    ja: "咋办Bot<em>あなたの Discord サーバーに楽しさを</em>"
+    en: "<span class=\"h1-brand\">咋办Bot</span><em>Bring joy to your Discord server</em>",
+    ja: "<span class=\"h1-brand\">咋办Bot</span><em>あなたの Discord サーバーに楽しさを</em>"
   },
   ".hero-tagline": {
     en: "AI chat, tarot, daily fortunes, media search &amp; gacha /ᐠ｡ꞈ｡ᐟ\\",
