@@ -23,7 +23,7 @@
   --paper: #fdf8f0;
   --cream: #f5ede0;
   --gold: #c8920a;
-  --gold-text: #b45309; /* 文字专用琥珀色：偏暖橙的金，浅色纸面上满足 WCAG AA 对比度 */
+  --gold-text: #b45309; /* Amber for text only: warm orange-leaning gold, meets WCAG AA contrast on the light paper background */
   --gold-bright: #ffc91e;
   --gold-light: #f5d472;
   --gold-pale: #faeec8;
@@ -45,12 +45,20 @@ body {
   line-height: 1.65;
   font-size: 15px;
   overflow-x: hidden;
-  /* 猫猫颜文字光标（重绘自 logo 图，48px 内联 SVG，热点在中心）；不支持时回退系统箭头
-     脸那行用 textLength 强制收进 44px，保证两侧脸颊括号不被画布裁掉 */
+  /* Cat-kaomoji cursor (redrawn from the logo, 48px inline SVG, hotspot at center); falls back to the system arrow.
+     The face line is squeezed into 44px via textLength so the cheek parentheses aren't clipped by the canvas. */
   cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
 }
 
-/* 链接/按钮悬停：歪头版猫猫光标（整只猫右倾 18°） */
+/* Dark areas (chat card / legal strip / footer): same cursor in cream, so it auto-adapts to the background */
+.hero-chat, .legal-strip, footer {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+.legal-strip a, footer a, .legal-strip button, footer button {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
+}
+
+/* Link/button hover: head-tilt cursor variant (whole cat leans 18° to the right) */
 a, button, [onclick] {
   cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
 }
@@ -123,7 +131,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 .lang-switch button {
   background: transparent;
   border: none;
-  /* 加大 padding 把点击区域撑到约 40px 高，方便触控 */
+  /* Extra padding grows the hit area to ~40px tall for touch */
   padding: 0.6rem 0.75rem;
   font-size: 0.75rem;
   color: var(--muted);
@@ -174,7 +182,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   letter-spacing: -0.01em;
   margin-bottom: 1.2rem;
 }
-/* 品牌字「咋办Bot」：亮金 + 暖棕投影，悬停轻轻弹跳 */
+/* Brand word "咋办Bot": bright gold + warm brown shadow, gentle bounce on hover */
 .h1-brand {
   display: inline-block;
   color: var(--gold-bright);
@@ -192,7 +200,6 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .h1-brand, .h1-brand:hover { animation: none; }
-  .cat-pop { animation: none; }
 }
 .hero h1 em {
   font-style: normal;
@@ -200,22 +207,22 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   font-weight: 900;
   color: var(--ink2);
   display: block;
-  /* 独立于 h1 的字号并禁止换行：右侧对话卡片挤压后副标题必须保持单行 */
+  /* Font size independent of h1, no wrapping: the subtitle must stay on one line when the chat card squeezes it */
   font-size: clamp(1.4rem, 3.2vw, 3.1rem);
   white-space: nowrap;
 }
 @media (max-width: 380px) {
-  .hero h1 em { white-space: normal; } /* 超小屏放开换行，避免溢出 */
+  .hero h1 em { white-space: normal; } /* Allow wrapping on very small screens to avoid overflow */
 }
 .hero-tagline {
-  /* 现为吐槽行下方的次要小字；自然换行，字号底线 12px */
+  /* Now the secondary small text below the quip line; wraps naturally, 12px font-size floor */
   font-size: clamp(0.75rem, 1.3vw, 0.85rem);
   color: var(--muted);
   opacity: 0.75;
   line-height: 1.7;
   margin-bottom: 2rem;
 }
-/* Top.gg 同款一句话吐槽：h1 下方第一行 */
+/* Top.gg-style one-line quip: first line under the h1 */
 .hero-quip {
   font-size: clamp(0.78rem, 1.5vw, 1rem);
   color: var(--muted);
@@ -228,6 +235,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   margin-bottom: 2.2rem;
 }
 .pill {
+  position: relative;
   font-size: 0.78rem;
   padding: 0.28rem 0.75rem;
   border: 1px solid var(--border-strong);
@@ -235,6 +243,22 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   color: var(--muted);
   background: var(--cream);
 }
+/* Two cat ears on top of each pill: 45°-rotated squares keeping only the top and left borders */
+.pill::before,
+.pill::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--cream);
+  border: 1px solid var(--border-strong);
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+}
+.pill::before { left: 10px; }
+.pill::after  { right: 10px; }
 .hero-btns {
   display: flex;
   gap: 0.85rem;
@@ -245,7 +269,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   align-items: center;
   gap: 0.4rem;
   padding: 0.65rem 1.6rem;
-  /* 亮金实心底 + 深色文字：主 CTA 明确压过次按钮，且对比度达标 */
+  /* Solid bright-gold background + dark text: primary CTA clearly outweighs the secondary buttons, with passing contrast */
   background: var(--gold-bright);
   color: var(--ink);
   border: 1px solid var(--gold-bright);
@@ -270,8 +294,33 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 }
 .btn-secondary:hover { border-color: var(--gold); color: var(--gold-text); text-decoration: none; }
 
-/* 悬停时从按钮上四散蹦出的随机猫猫颜文字（由 JS 生成，方向/旋转/颜文字均随机） */
+/* Random cat kaomoji that hop off the buttons on hover (JS-generated; direction/rotation/face all random) */
 .btn-primary, .btn-secondary { position: relative; }
+/* Cat ears on top of the buttons, same technique as the pills */
+.btn-primary::before, .btn-primary::after,
+.btn-secondary::before, .btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.btn-primary::before, .btn-secondary::before { left: 12px; }
+.btn-primary::after,  .btn-secondary::after  { right: 12px; }
+/* Primary button has a solid gold background: ears are the same solid color and darken with it on hover */
+.btn-primary::before, .btn-primary::after { background: var(--gold-bright); transition: background 0.15s; }
+.btn-primary:hover::before, .btn-primary:hover::after { background: #f0b400; }
+/* Secondary buttons are outlined: paper background + top/left borders only */
+.btn-secondary::before, .btn-secondary::after {
+  background: var(--paper);
+  border: 1px solid var(--border-strong);
+  border-bottom: none;
+  border-right: none;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover::before, .btn-secondary:hover::after { border-color: var(--gold); }
 .cat-pop {
   position: absolute;
   top: 0;
@@ -298,15 +347,10 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   width: 100px;
   height: 100px;
   object-fit: cover;
-  /* 用系统小手 + hover 放大提示可点击：颜文字光标在这里不够明显 */
   cursor: pointer;
-  transition: transform 0.15s ease-out;
-}
-.hero-right > img:hover {
-  transform: scale(1.12);
 }
 
-/* ─── HERO CHAT（对话实录卡片）─── */
+/* ─── HERO CHAT (sample conversation card) ─── */
 .hero-chat {
   margin-top: 1.2rem;
   background: var(--ink2);
@@ -366,7 +410,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   color: rgba(255,255,255,0.88);
   line-height: 1.4;
 }
-/* 对话卡片的 Discord 风输入框 + 打字动画 */
+/* Discord-style input box on the chat card + typing animation */
 .chat-input {
   margin-top: 0.8rem;
   background: #3a3d44;
@@ -461,6 +505,19 @@ section { border-bottom: 1px solid var(--border); }
   color: var(--muted);
   line-height: 1.6;
 }
+/* Each card hides a Zaban-style quip that fades in on hover (always occupies space to avoid layout shift) */
+.card-quip {
+  font-size: 0.75rem !important;
+  color: var(--gold-text) !important;
+  margin-top: 0.6rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+.card:hover .card-quip {
+  opacity: 1;
+  transform: none;
+}
 
 /* ─── COMMAND TABLE ─── */
 .cmd-section {
@@ -509,6 +566,23 @@ section { border-bottom: 1px solid var(--border); }
 .cmd-table tr:not(.group-header):hover td {
   background: rgba(245,212,114,0.1);
 }
+/* On row hover a little paw walks in at the line start, gently nudging the command name aside */
+.cmd-table tr:not(.group-header) td:first-child::before {
+  content: 'ฅ';
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  color: var(--gold-text);
+  font-weight: 700;
+  transform: translateX(-6px);
+  transition: width 0.18s ease-out, opacity 0.18s ease-out, transform 0.18s ease-out;
+}
+.cmd-table tr:not(.group-header):hover td:first-child::before {
+  width: 1.2em;
+  opacity: 1;
+  transform: none;
+}
 .cmd-table code {
   background: var(--ink2);
   color: var(--gold-light);
@@ -550,6 +624,7 @@ section { border-bottom: 1px solid var(--border); }
   flex-wrap: wrap;
 }
 .legal-link {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 1rem 1.5rem;
@@ -565,11 +640,49 @@ section { border-bottom: 1px solid var(--border); }
   text-decoration: none;
   color: var(--gold-light);
 }
+/* A cat head peeks over the card's top edge on hover: ears (::before) and face (::after) as separate layers,
+   mimicking the cursor cat's proportions — wide head (ear row), slightly narrowed face */
+.legal-link::before,
+.legal-link::after {
+  position: absolute;
+  top: 0;
+  right: 0.6rem;
+  width: 64px;
+  text-align: center;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--gold-light);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+}
+.legal-link::before {
+  content: '∧,,,∧';
+  font-size: 0.84rem; /* Ear row one size larger = head wider than face, matching the cursor cat */
+}
+.legal-link::after {
+  content: '(=•ω•=)';
+  font-size: 0.72rem;
+  transform: scaleX(0.9);
+  transform-origin: center bottom;
+}
+.legal-link:hover::after {
+  opacity: 1;
+  /* Lift an extra 2px so the cheek parentheses rest right on the card border */
+  transform: translateY(calc(-100% - 2px)) scaleX(0.9);
+}
+.legal-link:hover::before {
+  opacity: 1;
+  /* Ears stack above the face: own height + the face's line height + the same 2px */
+  transform: translateY(calc(-100% - 0.72rem - 2px));
+}
 .legal-link strong { font-size: 0.9rem; font-weight: 500; }
 .legal-link span { font-size: 0.76rem; color: rgba(255,255,255,0.45); margin-top: 3px; }
 
 /* ─── FOOTER ─── */
 footer {
+  position: relative; /* positioning context for paw prints / meow bubbles */
+  overflow: hidden;   /* the walking cat reaching the edge shouldn't create a horizontal scrollbar */
   background: var(--ink);
   padding: 2.5rem 2.5rem;
   color: rgba(255,255,255,0.70);
@@ -586,14 +699,84 @@ footer {
   flex-wrap: wrap;
   text-align: center;
 }
-.footer-inner img { height: 48px; opacity: 1; }
+.footer-inner img {
+  height: 48px;
+  opacity: 1;
+  cursor: pointer;
+}
+/* Clicking the cat: scattered paw prints (dark gold on the light hero, bright gold on the dark footer) */
+.paw-pop {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  color: var(--gold-text);
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0;
+  animation: paw-fade 0.9s ease-out forwards;
+}
+@keyframes paw-fade {
+  0%   { opacity: 0; transform: scale(0.4) rotate(var(--rot)); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25) rotate(var(--rot)) translateY(-14px); }
+}
+footer .paw-pop { color: var(--gold-light); }
+/* Global click paw prints: appended to body, fixed at the click point (above the gacha widget 9998 / FAB 9999) */
+.paw-pop.paw-global { position: fixed; z-index: 10001; }
+/* Clicking the footer cat: random meow bubble */
+.meow-bubble {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  background: var(--gold-pale);
+  color: var(--ink2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 1em;
+  border: 1px solid var(--border-strong);
+  white-space: nowrap;
+  animation: meow-up 1.6s ease-out forwards;
+}
+@keyframes meow-up {
+  0%   { opacity: 0; transform: translate(-50%, 8px) scale(0.8); }
+  15%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -12px); }
+}
+
+/* ─── Scroll reveal: sections float up and fade in as they enter the viewport ─── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── Cat rain triggered by rapid-clicking ─── */
+.cat-rain {
+  position: fixed;
+  top: -3em;
+  z-index: 9997;
+  pointer-events: none;
+  color: var(--gold-text);
+  font-weight: 700;
+  opacity: 0.9;
+  animation: cat-fall 3s linear forwards;
+}
+@keyframes cat-fall {
+  to { transform: translateY(115vh) rotate(var(--rot)); }
+}
 .footer-text { flex: unset; }
 .footer-text p + p { margin-top: 0.25rem; }
 .footer-text a { color: rgba(255,255,255,0.70); }
 .footer-text a:hover { color: var(--gold-light); }
 
 /* ─── RESPONSIVE ─── */
-/* 721–960px：卡片扩到 300px 后两栏放不下（日文 h1 副标题最宽），提前转单栏；GIF 保留居中 */
+/* 721–960px: with the card at 300px two columns no longer fit (the Japanese h1 subtitle is the widest), so switch to one column early; GIF stays centered */
 @media (max-width: 960px) {
   .hero-inner { grid-template-columns: 1fr; }
   .hero-right { padding-bottom: 0; margin-top: 1.5rem; }
@@ -601,10 +784,10 @@ footer {
 }
 @media (max-width: 720px) {
   nav { padding: 0 1.25rem; }
-  /* 窄屏保留导航：可横向滚动的链接行，隐藏滚动条 */
+  /* Keep the nav on narrow screens: horizontally scrollable link row with hidden scrollbar */
   nav ul {
     gap: 1.1rem;
-    margin-left: 1rem; /* 链接行可能占满剩余空间，auto 边距会塌掉，手动留出与品牌的间距 */
+    margin-left: 1rem; /* the link row may fill the remaining space, collapsing auto margins — keep manual spacing from the brand */
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -615,7 +798,7 @@ footer {
   .lang-switch { margin-left: 0.75rem; }
   .hero { padding: 3rem 1.25rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; }
-  /* 移动端隐藏大 GIF，但保留对话实录卡片（居中展示） */
+  /* Hide the large GIF on mobile but keep the chat card (centered) */
   .hero-right { padding-bottom: 0; }
   .hero-right > img { display: none; }
   .hero-chat { margin: 0 auto; }
@@ -632,28 +815,68 @@ footer {
   .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ── Mi-chan 扭蛋浮窗 ─────────────────────────────────────────────────────── */
+/* ── Mi-chan gacha floating widget ───────────────────────────────────────── */
 .gg-fab {
   position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
   width: 56px; height: 56px; border-radius: 50%;
-  background: var(--paper);
-  border: 2px solid var(--gold-bright);
-  display: flex; align-items: center; justify-content: center;
+  /* Gacha capsule: cream top half, bright-gold bottom half, dark-gold seam in between */
+  background: linear-gradient(180deg,
+    #fffdf6 0%, #fffdf6 46%,
+    #e8a200 46%, #e8a200 54%,
+    var(--gold-bright) 54%, var(--gold-bright) 100%);
+  border: 2px solid #e8a200;
   cursor: pointer; user-select: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,.18);
-  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18), inset -5px -5px 8px rgba(0,0,0,.08);
+  transition: box-shadow .15s;
+  /* A cat kaomoji printed on the capsule's cream upper half */
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 7px;
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--gold-text);
 }
-.gg-fab img { width: 38px; height: 38px; object-fit: contain; pointer-events: none; }
-/* 右上角小角标：提示这是扭蛋入口 */
-.gg-fab::after {
-  content: '🎰';
-  position: absolute; top: -5px; right: -5px;
-  width: 22px; height: 22px; border-radius: 50%;
-  background: var(--gold-bright); font-size: 0.7rem; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+/* Two cat ears on top of the capsule (::before is taken by 💤, so use empty elements) */
+.gg-fab .gg-ear {
+  position: absolute;
+  top: -5px;
+  width: 18px;
+  height: 10px;
+  /* Proper triangle ears (clip-path), same color as the border, base buried in the border ring for a seamless join */
+  background: #e8a200;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  pointer-events: none;
 }
-.gg-fab:hover { transform: scale(1.08) rotate(-6deg); box-shadow: 0 6px 22px rgba(0,0,0,.26); }
+.gg-fab .gg-ear-l { left: 1px;  transform: rotate(-30deg); }
+.gg-fab .gg-ear-r { right: 1px; transform: rotate(30deg); }
+.gg-fab:hover {
+  animation: fab-shake 0.45s ease-in-out;
+  box-shadow: 0 6px 22px rgba(0,0,0,.26), inset -5px -5px 8px rgba(0,0,0,.08);
+}
+@keyframes fab-shake {
+  0%, 100% { transform: rotate(0); }
+  25%      { transform: rotate(-12deg) translateY(-2px); }
+  60%      { transform: rotate(9deg); }
+}
+/* After 30s of page idle the cat falls asleep and a 💤 appears */
+.gg-fab::before {
+  content: '💤';
+  position: absolute;
+  top: -16px;
+  left: -12px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.gg-fab.sleeping::before {
+  opacity: 1;
+  animation: zzz-float 2.2s ease-in-out infinite;
+}
+@keyframes zzz-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
 
 .gg-widget {
   position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 9998;
@@ -685,7 +908,7 @@ footer {
 }
 .gg-w-close {
   background: none; border: none; cursor: pointer; font-size: 1rem;
-  color: var(--muted); padding: 0.7rem 0.75rem; border-radius: 4px; /* 撑大触控区域 */
+  color: var(--muted); padding: 0.7rem 0.75rem; border-radius: 4px; /* enlarge the touch target */
   transition: color .15s; line-height: 1;
 }
 .gg-w-close:hover { color: var(--ink); }
@@ -767,6 +990,13 @@ footer {
 }
 .gg-footer a { color: var(--gold-text); text-decoration: none; font-weight: 600; }
 .gg-footer a:hover { text-decoration: underline; }
+
+/* ─── Reduced motion: disable all easter-egg animations (kept at the end of the stylesheet so it overrides earlier rules) ─── */
+@media (prefers-reduced-motion: reduce) {
+  .cat-pop, .paw-pop, .meow-bubble, .cat-rain { animation: none; }
+  .gg-fab:hover, .gg-fab.sleeping::before { animation: none; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
 </style>
 </head>
 <body>
@@ -812,7 +1042,7 @@ footer {
       </div>
     </div>
     <div class="hero-right">
-      <img src="zabanwalk.gif" alt="咋办 Bot" onclick="ggToggle()" title="点击试试扭蛋机！" />
+      <img src="zabanwalk.gif" alt="咋办 Bot" title="/ᐠ｡ꞈ｡ᐟ\" />
       <div class="hero-chat">
         <div class="chat-msg" id="chat-msg-mom">
           <span class="chat-avatar"><img src="zabanma.png" alt="咋办妈" /></span>
@@ -836,9 +1066,9 @@ footer {
   </div>
 </div>
 
-<!-- 功能亮点 -->
+<!-- Feature highlights -->
 <section id="features">
-  <div class="section-wrap">
+  <div class="section-wrap" data-reveal>
     <div class="section-label">Features</div>
     <div class="section-title">你能用它做什么？</div>
     <div class="cards">
@@ -846,38 +1076,44 @@ footer {
         <span class="card-icon">💬</span>
         <h3>AI 对话</h3>
         <p>基于 GPT-4.1，支持多轮对话、图片分析、翻译。说「咋办」自动触发，个性角色可自定义，多语言回复（简中 / 繁中 / 英 / 日）。</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办什么都知道一点，包括错的</p>
       </div>
       <div class="card">
         <span class="card-icon">🔮</span>
         <h3>塔罗 · 运势</h3>
         <p>每日占卜神社签 + 塔罗牌，精美图卡渲染。连签有惊喜！</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 是吉是凶，是福是祸喵～</p>
       </div>
       <div class="card">
         <span class="card-icon">🎰</span>
         <h3>扭蛋机</h3>
         <p>用咋办币抽奖，SSR / SR / R 三稀有度，十连保底 SR。收集完整图鉴，碎片可兑换。</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 戒戒你好，我是咋办</p>
       </div>
       <div class="card">
         <span class="card-icon">🎬</span>
         <h3>书影音游</h3>
         <p>整合 NeoDB 与 Bangumi 搜索书籍、动画、游戏与音乐，带评分和封面。Steam 价格查询，萌娘百科 infobox 截图，一站搞定。</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 评分仅供参考，入坑后果自负</p>
       </div>
       <div class="card">
         <span class="card-icon">🐾</span>
         <h3>可爱 &amp; 艺术</h3>
         <p>从 Reddit 随机抽取可爱动物图片 / 视频（NSFW 自动过滤），或欣赏随机艺术品。</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 这个世上不能没有小动物和艺术</p>
       </div>
       <div class="card">
         <span class="card-icon">🛠️</span>
         <h3>实用工具</h3>
         <p>图片格式转换、读音查询（拼音 / 假名 / IPA）、世界时钟、投票、冷知识、知识问答……</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 难得正经的部分</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- mi-chan 扭蛋浮窗 -->
-<button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha"><img src="zabanwalk.gif" alt="扭蛋机" /></button>
+<!-- Mi-chan gacha floating widget -->
+<button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha" aria-label="打开扭蛋机"><i class="gg-ear gg-ear-l"></i><i class="gg-ear gg-ear-r"></i>(=•ω•=)</button>
 <div class="gg-widget" id="gg-widget">
   <div class="gg-w-header">
     <span class="gg-w-title">🎰 mi-chan gacha</span>
@@ -914,9 +1150,9 @@ footer {
   </div>
 </div>
 
-<!-- 指令速查 -->
+<!-- Command reference -->
 <div class="cmd-section" id="commands">
-  <div class="cmd-wrap">
+  <div class="cmd-wrap" data-reveal>
     <div class="section-label">Commands</div>
     <div class="section-title">指令速查表</div>
     <table class="cmd-table">
@@ -980,9 +1216,9 @@ footer {
   </div>
 </div>
 
-<!-- 法律 -->
+<!-- Legal -->
 <div class="legal-strip" id="legal">
-  <div class="legal-inner">
+  <div class="legal-inner" data-reveal>
     <div class="legal-left">
       <p>使用须知</p>
       <small>数据政策 &amp; 服务条款</small>
@@ -1001,7 +1237,7 @@ footer {
 </div>
 
 <footer>
-  <div class="footer-inner">
+  <div class="footer-inner" data-reveal>
     <img src="zabanwalk.gif" alt="咋办走路" />
     <div class="footer-text">
       <p>🎨 App Avatar by <a href="https://misskey.io/@nmsm" target="_blank" rel="noopener">@nmsm@misskey.io</a> (<a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache License 2.0</a>)</p>
@@ -1017,11 +1253,11 @@ footer {
 </footer>
 
 <script>
-// ── Mi-chan 扭蛋浮窗 ──────────────────────────────────────────────────────────
+// ── Mi-chan gacha floating widget ─────────────────────────────────────────────
 const GG_BASE = "https://raw.githubusercontent.com/sanjuroku/UwU/main/img/";
 const GG_PEPE = ["43", "44"];
 
-// Pool: 00-38 (mi-chan) + 43, 44 (pepe)；已移除 39-42 (nekoChan)
+// Pool: 00-38 (mi-chan) + 43, 44 (pepe); 39-42 (nekoChan) removed
 const GG_POOL = [
   ...Array.from({length: 39}, (_, i) => i < 10 ? "0" + i : String(i)),
   "43", "44"
@@ -1052,7 +1288,7 @@ function ggSave() {
 function ggRefresh() {
   const gpc  = ggData.goldPerClick;
   const cost = ggData.goldPerClickCost;
-  const L = ggLbl(); // 多语言文案，定义见下方 i18n 区块（函数声明提升，同一 <script> 内可用）
+  const L = ggLbl(); // i18n labels, defined in the i18n block below (function declarations hoist within the same <script>)
   document.getElementById("gg-gold").textContent     = "💰 " + ggData.gold + " Gold";
   document.getElementById("gg-col-text").textContent = L.col + ggCol.length + " / " + GG_TOTAL;
   document.getElementById("gg-pulls-line").innerHTML = L.pulls(ggData.pulls || 0);
@@ -1072,6 +1308,14 @@ function ggClick() {
   ggRefresh();
   ggSave();
 }
+
+// Clicks anywhere on the page also mine gold; clicks inside the widget/FAB are skipped to avoid double-counting with ggClick
+document.addEventListener("click", e => {
+  if (e.target.closest("#gg-widget, .gg-fab")) return;
+  ggData.gold += ggData.goldPerClick;
+  ggRefresh();
+  ggSave();
+});
 
 function ggBuyUpgrade() {
   if (ggData.gold < ggData.goldPerClickCost) return;
@@ -1144,24 +1388,50 @@ function ggClearSave() {
   ggRefresh();
 }
 
-// 被动收入：每 2 秒 +goldPerClick Gold
+// Passive income: +goldPerClick gold every 2 seconds
 setInterval(() => { ggData.gold += ggData.goldPerClick; ggRefresh(); ggSave(); }, 2000);
 
-// ── 按钮蹦猫猫：悬停时随机颜文字向随机方向跳出 ──────────────────────────────
-const CAT_FACES = ["(=^ω^=)", "(=•ω•=)", "(=˙ᆺ˙=)", "∧,,,∧", "(=ＴωＴ=)", "(=｀ω´=)", "/ᐠ｡ꞈ｡ᐟ\\"];
+// ── Button cat hops: random kaomoji jump out in random directions on hover ──
+const CAT_FACES = ["(=^ω^=)", "(=•ω•=)", "(=˙ᆺ˙=)", "∧,,,∧", "(=ＴωＴ=)", "(=｀ω´=)", "/ᐠ｡ꞈ｡ᐟ\\",
+  "(っ`ω´c)", "꒰ঌ(っ˘꒳˘ｃ)໒꒱", "꜀(^. .^꜀ )꜆੭", "ฅ^･֊･^ฅ", "(っ`ᵕ´c)!", ":3c"];
+
+// Kaomoji at the start of each card quip: re-randomized on load and after language switches
+const QUIP_FACES = ["(っ`ω´c)", "/ᐠ｡ꞈ｡ᐟ\\", "꒰ঌ(っ˘꒳˘ｃ)໒꒱", "꜀(^. .^꜀ )꜆੭", "ฅ^･֊･^ฅ", "(っ`ᵕ´c)!", ":3c"];
+function setQuipFace(p) {
+  let s = p.querySelector(".quip-face");
+  if (!s) {
+    // Wrap the kaomoji in its own span so hover re-rolls only swap the face, not the text
+    p.textContent = p.textContent.replace(/^\s*\/ᐠ｡ꞈ｡ᐟ\\\s*/, "");
+    s = document.createElement("span");
+    s.className = "quip-face";
+    p.prepend(s, " ");
+  }
+  s.textContent = QUIP_FACES[Math.floor(Math.random() * QUIP_FACES.length)];
+}
+function randomizeQuips() {
+  document.querySelectorAll(".card-quip").forEach(setQuipFace);
+}
+randomizeQuips();
+// Re-roll the face on every card hover
+document.querySelectorAll(".cards .card").forEach(card => {
+  card.addEventListener("mouseenter", () => {
+    const p = card.querySelector(".card-quip");
+    if (p) setQuipFace(p);
+  });
+});
 function catPop(btn) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const s = document.createElement("span");
   s.className = "cat-pop";
   s.textContent = CAT_FACES[Math.floor(Math.random() * CAT_FACES.length)];
-  s.style.left = (20 + Math.random() * 60) + "%";                       // 起跳点沿按钮顶边随机
-  s.style.setProperty("--dx",   (Math.random() * 90 - 45).toFixed(0) + "px");   // 水平方向随机
-  s.style.setProperty("--peak", -(28 + Math.random() * 38).toFixed(0) + "px");  // 跳跃高度随机
-  s.style.setProperty("--rot",  (Math.random() * 44 - 22).toFixed(0) + "deg");  // 旋转随机
+  s.style.left = (20 + Math.random() * 60) + "%";                       // random launch point along the button's top edge
+  s.style.setProperty("--dx",   (Math.random() * 90 - 45).toFixed(0) + "px");   // random horizontal direction
+  s.style.setProperty("--peak", -(28 + Math.random() * 38).toFixed(0) + "px");  // random jump height
+  s.style.setProperty("--rot",  (Math.random() * 44 - 22).toFixed(0) + "deg");  // random rotation
   s.addEventListener("animationend", () => s.remove());
   btn.appendChild(s);
 }
-// 光标在按钮上每移动一段就蹦一只（180ms 冷却），来回扫过就是一串猫猫
+// One hop per stretch of cursor movement over the button (180ms cooldown) — sweeping back and forth makes a stream of cats
 const _catLast = new WeakMap();
 document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
   b.addEventListener("mousemove", () => {
@@ -1172,8 +1442,150 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
   })
 );
 
-// ── Hero 对话实录动画 ─────────────────────────────────────────────────────────
-// 时间线：光标空闪两下 → 输入框打出「咋办」→ 发送（咋办妈消息浮现）→ 咋办回复浮现 → 停留后循环
+// ── Scroll reveal: sections float up and fade in as they enter the viewport ─
+(function reveals() {
+  const els = document.querySelectorAll("[data-reveal]");
+  if (!("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    els.forEach(e => e.classList.add("revealed"));
+    return;
+  }
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("revealed"); io.unobserve(en.target); }
+  }), { threshold: 0.12 });
+  els.forEach(e => io.observe(e));
+})();
+
+// ── Legal-strip heading typewriter: types out character by character when scrolled into view ──
+(function typeLegal() {
+  const el = document.querySelector(".legal-left p");
+  if (!el || !("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    io.disconnect();
+    const full = el.textContent;
+    // Store the full original text in data-zh first, so a mid-typing language switch doesn't make i18n treat the partial text as the source
+    if (el.dataset.zh === undefined) el.dataset.zh = full;
+    el.textContent = "";
+    let i = 0;
+    const t = setInterval(() => {
+      el.textContent = full.slice(0, ++i);
+      if (i >= full.length) clearInterval(t);
+    }, 90);
+  }), { threshold: 0.6 });
+  io.observe(el);
+})();
+
+// ── Cat easter eggs: click the hero / footer cat → paw prints + random meow; 10 clicks within 800ms gaps → cat rain ──
+(function catEggs() {
+  const MEOWS = ["喵！", "咋办喵～", "にゃーん", "meow?", "咕噜咕噜……", "ฅ^•ω•^ฅ"];
+
+  // Cat rain colors: fully random from the site palette
+  const RAIN_COLORS = ["#c8920a", "#b45309", "#ffc91e", "#f5d472", "#8c7a5e", "#2d2820", "#e8a200"];
+  function spawnCatRain() {
+    for (let i = 0; i < 24; i++) {
+      const s = document.createElement("span");
+      s.className = "cat-rain";
+      s.textContent = CAT_FACES[Math.floor(Math.random() * CAT_FACES.length)];
+      s.style.color = RAIN_COLORS[Math.floor(Math.random() * RAIN_COLORS.length)];
+      s.style.left = (Math.random() * 100).toFixed(1) + "vw";
+      s.style.fontSize = (0.7 + Math.random() * 0.8).toFixed(2) + "rem";
+      s.style.setProperty("--rot", (Math.random() * 360 - 180).toFixed(0) + "deg");
+      s.style.animationDuration = (2.2 + Math.random() * 2).toFixed(2) + "s";
+      s.style.animationDelay = (Math.random() * 0.8).toFixed(2) + "s";
+      s.addEventListener("animationend", () => s.remove());
+      document.body.appendChild(s);
+    }
+  }
+
+  function bind(img, container) {
+    if (!img || !container) return;
+    let clicks = 0, last = 0;
+    img.addEventListener("click", e => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const r = container.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement("span");
+        s.className = "paw-pop";
+        s.textContent = "ฅ";
+        s.style.left = x + (Math.random() * 120 - 60) + "px";
+        s.style.top  = y + (Math.random() * 70 - 35) + "px";
+        s.style.setProperty("--rot", (Math.random() * 60 - 30).toFixed(0) + "deg");
+        s.style.animationDelay = (i * 40) + "ms";
+        s.addEventListener("animationend", () => s.remove());
+        container.appendChild(s);
+      }
+      const b = document.createElement("span");
+      b.className = "meow-bubble";
+      b.textContent = MEOWS[Math.floor(Math.random() * MEOWS.length)];
+      b.style.left = x + "px";
+      b.style.top  = (y - 40) + "px";
+      b.addEventListener("animationend", () => b.remove());
+      container.appendChild(b);
+
+      const now = performance.now();
+      clicks = (now - last < 800) ? clicks + 1 : 1;
+      last = now;
+      if (clicks >= 10) { clicks = 0; spawnCatRain(); }
+    });
+  }
+
+  bind(document.querySelector(".hero-right > img"), document.querySelector(".hero"));
+  bind(document.querySelector("footer .footer-inner img"), document.querySelector("footer"));
+
+  // The gacha +1 button also triggers cat rain: 10 clicks within 800ms gaps (a treat for rapid clickers)
+  const ggBtn = document.querySelector(".gg-click-btn");
+  if (ggBtn) {
+    let c = 0, t = 0;
+    ggBtn.addEventListener("click", () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const now = performance.now();
+      c = (now - t < 800) ? c + 1 : 1;
+      t = now;
+      if (c >= 10) { c = 0; spawnCatRain(); }
+    });
+  }
+
+  // Clicking anywhere on the page scatters 6 paw prints (the two cats already have their own paws + meow, so skip them)
+  document.addEventListener("click", e => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (e.target.closest(".hero-right > img, footer .footer-inner img")) return;
+    const inFooter = !!e.target.closest("footer, .legal-strip, .hero-chat");
+    for (let i = 0; i < 6; i++) {
+      const s = document.createElement("span");
+      s.className = "paw-pop paw-global";
+      s.textContent = "ฅ";
+      if (inFooter) s.style.color = "var(--gold-light)";
+      s.style.left = e.clientX + (Math.random() * 120 - 60) + "px";
+      s.style.top  = e.clientY + (Math.random() * 70 - 35) + "px";
+      s.style.setProperty("--rot", (Math.random() * 60 - 30).toFixed(0) + "deg");
+      s.style.animationDelay = (i * 40) + "ms";
+      s.addEventListener("animationend", () => s.remove());
+      document.body.appendChild(s);
+    }
+  });
+})();
+
+// ── 30s idle: the FAB cat falls asleep with a 💤, wakes on any activity ─────
+(function fabIdle() {
+  const fab = document.querySelector(".gg-fab");
+  if (!fab) return;
+  let t;
+  const arm = () => {
+    fab.classList.remove("sleeping");
+    clearTimeout(t);
+    t = setTimeout(() => fab.classList.add("sleeping"), 30000);
+  };
+  ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(ev =>
+    window.addEventListener(ev, arm, { passive: true })
+  );
+  arm();
+})();
+
+// ── Hero chat replay animation ────────────────────────────────────────────────
+// Timeline: caret blinks twice → "咋办" is typed in the input → send (mom's message appears) → Zaban's reply appears → pause, then loop
 (function chatAnim() {
   const mom   = document.getElementById("chat-msg-mom");
   const bot   = document.getElementById("chat-msg-bot");
@@ -1182,7 +1594,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
   const ph    = document.getElementById("chat-placeholder");
   if (!mom || !bot || !typed) return;
 
-  // 无障碍：用户偏好减少动效时，直接呈现最终静态画面
+  // Accessibility: with reduced motion preferred, show the final static frame directly
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     mom.classList.add("show");
     bot.classList.add("show");
@@ -1196,21 +1608,21 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     bot.classList.remove("show");
     typed.textContent = "";
     ph.style.display = "";
-    at(2100, () => { ph.style.display = "none"; typed.textContent = "咋"; });   // 光标先空闪约两个周期
-    at(2450, () => { typed.textContent = "咋办"; });  // 触发词全语言保持简体
-    at(3150, () => { typed.textContent = ""; ph.style.display = ""; mom.classList.add("show"); }); // 发送
+    at(2100, () => { ph.style.display = "none"; typed.textContent = "咋"; });   // caret blinks idle for ~two cycles first
+    at(2450, () => { typed.textContent = "咋办"; });  // the trigger word stays Simplified in all languages
+    at(3150, () => { typed.textContent = ""; ph.style.display = ""; mom.classList.add("show"); }); // send
     at(3900, () => { bot.classList.add("show"); });
-    at(6900, play); // 停留约 3 秒后重播
+    at(6900, play); // pause ~3s, then replay
   }
-  // 首帧先静态展示完整对话，避免加载时只看到一个空黑盒；停留片刻再进入打字循环
+  // Show the full conversation statically on first paint, so the page doesn't load as an empty dark box; linger briefly before entering the typing loop
   mom.classList.add("show");
   bot.classList.add("show");
   at(2600, play);
 })();
 
-// ── 多语言 i18n ──────────────────────────────────────────────────────────────
-// 原则：中文为页面原文（DOM 即字典），首次切换时把原文存入 data-zh，切回中文时还原。
-// 指令表不加任何标记，按 <code> 里的命令名匹配 I18N_CMDS，新增命令行不翻译也不会报错。
+// ── i18n ─────────────────────────────────────────────────────────────────────
+// Principle: Chinese is the page's source text (the DOM is the dictionary); on first switch the original is stored in data-zh and restored when switching back to Chinese.
+// The command table carries no markup — rows match I18N_CMDS by the command name inside <code>, so new untranslated rows won't break anything.
 let currentLang = "zh";
 
 const GG_LBL = {
@@ -1250,7 +1662,7 @@ const GG_LBL = {
 };
 function ggLbl() { return GG_LBL[currentLang] || GG_LBL.zh; }
 
-// 静态文案：选择器 → { en, ja }（值为 innerHTML，可含标签）
+// Static copy: selector → { en, ja } (values are innerHTML and may contain tags)
 const I18N_SEL = {
   "nav ul li:nth-child(1) a": { en: "Features", ja: "機能" },
   "nav ul li:nth-child(2) a": { en: "Commands", ja: "コマンド" },
@@ -1309,6 +1721,12 @@ const I18N_SEL = {
     en: "Image conversion, pronunciation lookup (pinyin / kana / IPA), world clock, polls, daily facts, trivia quizzes…",
     ja: "画像変換、読み方検索（ピンイン / ふりがな / IPA）、世界時計、投票、豆知識、クイズなど…"
   },
+  ".cards .card:nth-child(1) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Zaban knows a little about everything — including the wrong things", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんは何でもちょっと知ってる、間違いも含めて" },
+  ".cards .card:nth-child(2) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Fortune or doom, blessing or curse — meow~", ja: "/ᐠ｡ꞈ｡ᐟ\\ 吉か凶か、福か禍かにゃ～" },
+  ".cards .card:nth-child(3) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Hi, I'm Zaban, and I'm a gacha addict", ja: "/ᐠ｡ꞈ｡ᐟ\\ こんにちは、ザバンです。ガチャがやめられません" },
+  ".cards .card:nth-child(4) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Ratings are for reference; new obsessions are your own responsibility", ja: "/ᐠ｡ꞈ｡ᐟ\\ 評価は参考まで、沼に落ちても自己責任" },
+  ".cards .card:nth-child(5) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ A world without animals and art? Unthinkable", ja: "/ᐠ｡ꞈ｡ᐟ\\ この世に小動物とアートは欠かせないのだ" },
+  ".cards .card:nth-child(6) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ The rare serious bit", ja: "/ᐠ｡ꞈ｡ᐟ\\ 珍しく真面目なコーナー" },
   "#commands .section-title": { en: "Command Reference", ja: "コマンド一覧" },
   ".cmd-table th:nth-child(1)": { en: "Command", ja: "コマンド" },
   ".cmd-table th:nth-child(2)": { en: "Description", ja: "説明" },
@@ -1330,7 +1748,7 @@ const I18N_SEL = {
   }
 };
 
-// 指令表组标题：按原文匹配
+// Command-table group headers: matched by source text
 const I18N_GROUPS = {
   "💬 AI & 对话":   { en: "💬 AI & Chat",            ja: "💬 AI＆チャット" },
   "🔮 占卜 & 运势": { en: "🔮 Divination & Fortune", ja: "🔮 占い＆運勢" },
@@ -1343,7 +1761,7 @@ const I18N_GROUPS = {
   "📌 其他":        { en: "📌 Misc",                 ja: "📌 その他" }
 };
 
-// 指令描述：按 <code> 命令名匹配
+// Command descriptions: matched by the command name inside <code>
 const I18N_CMDS = {
   "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\"", ja: "ザバンにゃんに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言ってもトリガー" },
   "/choose":       { en: "Can't decide? Let Zaban choose for you; add by:me to reveal fate yourself", ja: "迷ったらザバンにゃんにおまかせ。by:me で自分で運命をめくることも" },
@@ -1393,13 +1811,13 @@ const PAGE_TITLES = {
   ja: "咋办Bot（ザバンにゃんBot）/ᐠ｡ꞈ｡ᐟ\\"
 };
 
-// ── 繁体中文：简体原文 + OpenCC（opencc-js，懒加载 CDN）整页文本节点转换 ──────
-// 「咋办」是品牌名兼触发词，转换时整体保护、所有语言（含繁体）保持简体「咋办」原样
-// ——只有「咋办」能触发命令，繁体用户照着页面输入「咋辦」会触发失败。
-// 转换前记录原文，切走时先还原，避免字典没覆盖的静态中文留下繁体残影。
-let _twConv = null;        // (s) => 繁体
+// ── Traditional Chinese: Simplified source + OpenCC (opencc-js, lazy-loaded from CDN) converting every text node on the page ──
+// "咋办" is both the brand name and the trigger word: it is protected as a whole during conversion and stays Simplified in every language (including zh-TW)
+// — only "咋办" triggers commands, so a zh-TW user copying "咋辦" from the page would get no response.
+// Original text is recorded before converting and restored when switching away, so static Chinese not covered by the dictionary leaves no Traditional residue.
+let _twConv = null;        // (s) => Traditional Chinese
 let _twLoading = null;     // Promise
-const _twTouched = [];     // [textNode, 原文]
+const _twTouched = [];     // [textNode, original text]
 
 function _twRestore() {
   for (const [n, o] of _twTouched) n.nodeValue = o;
@@ -1415,7 +1833,7 @@ function _loadTwConverter() {
     s.onload = () => {
       const c = OpenCC.Converter({ from: "cn", to: "twp" });
       _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办");
-      // 扭蛋小组件的动态文案：基于 zh 包一层转换
+      // Gacha widget's dynamic labels: wrap the zh strings with a conversion layer
       GG_LBL.tw = {};
       for (const [k, v] of Object.entries(GG_LBL.zh)) {
         GG_LBL.tw[k] = typeof v === "function" ? (...a) => _twConv(v(...a)) : _twConv(v);
@@ -1447,8 +1865,8 @@ function applyLang(lang) {
   document.documentElement.lang = lang === "zh" ? "zh-CN" : (lang === "tw" ? "zh-TW" : lang);
   document.title = PAGE_TITLES[lang];
 
-  _twRestore();  // 无论切到哪种语言，先还原繁体转换过的文本节点
-  const base = lang === "tw" ? "zh" : lang;  // 繁体以简体内容为底，再整页转换
+  _twRestore();  // whatever language we switch to, first restore any Traditional-converted text nodes
+  const base = lang === "tw" ? "zh" : lang;  // zh-TW renders from Simplified content, then converts the whole page
 
   for (const [sel, tr] of Object.entries(I18N_SEL)) {
     const el = document.querySelector(sel);
@@ -1476,6 +1894,7 @@ function applyLang(lang) {
     b.classList.toggle("active", b.dataset.lang === lang)
   );
   ggRefresh();
+  randomizeQuips(); // the i18n rewrite restores the default quip face; re-roll it
 
   if (lang === "tw") {
     _loadTwConverter()
@@ -1494,5 +1913,7 @@ if (savedLang === "en" || savedLang === "ja" || savedLang === "tw") applyLang(sa
 ggLoad();
 </script>
 
+<!-- GoatCounter anonymous analytics: no cookies, no personal data collected -->
+<script data-goatcounter="https://kuroniko07.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

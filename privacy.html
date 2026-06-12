@@ -201,6 +201,43 @@ footer a:hover { color: var(--gold-light); }
   .content-wrap { padding: 2.5rem 1.25rem 4rem; }
   footer { padding: 1.5rem 1.25rem; }
 }
+
+/* ─── Same easter egg as the home page: cat-kaomoji cursor ─── */
+body {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+/* Link hover: head-tilt variant */
+a, button, [onclick] {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
+}
+/* Dark footer: cream cursor */
+footer {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+footer a, footer button {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
+}
+
+/* ─── Same easter egg as the home page: click paw prints ─── */
+.paw-pop {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  color: #b45309;
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0;
+  animation: paw-fade 0.9s ease-out forwards;
+}
+.paw-pop.paw-dark { color: var(--gold-light); }
+@keyframes paw-fade {
+  0%   { opacity: 0; transform: scale(0.4) rotate(var(--rot)); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25) rotate(var(--rot)) translateY(-14px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paw-pop { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -239,6 +276,7 @@ footer a:hover { color: var(--gold-light); }
     <li>Timestamps and context of interactions (server name, channel name, command used)</li>
   </ul>
   <p><strong>Message reading scope &amp; opt-out:</strong> The bot only reads message content to detect the "咋办" keyword trigger or explicit command invocations; all other messages are ignored and never stored. You can fully opt out of keyword responses at any time with the <code>/trigger</code> command.</p>
+  <p><strong>Website analytics:</strong> This website uses <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> for anonymous, aggregate visit statistics (page views, referrer, country, device type). GoatCounter does not use cookies and does not collect or store any personally identifiable information.</p>
 
   <h2>2. Data Storage</h2>
   <p>Collected data is stored as follows:</p>
@@ -315,5 +353,24 @@ footer a:hover { color: var(--gold-light); }
   </div>
 </footer>
 
+<script>
+// Same as the home page: clicking anywhere scatters 6 paw prints (bright gold on the dark footer)
+document.addEventListener("click", e => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const dark = !!e.target.closest("footer");
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement("span");
+    s.className = "paw-pop" + (dark ? " paw-dark" : "");
+    s.textContent = "ฅ";
+    s.style.left = e.clientX + (Math.random() * 120 - 60) + "px";
+    s.style.top  = e.clientY + (Math.random() * 70 - 35) + "px";
+    s.style.setProperty("--rot", (Math.random() * 60 - 30).toFixed(0) + "deg");
+    s.style.animationDelay = (i * 40) + "ms";
+    s.addEventListener("animationend", () => s.remove());
+    document.body.appendChild(s);
+  }
+});
+</script>
+<script data-goatcounter="https://kuroniko07.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
