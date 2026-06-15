@@ -256,7 +256,7 @@ footer a, footer button {
     <div class="page-eyebrow">Legal</div>
     <h1>Privacy Policy</h1>
     <p class="sub">This Privacy Policy describes how Echo's Bot (also referred to as "咋办Bot") collects, uses, and protects your information when you interact with the bot on Discord.</p>
-    <p class="sub" style="margin-top:0.5rem;">Last updated: June 12, 2026</p>
+    <p class="sub" style="margin-top:0.5rem;">Last updated: June 15, 2026</p>
   </div>
 </div>
 
@@ -269,13 +269,16 @@ footer a, footer button {
     <li>Your input (e.g., prompts, command options, or images attached to <code>/ask</code>) and the corresponding GPT responses</li>
     <li>Custom AI role settings set via <code>/setrole</code></li>
     <li>Language preference set via <code>/language</code> (Simplified Chinese / Traditional Chinese / English / Japanese)</li>
-    <li>Profile card data provided via <code>/mycard</code>, including nickname, pronouns, bio, location/timezone, and linked game accounts (Steam, Nintendo, PlayStation)</li>
+    <li>Profile card data provided via <code>/mycard</code> (also accessible via <code>/hellohowareyou</code> or the <code>咋办我是谁</code> message trigger), including nickname, pronouns, bio, location/timezone, linked game accounts (Steam, Nintendo, PlayStation), and an optional "showcased" gacha item displayed on your card</li>
     <li>Trivia quiz statistics (correct and incorrect answer counts)</li>
     <li>Daily fortune check-in data, including consecutive check-in streaks and personal records</li>
+    <li>Per-server fortune statistics (how many times you have drawn each fortune level) used to build the public Fortune Wall leaderboards</li>
     <li>Virtual currency balances (Zacoins / 咋办币) and gacha-related data, including fragment counts, collected items, and pity counters</li>
     <li>Timestamps and context of interactions (server name, channel name, command used)</li>
   </ul>
   <p><strong>Message reading scope &amp; opt-out:</strong> The bot only reads message content to detect the "咋办" keyword trigger or explicit command invocations; all other messages are ignored and never stored. You can fully opt out of keyword responses at any time with the <code>/trigger</code> command.</p>
+  <p><strong>Public leaderboards (Fortune Wall):</strong> Your daily fortune check-in statistics, together with your Discord display name and username, may be shown on a <strong>public, server-visible leaderboard</strong> ("运势墙 / Fortune Wall") to other members of the same server. Leaderboards are <strong>per-server</strong> — only that server's members' data is shown within that server. You can <strong>hide your identity</strong> on the public leaderboard at any time using the anonymity toggle shown with your fortune result; once hidden, your name and username are replaced with an anonymous placeholder. Other features may display only non-personal, aggregate totals (for example, server-wide or global counts of how many times a command has been used), which are not linked to any individual.</p>
+  <p><strong>Shareable profile cards:</strong> Using the 📤 Share button on your profile card (opened via <code>/mycard</code>, <code>/hellohowareyou</code>, or the <code>咋办我是谁</code> message trigger), the bot can compose your profile information — your self-provided card fields, your Discord display name and avatar, your showcased gacha item, and (optionally) your current day's fortune snapshot — into a single image. This image is generated on demand and held only briefly in the server's memory (a short-lived cache); it is not stored on disk. The preview is shown <strong>only to you</strong> by default — the card is made visible to others only if <strong>you</strong> choose to post it to a channel yourself.</p>
   <p><strong>Website analytics:</strong> This website uses <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> for anonymous, aggregate visit statistics (page views, referrer, country, device type). GoatCounter does not use cookies and does not collect or store any personally identifiable information.</p>
 
   <h2>2. Data Storage</h2>
@@ -302,7 +305,8 @@ footer a, footer button {
     <li>Providing personalized responses</li>
     <li>Maintaining user history and summaries</li>
     <li>Displaying profile cards and trivia statistics</li>
-    <li>Operating the daily fortune check-in system and virtual currency economy</li>
+    <li>Generating shareable profile card images at your request</li>
+    <li>Operating the daily fortune check-in system, virtual currency economy, and public Fortune Wall leaderboards</li>
     <li>Debugging and ensuring bot performance</li>
   </ul>
 
@@ -326,7 +330,7 @@ footer a, footer button {
     <li><strong>Conversation history, summaries, and role settings:</strong> Use the <code>/reset</code> command at any time.</li>
     <li><strong>Trivia statistics:</strong> Use the <code>/resettrivia</code> command at any time.</li>
     <li><strong>Language preference:</strong> You can change it at any time with the <code>/language</code> command. It is not cleared by <code>/reset</code>; to have it deleted, contact the developer directly (see Section 8).</li>
-    <li><strong>Profile card data, fortune check-in records, Zacoin balances, and gacha data:</strong> Contact the developer directly (see Section 8) to request deletion. These cannot currently be deleted via bot command.</li>
+    <li><strong>Profile card data, fortune check-in records, Zacoin balances, and gacha data:</strong> Contact the developer directly (see Section 8) to request deletion. These cannot currently be deleted via bot command. Your showcased gacha item can be changed or removed at any time directly from your profile card. To hide your name from the public Fortune Wall leaderboard, use the anonymity toggle shown with your fortune result (this takes effect immediately on refresh).</li>
     <li><strong>Activity logs:</strong> Logs are automatically pruned according to the retention schedule described in Section 2. Individual log entries cannot be deleted on request.</li>
   </ul>
 
