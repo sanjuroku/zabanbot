@@ -467,7 +467,8 @@ section { border-bottom: 1px solid var(--border); }
 /* ─── FEATURE CARDS ─── */
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr; /* 所有行强制等高：上下两排卡片高度一致，不随吐槽/正文长度变化 */
   gap: 1px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -989,6 +990,7 @@ footer .paw-pop { color: var(--gold-light); }
   .gg-fab:hover, .gg-fab.sleeping::before { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
+
 </style>
 </head>
 <body>
@@ -1020,8 +1022,7 @@ footer .paw-pop { color: var(--gold-light); }
         <span class="pill">🔮 塔罗占卜</span>
         <span class="pill">🎰 扭蛋机</span>
         <span class="pill">🎬 书影音游</span>
-        <span class="pill">🐾 可爱 &amp; 艺术</span>
-        <span class="pill">🛠️ 实用工具</span>
+        <span class="pill">🪄 文字触发「咋办」</span>
         <span class="pill">🌐 多语言支持</span>
       </div>
       <div class="hero-btns">
@@ -1059,43 +1060,55 @@ footer .paw-pop { color: var(--gold-light); }
 <section id="features">
   <div class="section-wrap" data-reveal>
     <div class="section-label">Features</div>
-    <div class="section-title">你能用它做什么？</div>
+    <div class="section-title">咋办可以为你做什么？</div>
     <div class="cards">
       <div class="card">
         <span class="card-icon">💬</span>
         <h3>AI 对话</h3>
-        <p>基于 GPT-4.1，支持多轮对话、图片分析、翻译。说「咋办」自动触发，个性角色可自定义，多语言回复（简中 / 繁中 / 英 / 日）。</p>
+        <p>GPT 驱动，咋办能聊天、看图、翻译，喊声「咋办这是什么」「咋办什么是XXX」就好！</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办什么都知道一点，包括错的</p>
       </div>
       <div class="card">
         <span class="card-icon">🔮</span>
         <h3>塔罗 · 运势</h3>
-        <p>每日占卜神社签 + 塔罗牌，精美图卡渲染。连签有惊喜！</p>
-        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 是吉是凶，是福是祸喵～</p>
+        <p>每日签到看今日运势，也能抽塔罗牌，有好看的图卡，签到可赚咋办币，连签有惊喜。</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 是吉是凶，是福是祸喵~</p>
       </div>
       <div class="card">
         <span class="card-icon">🎰</span>
         <h3>扭蛋机</h3>
-        <p>用咋办币抽奖，SSR / SR / R 三稀有度，十连保底 SR。收集完整图鉴，碎片可兑换。</p>
+        <p>用咋办币抽扭蛋，三种稀有度、十连保底 SR，奖品池里啥都有，充满惊喜。（嘿嘿…嘿嘿……）</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 戒戒你好，我是咋办</p>
       </div>
       <div class="card">
         <span class="card-icon">🎬</span>
         <h3>书影音游</h3>
-        <p>整合 NeoDB 与 Bangumi 搜索书籍、动画、游戏与音乐，带评分和封面。Steam 价格查询，萌娘百科 infobox 截图，一站搞定。</p>
+        <p>NeoDB 和 Bangumi 查书影音游，带评分封面，也能查 Steam 和萌娘百科条目。</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 评分仅供参考，入坑后果自负</p>
       </div>
       <div class="card">
         <span class="card-icon">🐾</span>
         <h3>可爱 &amp; 艺术</h3>
-        <p>从 Reddit 随机抽取可爱动物图片 / 视频（NSFW 自动过滤），或欣赏随机艺术品。</p>
+        <p>从 Reddit 随机给你一只可爱动物（自动过滤 NSFW），也可以随机获取一幅博物馆典藏艺术品。</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 这个世上不能没有小动物和艺术</p>
       </div>
       <div class="card">
         <span class="card-icon">🛠️</span>
         <h3>实用工具</h3>
-        <p>图片格式转换、读音查询（拼音 / 假名 / IPA）、世界时钟、投票、冷知识、知识问答……</p>
+        <p>图片转换、查读音、世界时钟、创建投票、冷知识、知识问答，咋办什么都会一点。</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 难得正经的部分</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🐱</span>
+        <h3>社群 &amp; 分享</h3>
+        <p>运势墙看看本服的「天选之猫」，个人资料卡能生成专属分享图，展示抽到的奖品，可以拿去美美把玩~</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办也很费解除了咋办妈谁还会需要这个功能呢</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🪄</span>
+        <h3>文字触发「咋办」</h3>
+        <p>只要消息发「咋办+关键词」就能呼叫咋办，还有不少触发词彩蛋给你惊喜！</p>
+        <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办会一直一直注视着你……（大概）</p>
       </div>
     </div>
   </div>
@@ -1163,6 +1176,7 @@ footer .paw-pop { color: var(--gold-light); }
         <tr class="group-header"><td colspan="2">🔮 占卜 &amp; 运势</td></tr>
         <tr><td><code>/fortune</code></td><td>每日运势签到，连签领咋办币与补签卡</td></tr>
         <tr><td><code>/tarot</code></td><td>塔罗牌占卜（1 / 3 / 5 张牌阵）</td></tr>
+        <tr><td><code>/fortunewall</code></td><td>运势墙：本服大吉 / 大凶「天选之猫」公开榜（纯运气 · 零攀比）</td></tr>
         <tr class="group-header"><td colspan="2">🎰 扭蛋</td></tr>
         <tr><td><code>/gacha</code></td><td>咋办扭蛋机，单抽 1 币 / 十连 10 币，SSR / SR / R 三稀有度</td></tr>
         <tr class="group-header"><td colspan="2">🎬 书影音游</td></tr>
@@ -1191,13 +1205,14 @@ footer .paw-pop { color: var(--gold-light); }
         <tr><td><code>/timezone</code></td><td>全球 15 城市时区一览</td></tr>
         <tr><td><code>/poll</code></td><td>创建 Discord 原生投票</td></tr>
         <tr class="group-header"><td colspan="2">👤 个人设置</td></tr>
-        <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡（可以用来自我介绍哦！）</td></tr>
+        <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡——自我介绍、一键生成精美分享图、炫耀抽到的奖品</td></tr>
         <tr><td><code>/mycard</code></td><td>同上，只是更简洁的命令名字！</td></tr>
         <tr><td><code>/language</code></td><td>切换咋办的回复语言（简中 / 繁中 / English / 日本語）</td></tr>
         <tr><td><code>/trigger</code></td><td>开关关键词「咋办」自动触发 AI 回复</td></tr>
         <tr><td><code>/reset</code></td><td>清空个人全部数据（对话历史 / 设定 / 统计）</td></tr>
         <tr class="group-header"><td colspan="2">📌 其他</td></tr>
         <tr><td><code>/menu</code></td><td>图形化按钮式命令启动器</td></tr>
+        <tr><td><code>/stats</code></td><td>咋办做算术：全服趣味使用统计，看看咋办都一本正经地胡说八道了多少次</td></tr>
         <tr><td><code>/help</code></td><td>完整指令列表与说明</td></tr>
         <tr><td><code>/buymeacoffee</code></td><td>支持开发者</td></tr>
       </tbody>
@@ -1242,6 +1257,13 @@ footer .paw-pop { color: var(--gold-light); }
 </footer>
 
 <script>
+// ── Console 彩蛋：打开开发者工具的访客会看到一只睡着的咋办猫 ──────────────────
+console.log(
+  "%c  ╱|、\n (˚ˎ 。7   z Z\n  |、˜〵\n  じしˍ,)ノ\n\n咋办！你也是来看代码的喵？",
+  "color:#ffc91e;font-family:monospace;font-size:13px;line-height:1.35"
+);
+
+
 // ── Mi-chan gacha floating widget ─────────────────────────────────────────────
 const GG_BASE = "https://raw.githubusercontent.com/sanjuroku/UwU/main/img/";
 const GG_PEPE = ["43", "44"];
@@ -1668,43 +1690,42 @@ const I18N_SEL = {
   ".hero-pills .pill:nth-child(2)": { en: "🔮 Tarot", ja: "🔮 タロット占い" },
   ".hero-pills .pill:nth-child(3)": { en: "🎰 Gacha", ja: "🎰 ガチャ" },
   ".hero-pills .pill:nth-child(4)": { en: "🎬 Media Search", ja: "🎬 メディア検索" },
-  ".hero-pills .pill:nth-child(5)": { en: "🐾 Cute &amp; Art", ja: "🐾 かわいい＆アート" },
-  ".hero-pills .pill:nth-child(6)": { en: "🛠️ Utilities", ja: "🛠️ 便利ツール" },
-  ".hero-pills .pill:nth-child(7)": { en: "🌐 Multilingual", ja: "🌐 多言語対応" },
+  ".hero-pills .pill:nth-child(5)": { en: "🪄 Text Trigger 「咋办」", ja: "🪄 テキストトリガー「咋办」" },
+  ".hero-pills .pill:nth-child(6)": { en: "🌐 Multilingual", ja: "🌐 多言語対応" },
   ".hero-btns a:nth-child(1)": { en: "➕ Invite 咋办", ja: "➕ 咋办を招待" },
   ".hero-btns a:nth-child(2)": { en: "⭐ Vote on Top.gg", ja: "⭐ Top.gg で投票" },
   "#chat-name-mom-label": { en: "Zaban's Mom", ja: "ザバンにゃんのかあちゃん" },
   "#chat-placeholder": { en: "Message #zaban-moms-nest", ja: "#ザバンにゃんの実家 へメッセージを送信" },
-  "#features .section-title": { en: "What can it do?", ja: "何ができるの？" },
+  "#features .section-title": { en: "What can 咋办 do for you?", ja: "咋办にできることは？" },
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
-    en: "Powered by GPT-4.1: multi-turn conversation, image analysis and translation. Just say \"咋办\" to trigger it; AI personas are customizable, with multilingual replies (Simplified / Traditional Chinese, English, Japanese).",
-    ja: "GPT-4.1 ベースのマルチターン会話・画像分析・翻訳。「咋办」と言うだけでトリガー、AI のキャラ設定もカスタマイズ可能。返答は多言語対応（簡体 / 繁体中国語・英語・日本語）。"
+    en: "GPT-powered chat, image analysis and translation — just say 「咋办这是什么」 or 「咋办什么是XXX」 and I'll come running.",
+    ja: "GPT 駆動でおしゃべり・画像分析・翻訳、「咋办这是什么」「咋办什么是XXX」と言えば飛んでくるよ。"
   },
   ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
   ".cards .card:nth-child(2) p": {
-    en: "Daily shrine fortunes and tarot readings rendered as beautiful cards. Check-in streaks bring surprises!",
-    ja: "毎日のおみくじ＋タロット占いを美しいカードで。連続チェックインにはご褒美も！"
+    en: "Check in daily for your fortune, draw tarot too, all as pretty cards — check-ins earn Zacoins, and streaks bring surprises.",
+    ja: "毎日チェックインで今日の運勢、タロットも引けるよ、きれいなカード付き。チェックインでザバンコインが貯まり、連続でサプライズも。"
   },
   ".cards .card:nth-child(3) h3": { en: "Gacha Machine", ja: "ガチャマシン" },
   ".cards .card:nth-child(3) p": {
-    en: "Spend Zacoins on pulls — SSR / SR / R rarities, with a guaranteed SR per ten-pull. Complete the collection; duplicates convert to fragments.",
-    ja: "ザバンコインでガチャ！SSR / SR / R の3レアリティ、10連でSR確定。図鑑を集めよう、かぶりはかけらに変換。"
+    en: "Spend Zacoins on the gacha — three rarities, SR guaranteed per ten-pull, and the prize pool has... everything (hehe).",
+    ja: "ザバンコインでガチャ、3レアリティ・10連でSR確定、景品プールには何でもあるよ（ふふ…）。"
   },
   ".cards .card:nth-child(4) h3": { en: "Books · Movies · Music · Games", ja: "本・映画・音楽・ゲーム" },
   ".cards .card:nth-child(4) p": {
-    en: "Search books, anime, games and music via NeoDB and Bangumi, with ratings and covers. Steam price lookup and Moegirlpedia infobox screenshots included.",
-    ja: "NeoDB と Bangumi で本・アニメ・ゲーム・音楽を検索、評価とカバー付き。Steam 価格検索や萌娘百科 infobox スクショも。"
+    en: "Look up books, films, music and games on NeoDB and Bangumi with ratings and covers; Steam and Moegirlpedia too.",
+    ja: "NeoDB と Bangumi で本・映画・音楽・ゲームを検索（評価＆カバー付き）、Steam や萌娘百科も。"
   },
   ".cards .card:nth-child(5) h3": { en: "Cute &amp; Art", ja: "かわいい＆アート" },
   ".cards .card:nth-child(5) p": {
-    en: "Random adorable animal photos and videos from Reddit (NSFW auto-filtered), or random artwork appreciation.",
-    ja: "Reddit からランダムにかわいい動物の写真・動画（NSFW 自動フィルター）、ランダムな名画鑑賞も。"
+    en: "A random adorable animal from Reddit (NSFW auto-filtered), or a museum-collection artwork.",
+    ja: "Reddit からランダムにかわいい動物（NSFW自動フィルター）、または美術館収蔵のアート作品を。"
   },
   ".cards .card:nth-child(6) h3": { en: "Utilities", ja: "便利ツール" },
   ".cards .card:nth-child(6) p": {
-    en: "Image conversion, pronunciation lookup (pinyin / kana / IPA), world clock, polls, daily facts, trivia quizzes…",
-    ja: "画像変換、読み方検索（ピンイン / ふりがな / IPA）、世界時計、投票、豆知識、クイズなど…"
+    en: "Image conversion, pronunciation lookup, world clock, polls, daily facts, trivia — I know a little of everything.",
+    ja: "画像変換・読み方検索・世界時計・投票・豆知識・クイズ、ザバンにゃんは何でもちょっとできるよ。"
   },
   ".cards .card:nth-child(1) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Zaban knows a little about everything — including the wrong things", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんは何でもちょっと知ってる、間違いも含めて" },
   ".cards .card:nth-child(2) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Fortune or doom, blessing or curse — meow~", ja: "/ᐠ｡ꞈ｡ᐟ\\ 吉か凶か、福か禍かにゃ～" },
@@ -1712,6 +1733,18 @@ const I18N_SEL = {
   ".cards .card:nth-child(4) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Ratings are for reference; new obsessions are your own responsibility", ja: "/ᐠ｡ꞈ｡ᐟ\\ 評価は参考まで、沼に落ちても自己責任" },
   ".cards .card:nth-child(5) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ A world without animals and art? Unthinkable", ja: "/ᐠ｡ꞈ｡ᐟ\\ この世に小動物とアートは欠かせないのだ" },
   ".cards .card:nth-child(6) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ The rare serious bit", ja: "/ᐠ｡ꞈ｡ᐟ\\ 珍しく真面目なコーナー" },
+  ".cards .card:nth-child(7) h3": { en: "Community &amp; Sharing", ja: "コミュニティ＆シェア" },
+  ".cards .card:nth-child(7) p": {
+    en: "See your server's \"Chosen Meow\" on the Wall of Fortune, and turn your profile card into a share image that shows off your gacha prizes~",
+    ja: "運勢ボードでサーバーの「選ばれし猫」を見て、自己紹介カードは引いた景品を見せびらかすシェア画像にできるよ~"
+  },
+  ".cards .card:nth-child(7) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Even Zaban's stumped — who needs this besides Zaban's mom?", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんも謎、こんな機能ザバンにゃんのかあちゃん以外に誰が使うのにゃ" },
+  ".cards .card:nth-child(8) h3": { en: "Text Trigger 「咋办」", ja: "テキストトリガー「咋办」" },
+  ".cards .card:nth-child(8) p": {
+    en: "No commands to memorize — just send 「咋办 + keyword」 and I'll come; plenty of hidden trigger-word surprises too, meow.",
+    ja: "コマンド不要、「咋办＋キーワード」と送れば来るよ。隠れたトリガーワードのサプライズもいっぱいにゃ。"
+  },
+  ".cards .card:nth-child(8) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Zaban is always, always watching you... (probably)", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんはずっとずっと君を見てるよ……（たぶん）" },
   "#commands .section-title": { en: "Command Reference", ja: "コマンド一覧" },
   ".cmd-table th:nth-child(1)": { en: "Command", ja: "コマンド" },
   ".cmd-table th:nth-child(2)": { en: "Description", ja: "説明" },
@@ -1757,6 +1790,7 @@ const I18N_CMDS = {
   "/summarycheck": { en: "View your saved conversation summary", ja: "保存された会話要約を確認" },
   "/fortune":      { en: "Your daily fortune, read and explained; check-in streaks earn Zacoins and Catch-up Cards", ja: "今日の運勢を占って解説。連続チェックインでザバンコインやリカバリーカードを獲得" },
   "/tarot":        { en: "Draw tarot cards and let Zaban read them (1 / 3 / 5-card spreads)", ja: "タロットを引いて悩みを解説（1 / 3 / 5枚スプレッド）" },
+  "/fortunewall":  { en: "The Wall of Fortune: this server's \"Chosen Meow\" leaderboards for Great Blessing / Great Misfortune (pure luck, zero competition)", ja: "運勢ボード：このサーバーの大吉 / 大凶「選ばれし猫」公開ランキング（運次第・比べっこなし）" },
   "/gacha":        { en: "The Zaban gacha machine — 1 coin per pull, ten-pull guarantees SR; SSR / SR / R rarities", ja: "ザバンにゃんガチャ。単発1コイン / 10連10コイン（SR確定）、SSR / SR / R の3レアリティ" },
   "/neodb":        { en: "Search NeoDB for books, movies, music & games, with ratings and covers", ja: "NeoDB で本・映画・音楽・ゲームを検索、評価とカバー付き" },
   "/bangumi":      { en: "Search Bangumi for anime, books, games & music, with ratings and covers", ja: "Bangumi でアニメ・本・ゲーム・音楽を検索、評価とカバー付き" },
@@ -1779,12 +1813,13 @@ const I18N_CMDS = {
   "/reading":      { en: "How do I read this?? Pinyin / kana / IPA annotations", ja: "これなんて読むの？？qwqピンイン / ふりがな / IPA の読み注釈" },
   "/timezone":     { en: "World clock for 15 cities", ja: "世界15都市の時刻一覧" },
   "/poll":         { en: "Create a native Discord poll", ja: "Discord ネイティブ投票を作成" },
-  "/hellohowareyou": { en: "Fill out your profile card (great for introductions!)", ja: "プロフィールカードを作成（自己紹介にどうぞ！）" },
+  "/hellohowareyou": { en: "Fill out your profile card — introduce yourself, generate a shareable image in one tap, and show off your gacha prizes", ja: "自己紹介カードを作成 — 自己紹介、ワンタップでシェア画像生成、引いた景品の自慢も" },
   "/mycard":       { en: "Same as above, just a shorter command name!", ja: "同上、短いコマンド名バージョン！" },
   "/language":     { en: "Switch Zaban's reply language (简中 / 繁中 / English / 日本語)", ja: "ザバンにゃんの返答言語を切り替え（简中 / 繁中 / English / 日本語）" },
   "/trigger":      { en: "Toggle the \"咋办\" keyword auto-response", ja: "「咋办」キーワード自動応答のオン / オフ" },
   "/reset":        { en: "Clear all your personal data (history / settings / stats)", ja: "個人データを全消去（履歴 / 設定 / 統計）" },
   "/menu":         { en: "Graphical button-based command launcher", ja: "ボタン式コマンドランチャー" },
+  "/stats":        { en: "Zaban Crunches the Numbers — fun server-wide tallies of all the earnest nonsense Zaban's been up to", ja: "ザバンにゃんのおさんすう — みんなの利用回数を集計した楽しい数字" },
   "/help":         { en: "Full command list and descriptions", ja: "全コマンド一覧と説明" },
   "/buymeacoffee": { en: "Support the developer", ja: "開発者を応援" }
 };
@@ -1817,7 +1852,7 @@ function _loadTwConverter() {
     s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
     s.onload = () => {
       const c = OpenCC.Converter({ from: "cn", to: "twp" });
-      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办");
+      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办").replaceAll("補籤", "補簽").replaceAll("連籤", "連簽");  // OpenCC 把签到义的「补签/连签」误转成抽签义「補籤/連籤」；对齐 bot utils/i18n.py 的 _S2T_FIXUPS（網站文案多了「连签」一词，故比 bot 多一条）
       // Gacha widget's dynamic labels: wrap the zh strings with a conversion layer
       GG_LBL.tw = {};
       for (const [k, v] of Object.entries(GG_LBL.zh)) {
