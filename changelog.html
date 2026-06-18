@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>更新日志 – 咋办Bot /ᐠ｡ꞈ｡ᐟ\</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #12100e;
+  --ink2: #2d2820;
+  --paper: #fdf8f0;
+  --cream: #f5ede0;
+  --gold: #c8920a;
+  --gold-text: #b45309;
+  --gold-light: #f5d472;
+  --gold-pale: #faeec8;
+  --muted: #8c7a5e;
+  --border: rgba(180,140,60,0.22);
+  --border-strong: rgba(180,140,60,0.45);
+  --tag-bg: #f0e4c8;
+  --sans: 'Noto Sans SC', 'DM Sans', 'Microsoft YaHei', sans-serif;
+  --serif: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: var(--gold-text); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ─── Cat-kaomoji cursor ─── */
+body {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+a, button, [onclick] {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
+}
+footer {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/svg%3E") 24 24, auto;
+}
+footer a, footer button {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23f5ede0'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23f5ede0'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
+}
+
+/* ─── Paw print click effect ─── */
+.paw-pop {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  color: var(--gold-text);
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0;
+  animation: paw-fade 0.9s ease-out forwards;
+}
+.paw-pop.paw-dark { color: var(--gold-light); }
+@keyframes paw-fade {
+  0%   { opacity: 0; transform: scale(0.4) rotate(var(--rot)); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25) rotate(var(--rot)) translateY(-14px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paw-pop { animation: none; }
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center;
+  padding: 0 2.5rem;
+  height: 54px;
+  background: rgba(253,248,240,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: var(--sans); font-size: 1rem; font-weight: 700;
+  color: var(--ink2); text-decoration: none; white-space: nowrap; flex-shrink: 0;
+}
+.nav-brand:hover { text-decoration: none; }
+.nav-brand img { height: 28px; width: auto; }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+nav ul a {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+nav ul a:hover { color: var(--gold-text); text-decoration: none; }
+
+/* ─── LANG SWITCH (reused from home page) ─── */
+.lang-switch {
+  margin-left: 1.5rem;
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lang-switch button {
+  background: transparent;
+  border: none;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: background 0.15s, color 0.15s;
+}
+.lang-switch button + button { border-left: 1px solid var(--border); }
+.lang-switch button:hover { color: var(--gold-text); }
+.lang-switch button.active { background: var(--gold-pale); color: var(--ink2); font-weight: 500; }
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  border-bottom: 1px solid var(--border);
+  padding: 3.5rem 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-header-bg {
+  position: absolute;
+  top: -0.1em; right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(5rem, 15vw, 12rem);
+  font-style: italic;
+  color: rgba(200,146,10,0.05);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.page-header-inner {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.page-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.page-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--ink2);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+.page-header .sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 560px;
+}
+.page-header .sub-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  opacity: 0.7;
+  margin-top: 0.45rem;
+  max-width: 560px;
+}
+.page-header .sub-note del { text-decoration-color: var(--border-strong); }
+
+/* ─── TIMELINE ─── */
+.timeline-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem 5rem;
+  position: relative;
+}
+
+.tl-entry {
+  position: relative;
+  padding-left: 2.5rem;
+  border-left: 2px solid var(--border-strong);
+  margin-bottom: 4rem;
+}
+.tl-entry:last-child { margin-bottom: 0; }
+
+.tl-dot {
+  position: absolute;
+  left: -7px; top: 0.35rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+
+.tl-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
+}
+.tl-year {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--ink2);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.tl-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  background: var(--gold-pale);
+  border: 1px solid rgba(180,140,60,0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+}
+
+/* ─── SECTIONS ─── */
+.tl-section { margin-bottom: 2.25rem; }
+.tl-section:last-child { margin-bottom: 0; }
+.tl-section h2 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink2);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── CMD GRID ─── */
+.cmd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.6rem;
+}
+.cmd-item {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.cmd-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+.cmd-emoji { font-size: 1rem; line-height: 1; flex-shrink: 0; }
+.cmd-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink2);
+  font-family: 'Consolas', 'SF Mono', monospace;
+  letter-spacing: 0.01em;
+}
+.cmd-desc {
+  font-size: 0.77rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ─── BULLET LIST ─── */
+.tl-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tl-list li {
+  font-size: 0.9rem;
+  color: #3d3428;
+  padding-left: 1.3rem;
+  position: relative;
+  line-height: 1.6;
+}
+.tl-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0.35rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+code {
+  background: var(--ink2);
+  color: var(--gold-light);
+  padding: 0.1rem 0.42rem;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  font-family: 'Consolas', 'SF Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink2);
+  border-top: 1px solid var(--border);
+  padding: 1.6rem 2.5rem;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+footer a { color: rgba(255,255,255,0.45); }
+footer a:hover { color: var(--gold-light); text-decoration: none; }
+.footer-links { display: flex; gap: 1.5rem; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  nav { padding: 0 1.25rem; }
+  nav ul { gap: 1rem; }
+  .page-header { padding: 2.5rem 1.25rem 2rem; }
+  .timeline-wrap { padding: 2.5rem 1.25rem 4rem; }
+  .tl-entry { padding-left: 1.5rem; }
+  footer { padding: 1.5rem 1.25rem; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .cmd-grid { grid-template-columns: 1fr 1fr; }
+  .lang-switch { margin-left: 0.75rem; }
+  .lang-switch button { padding: 0.5rem 0.5rem; }
+}
+@media (max-width: 360px) {
+  .cmd-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
+  <ul>
+    <li><a id="nav-home" href="index.html">← 首页</a></li>
+    <li><a id="nav-privacy" href="privacy.html">隐私</a></li>
+    <li><a id="nav-terms" href="tos.html">条款</a></li>
+  </ul>
+  <div class="lang-switch" id="lang-switch">
+    <button data-lang="zh" class="active">简</button>
+    <button data-lang="tw">繁</button>
+    <button data-lang="en">EN</button>
+    <button data-lang="ja">日</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">Changelog</div>
+  <div class="page-header-inner">
+    <div class="page-eyebrow">Release Notes</div>
+    <h1 id="cl-h1">更新日志</h1>
+    <p class="sub" id="cl-sub">咋办 Bot 的功能更新记录 · 持续更新中 /ᐠ｡ꞈ｡ᐟ\</p>
+    <p class="sub-note" id="cl-note"><del>让P人干这个活也太难了一点！</del></p>
+  </div>
+</div>
+
+<div class="timeline-wrap" id="timeline"></div>
+
+<footer>
+  <span>Echo's Bot · 咋办Bot</span>
+  <div class="footer-links">
+    <a id="ft-home" href="index.html">首页</a>
+    <a id="ft-privacy" href="privacy.html">隐私政策</a>
+    <a id="ft-terms" href="tos.html">服务条款</a>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════
+   四语文案数据：简体为源，en/ja 直接写；繁体由 OpenCC 自动转换。
+   命令名（/gacha 等）跨语言不变。Emoji 与 bot 的 /help（discord_commands/misc.py）对齐。
+   ════════════════════════════════════════════════════ */
+const UI = {
+  title:   { zh: "更新日志 – 咋办Bot /ᐠ｡ꞈ｡ᐟ\\", en: "Changelog – 咋办Bot /ᐠ｡ꞈ｡ᐟ\\", ja: "更新履歴 – 咋办Bot /ᐠ｡ꞈ｡ᐟ\\" },
+  h1:      { zh: "更新日志", en: "Changelog", ja: "更新履歴" },
+  sub:     { zh: "咋办 Bot 的功能更新记录 · 持续更新中 /ᐠ｡ꞈ｡ᐟ\\", en: "咋办 Bot's feature update log · always growing /ᐠ｡ꞈ｡ᐟ\\", ja: "咋办 Bot の機能アップデート記録 · 随時更新中 /ᐠ｡ꞈ｡ᐟ\\" },
+  note:    {
+    zh: "<del>让P人干这个活也太难了一点！</del><br>内容为大概，具体以实际功能为准，随便看看就好。",
+    en: "<del>Getting a P-type to do this is honestly a bit much!</del><br>Contents are approximate—the actual features are what count; just a casual read.<br>⚙️ This page is machine-translated; the Chinese original takes precedence.",
+    ja: "<del>P型にこの作業をやらせるのはちょっと酷では！</del><br>内容はだいたいです。実際の機能が正。気軽に眺めてね。<br>⚙️ このページは自動翻訳です。内容は中国語の原文を正とします。",
+  },
+  navHome:    { zh: "← 首页", en: "← Home", ja: "← ホーム" },
+  navPrivacy: { zh: "隐私", en: "Privacy", ja: "プライバシー" },
+  navTerms:   { zh: "条款", en: "Terms", ja: "利用規約" },
+  ftHome:     { zh: "首页", en: "Home", ja: "ホーム" },
+  ftPrivacy:  { zh: "隐私政策", en: "Privacy Policy", ja: "プライバシーポリシー" },
+  ftTerms:    { zh: "服务条款", en: "Terms of Service", ja: "利用規約" },
+  badge2026:  { zh: "大更新", en: "Major Update", ja: "大型アップデート" },
+  badge2025:  { zh: "初版上线", en: "Launch", ja: "初版リリース" },
+};
+
+const YEARS = [
+  {
+    year: "2026",
+    badge: "badge2026",
+    sections: [
+      {
+        type: "cards",
+        h: { zh: "✨ 新增命令", en: "✨ New Commands", ja: "✨ 新コマンド" },
+        items: [
+          { emoji: "🎰", name: "/gacha", desc: {
+            zh: "扭蛋机，用咋办币抽奖；十连保底至少一件 SR，重复出碎片，3 碎片换 1 币",
+            en: "Gacha machine—spend Zaban Coins; ten-pulls guarantee at least one SR, dupes give shards, 3 shards → 1 coin",
+            ja: "ガチャ機。ザバンコインで回す。10連はSR1枚以上確定、重複はかけらに、かけら3個で1コイン" } },
+          { emoji: "📊", name: "/fortunewall", desc: {
+            zh: "本服运势墙，大吉 / 大凶「天选之猫」公开榜，可匿名",
+            en: "Per-server Fortune Wall—public \"Chosen Meow\" boards for best / worst luck, anonymizable",
+            ja: "サーバーごとの運勢ウォール。大吉 / 大凶「選ばれし猫」公開ランキング、匿名可" } },
+          { emoji: "👤", name: "/hellohowareyou · /mycard", desc: {
+            zh: "个人资料卡，自填昵称 / 简介 / 炫耀奖品，可一键生成分享图",
+            en: "Profile card—custom nickname / bio / showcase prize, one-click shareable image",
+            ja: "プロフィールカード。ニックネーム / 自己紹介 / 自慢の景品を設定、共有画像をワンクリック生成" } },
+          { emoji: "💡", name: "/dailyfact", desc: {
+            zh: "每日冷知识（来自 Reddit / 维基百科 / Futility Closet）",
+            en: "Daily trivia facts (from Reddit / Wikipedia / Futility Closet)",
+            ja: "毎日の豆知識（Reddit / Wikipedia / Futility Closet より）" } },
+          { emoji: "📖", name: "/reading", desc: {
+            zh: "注音：中文拼音 / 日文假名 / 英文音标，最多 500 字；也可右键消息「这个咋读qwq」",
+            en: "Pronunciation: Chinese pinyin / Japanese kana / English IPA, up to 500 chars; also via right-click “这个咋读qwq”",
+            ja: "読み方：中国語ピンイン / 日本語かな / 英語IPA、最大500字。右クリック「这个咋读qwq」でも可" } },
+          { emoji: "🌸", name: "/moewiki", desc: {
+            zh: "萌娘百科搜索 + 随机页面，含信息框截图预览",
+            en: "Moegirlpedia search + random pages, with infobox screenshot preview",
+            ja: "萌娘百科（Moegirlpedia）検索 + ランダムページ、情報ボックスのスクショ付き" } },
+          { emoji: "🎬", name: "/bangumi", desc: {
+            zh: "Bangumi 番组计划：动画 / 书籍 / 游戏 / 音乐搜索",
+            en: "Bangumi search: anime / books / games / music",
+            ja: "Bangumi 検索：アニメ / 書籍 / ゲーム / 音楽" } },
+          { emoji: "🎲", name: "/roll", desc: {
+            zh: "随机抽取系列：数字 / 中华料理 / 维基 / NeoDB / 萌百 / Bangumi",
+            en: "Random rollers: numbers / Chinese dishes / Wikipedia / NeoDB / Moegirl / Bangumi",
+            ja: "ランダム抽選：数字 / 中華料理 / Wikipedia / NeoDB / 萌娘 / Bangumi" } },
+          { emoji: "🎯", name: "/trivia · /triviarank", desc: {
+            zh: "知识问答，有分类和难度，本服带排行榜",
+            en: "Trivia quiz with categories and difficulty, per-server leaderboard",
+            ja: "クイズ。カテゴリ・難易度あり、サーバー別ランキング付き" } },
+          { emoji: "📊", name: "/poll", desc: {
+            zh: "Discord 原生投票，2–10 个选项，单选或多选",
+            en: "Native Discord polls, 2–10 options, single or multiple choice",
+            ja: "Discord ネイティブ投票、2〜10択、単一 / 複数選択" } },
+          { emoji: "🖼️", name: "/art", desc: {
+            zh: "随机欣赏一件公共领域艺术品",
+            en: "Enjoy a random public-domain artwork",
+            ja: "パブリックドメインのアート作品をランダムに鑑賞" } },
+          { emoji: "🖼️", name: "/imageconvert", desc: {
+            zh: "图片格式互转（PNG / JPEG / WEBP / BMP）",
+            en: "Convert image formats (PNG / JPEG / WEBP / BMP)",
+            ja: "画像フォーマット変換（PNG / JPEG / WEBP / BMP）" } },
+          { emoji: "🐱", name: "/stats", desc: {
+            zh: "全服「咋办做算术」趣味统计面板",
+            en: "Server-wide \"咋办 does the math\" fun stats panel",
+            ja: "全サーバー「咋办の計算ごっこ」お遊び統計パネル" } },
+          { emoji: "🌐", name: "/language", desc: {
+            zh: "一键设置交流语言；管理员可用 scope=server 设全服默认",
+            en: "Set your language in one click; admins can use scope=server for a server-wide default",
+            ja: "ワンクリックで言語設定。管理者は scope=server でサーバー全体の既定を設定可" } },
+          { emoji: "🕒", name: "/settimezone", desc: {
+            zh: "设置个人时区，运势按你的当地日期重置",
+            en: "Set your timezone—fortune resets by your local date",
+            ja: "個人のタイムゾーンを設定。運勢は現地日付でリセット" } },
+          { emoji: "🌟", name: "/menu", desc: {
+            zh: "所有功能汇总的按钮启动器",
+            en: "Button launcher for all features",
+            ja: "全機能をまとめたボタンランチャー" } },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🔮 /fortune 运势升级", en: "🔮 /fortune Upgrades", ja: "🔮 /fortune 運勢アップグレード" },
+        items: [
+          { zh: "运势结果从纯文字升级为精美图卡（塔罗牌名 + 等级 + GPT 解读）",
+            en: "Fortune results upgraded from plain text to polished image cards (tarot card + level + GPT reading)",
+            ja: "運勢結果がテキストから美しい画像カードに（タロット名 + ランク + GPT 解説）" },
+          { zh: "每日签到可获得咋办币，连续打卡有里程碑奖励",
+            en: "Daily check-in earns Zaban Coins, with milestone rewards for streaks",
+            ja: "毎日のチェックインでザバンコイン獲得、連続記録でマイルストーン報酬" },
+          { zh: "约 3.33% 概率触发隐藏暴击，获得额外咋办币",
+            en: "~3.33% chance to trigger a hidden crit for bonus Zaban Coins",
+            ja: "約3.33%で隠し大当たり発生、ボーナスのザバンコイン" },
+          { zh: "断签可用补签卡补回（每连续 5 天得 1 张，或花 5 枚币购买，最多存 3 张）",
+            en: "Use a Catch-up Card to restore a broken streak (1 per 5-day streak, or buy for 5 coins, up to 3 banked)",
+            ja: "途切れた連続記録はリカバリーカードで復活（5日連続ごとに1枚、または5コインで購入、最大3枚）" },
+          { zh: "设置时区后（<code>/settimezone</code>），签到按你的当地日期重置",
+            en: "After setting your timezone (<code>/settimezone</code>), check-in resets by your local date",
+            ja: "タイムゾーン設定後（<code>/settimezone</code>）、チェックインは現地日付でリセット" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "💬 /ask 对话升级", en: "💬 /ask Upgrades", ja: "💬 /ask 会話アップグレード" },
+        items: [
+          { zh: "新增图片分析：上传图片或引用带图消息，让咋办帮你看图",
+            en: "New image analysis: upload an image or reply to one and let 咋办 look at it",
+            ja: "画像分析が追加：画像をアップ、または画像付きメッセージに返信して咋办に見てもらう" },
+          { zh: "触发词「咋办这是什么」：引用带图消息即可自动发起图片分析",
+            en: "Trigger “咋办这是什么”: reply to an image message to auto-start image analysis",
+            ja: "トリガー「咋办这是什么」：画像付きメッセージに返信で画像分析を自動開始" },
+          { zh: "右键任意消息 →「翻译这条消息」快捷翻译",
+            en: "Right-click any message → “翻译这条消息” for quick translation",
+            ja: "任意のメッセージを右クリック →「翻译这条消息」で即翻訳" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🌐 全新四语支持（简中 · 繁中 · EN · 日）", en: "🌐 New Four-Language Support (SC · TC · EN · JA)", ja: "🌐 4言語対応が新登場（簡体 · 繁体 · EN · 日）" },
+        items: [
+          { zh: "全部命令界面、按钮、错误提示均已四语化",
+            en: "All command UI, buttons, and error messages are now in four languages",
+            ja: "すべてのコマンドUI・ボタン・エラー表示が4言語対応" },
+          { zh: "繁体中文由简体自动转换，台湾正体用词",
+            en: "Traditional Chinese is auto-converted from Simplified, using Taiwan-standard wording",
+            ja: "繁体字は簡体字から自動変換、台湾正体の用語" },
+          { zh: "运势 / 塔罗图卡标签也已四语化",
+            en: "Fortune / tarot card labels are localized too",
+            ja: "運勢 / タロットカードのラベルも多言語化" },
+          { zh: "扭蛋奖品名和描述有英 / 日翻译",
+            en: "Gacha prize names and descriptions have EN / JA translations",
+            ja: "ガチャ景品の名前と説明に英 / 日翻訳" },
+          { zh: "可跟随你的客户端语言，或用 <code>/language</code> 手动指定",
+            en: "Follows your client language, or set it manually with <code>/language</code>",
+            ja: "クライアント言語に追従、または <code>/language</code> で手動指定" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🎉 其他", en: "🎉 More", ja: "🎉 その他" },
+        items: [
+          { zh: "全新经济系统：咋办币 + 碎片 + 扭蛋，靠每日签到积累",
+            en: "Brand-new economy: Zaban Coins + shards + gacha, built up via daily check-ins",
+            ja: "新しい経済システム：ザバンコイン + かけら + ガチャ、毎日のチェックインで貯まる" },
+          { zh: "「咋办」触发升级：现在打「咋办运势墙」「咋办考考我」「咋办这是什么」等就能直接调用命令",
+            en: "“咋办” trigger upgrade: typing “咋办运势墙”, “咋办考考我”, “咋办这是什么”, etc. now runs commands directly",
+            ja: "「咋办」トリガー強化：「咋办运势墙」「咋办考考我」「咋办这是什么」などでコマンドを直接実行" },
+          { zh: "进服欢迎消息新增走路猫动图，按服务器语言自动切换",
+            en: "New server welcome message with a walking-cat GIF that switches by server language",
+            ja: "サーバー参加時のウェルカムメッセージに歩く猫GIF、サーバー言語で自動切替" },
+          { zh: "咋办现已上架 <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> 和 <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a>",
+            en: "咋办 is now listed on <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> and the <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a>",
+            ja: "咋办 は <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> と <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a> に掲載" },
+        ],
+      },
+    ],
+  },
+  {
+    year: "2025",
+    badge: "badge2025",
+    sections: [
+      {
+        type: "cards",
+        h: { zh: "🚀 上线命令（2025 年 6 – 8 月）", en: "🚀 Launch Commands (Jun – Aug 2025)", ja: "🚀 リリース時のコマンド（2025年6〜8月）" },
+        items: [
+          { emoji: "💬", name: "/ask", desc: {
+            zh: "AI 对话，带对话记忆和角色设定（/setrole · /rolecheck · /resetrole）；可指定语言翻译",
+            en: "AI chat with memory and custom roles (/setrole · /rolecheck · /resetrole); translate to a chosen language",
+            ja: "AI会話。会話メモリとキャラ設定（/setrole · /rolecheck · /resetrole）。指定言語への翻訳も" } },
+          { emoji: "🔮", name: "/tarot", desc: {
+            zh: "抽 1 / 3 / 5 张塔罗牌，GPT 解读当下困惑",
+            en: "Draw 1 / 3 / 5 tarot cards, GPT interprets your question",
+            ja: "タロットを1 / 3 / 5枚引き、GPTが今の悩みを解説" } },
+          { emoji: "🧙‍♀️", name: "/fortune", desc: {
+            zh: "随机抽取塔罗牌，GPT 生成今日综合运势文字解读",
+            en: "Random tarot draw, GPT writes your overall fortune for the day",
+            ja: "タロットをランダムに引き、GPTが今日の総合運をテキストで解説" } },
+          { emoji: "💭", name: "/choose", desc: {
+            zh: "随机选择器，拿不定主意时让咋办替你选",
+            en: "Random picker—let 咋办 choose when you can't decide",
+            ja: "ランダム選択。迷ったら咋办が選んでくれる" } },
+          { emoji: "🎮", name: "/steam", desc: {
+            zh: "Steam 游戏价格查询，支持国 / 美 / 日 / 港 / 台等 10 个区",
+            en: "Steam game price lookup across 10 regions (CN / US / JP / HK / TW, etc.)",
+            ja: "Steam ゲーム価格検索、国 / 米 / 日 / 香港 / 台湾など10地域対応" } },
+          { emoji: "🐾", name: "/aww", desc: {
+            zh: "随机 Reddit 动物图片 / 视频，多个 subreddit 可选，NSFW 自动过滤",
+            en: "Random Reddit animal pics / videos, multiple subreddits, NSFW auto-filtered",
+            ja: "Reddit のかわいい動物画像 / 動画をランダム表示、複数 subreddit、NSFW 自動フィルタ" } },
+          { emoji: "🌠", name: "/neodb", desc: {
+            zh: "NeoDB 搜索书 / 影 / 剧 / 音乐，带评分与条目链接",
+            en: "NeoDB search for books / movies / TV / music, with ratings and links",
+            ja: "NeoDB で書籍 / 映画 / ドラマ / 音楽を検索、評価とリンク付き" } },
+          { emoji: "🕒", name: "/timezone", desc: {
+            zh: "全球多时区当前时间对照",
+            en: "Compare current time across global time zones",
+            ja: "世界の複数タイムゾーンの現在時刻を一覧" } },
+          { emoji: "📝", name: "/summary · /summarycheck", desc: {
+            zh: "GPT 生成对话摘要并存档，随时查看",
+            en: "GPT generates and saves a conversation summary you can check anytime",
+            ja: "GPT が会話の要約を生成・保存、いつでも確認可" } },
+          { emoji: "🧹", name: "/reset", desc: {
+            zh: "清除对话历史（含二次确认），重新开始",
+            en: "Clear conversation history (with confirmation) and start fresh",
+            ja: "会話履歴を消去（確認あり）してリセット" } },
+          { emoji: "😶", name: "/trigger", desc: {
+            zh: "开关你发言时的「咋办」自动触发",
+            en: "Toggle the automatic “咋办” reply on your messages",
+            ja: "自分の発言での「咋办」自動反応のオン / オフ" } },
+          { emoji: "🌈", name: "/buymeacoffee", desc: {
+            zh: "喜欢咋办的话，可以请作者喝杯咖啡捏",
+            en: "If you like 咋办, you can buy the author a coffee",
+            ja: "咋办 が気に入ったら、作者にコーヒーをおごれます" } },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🪄 核心特性", en: "🪄 Core Features", ja: "🪄 コア機能" },
+        items: [
+          { zh: "发言里出现「咋办」，咋办就会回你一句「咋办」（可用 <code>/trigger</code> 关闭）",
+            en: "When your message contains “咋办”, 咋办 replies with “咋办” (toggle off with <code>/trigger</code>)",
+            ja: "メッセージに「咋办」が含まれると、咋办 が「咋办」と返す（<code>/trigger</code> でオフ可）" },
+          { zh: "对话记忆与自动摘要，长聊也能续上前文",
+            en: "Conversation memory and auto-summary keep long chats coherent",
+            ja: "会話メモリと自動要約で、長い会話でも文脈を維持" },
+          { zh: "跨重启持久化，记得你的对话、角色设定和偏好",
+            en: "Persists across restarts—remembers your chats, roles, and preferences",
+            ja: "再起動をまたいで永続化、会話・キャラ設定・好みを記憶" },
+        ],
+      },
+    ],
+  },
+];
+
+/* ─── 渲染（desc / list item 允许内嵌 <code>/<a>，按 HTML 插入） ─── */
+
+function renderTimeline(base) {
+  const html = YEARS.map(y => {
+    const badge = UI[y.badge][base] || UI[y.badge].zh;
+    const secs = y.sections.map(sec => {
+      const head = sec.h[base] || sec.h.zh;
+      let body;
+      if (sec.type === "cards") {
+        body = '<div class="cmd-grid">' + sec.items.map(it => {
+          const d = it.desc[base] || it.desc.zh;
+          return '<div class="cmd-item"><div class="cmd-header"><span class="cmd-emoji">' + it.emoji +
+            '</span><span class="cmd-name">' + it.name + '</span></div><span class="cmd-desc">' + d + '</span></div>';
+        }).join("") + '</div>';
+      } else {
+        body = '<ul class="tl-list">' + sec.items.map(it => {
+          const d = it[base] || it.zh;
+          return '<li>' + d + '</li>';
+        }).join("") + '</ul>';
+      }
+      return '<div class="tl-section"><h2>' + head + '</h2>' + body + '</div>';
+    }).join("");
+    return '<div class="tl-entry"><div class="tl-dot"></div><div class="tl-meta">' +
+      '<span class="tl-year">' + y.year + '</span><span class="tl-badge">' + badge + '</span></div>' +
+      secs + '</div>';
+  }).join("");
+  document.getElementById("timeline").innerHTML = html;
+}
+
+/* ─── 繁体：简体源 + OpenCC（opencc-js，CDN 懒加载）转换页面文本节点 ───
+   「咋办」是品牌名兼触发词：转换时整体保护，所有语言（含繁体）保持简体——只有「咋办」能触发命令。
+   补签/连签 修正对齐 bot utils/i18n.py 的 _S2T_FIXUPS。 */
+let _twConv = null, _twLoading = null;
+function _loadTw() {
+  if (_twConv) return Promise.resolve(_twConv);
+  if (_twLoading) return _twLoading;
+  _twLoading = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
+    s.onload = () => {
+      const c = OpenCC.Converter({ from: "cn", to: "twp" });
+      _twConv = t => c(t.replaceAll("咋办", "")).replaceAll("", "咋办").replaceAll("補籤", "補簽").replaceAll("連籤", "連簽").replaceAll("斷籤", "斷簽");
+      resolve(_twConv);
+    };
+    s.onerror = () => { _twLoading = null; reject(new Error("opencc-js load failed")); };
+    document.head.appendChild(s);
+  });
+  return _twLoading;
+}
+function _twConvertDom(conv) {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = walker.nextNode())) {
+    const t = n.nodeValue;
+    if (/[一-鿿]/.test(t)) {
+      const c = conv(t);
+      if (c !== t) n.nodeValue = c;
+    }
+  }
+}
+
+let currentLang = "zh";
+function setText(id, key, base) { const el = document.getElementById(id); if (el) el.textContent = UI[key][base] || UI[key].zh; }
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("site_lang", lang);
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : (lang === "tw" ? "zh-TW" : lang);
+  const base = lang === "tw" ? "zh" : lang;   // 繁体先按简体渲染，再整页转换
+
+  document.title = UI.title[base] || UI.title.zh;
+  setText("cl-h1", "h1", base);
+  setText("cl-sub", "sub", base);
+  document.getElementById("cl-note").innerHTML = UI.note[base] || UI.note.zh;  // innerHTML：zh 含 <del> 删除线
+  setText("nav-home", "navHome", base);
+  setText("nav-privacy", "navPrivacy", base);
+  setText("nav-terms", "navTerms", base);
+  setText("ft-home", "ftHome", base);
+  setText("ft-privacy", "ftPrivacy", base);
+  setText("ft-terms", "ftTerms", base);
+  renderTimeline(base);
+
+  document.querySelectorAll("#lang-switch button").forEach(b =>
+    b.classList.toggle("active", b.dataset.lang === lang)
+  );
+
+  if (lang === "tw") {
+    _loadTw()
+      .then(conv => { if (currentLang === "tw") _twConvertDom(conv); })
+      .catch(e => console.warn("繁体转换器加载失败，维持简体显示", e));
+  }
+}
+
+document.querySelectorAll("#lang-switch button").forEach(b =>
+  b.addEventListener("click", () => applyLang(b.dataset.lang))
+);
+
+/* 初始渲染：与官网共享 localStorage("site_lang") */
+const savedLang = localStorage.getItem("site_lang");
+applyLang((savedLang === "en" || savedLang === "ja" || savedLang === "tw") ? savedLang : "zh");
+
+/* ─── 点击撒猫爪（与官网一致） ─── */
+document.addEventListener("click", e => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const dark = !!e.target.closest("footer");
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement("span");
+    s.className = "paw-pop" + (dark ? " paw-dark" : "");
+    s.textContent = "ฅ";
+    s.style.left = e.clientX + (Math.random() * 120 - 60) + "px";
+    s.style.top  = e.clientY + (Math.random() * 70 - 35) + "px";
+    s.style.setProperty("--rot", (Math.random() * 60 - 30).toFixed(0) + "deg");
+    s.style.animationDelay = (i * 40) + "ms";
+    s.addEventListener("animationend", () => s.remove());
+    document.body.appendChild(s);
+  }
+});
+</script>
+<script data-goatcounter="https://kuroniko07.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
