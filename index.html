@@ -1096,7 +1096,7 @@ footer .paw-pop { color: var(--gold-light); }
       <div class="card">
         <span class="card-icon">💬</span>
         <h3>AI 对话</h3>
-        <p>GPT 驱动，咋办能聊天、看图、翻译，喊声「咋办这是什么」「咋办什么是XXX」就好！</p>
+        <p>GPT 驱动，咋办能聊天、看图、翻译，喊声「咋办这是什么」「咋办什么是XXX」就好！<br>不知道咋办怎么用？直接问我就好！✨</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办什么都知道一点，包括错的</p>
       </div>
       <div class="card">
@@ -1197,7 +1197,7 @@ footer .paw-pop { color: var(--gold-light); }
       </thead>
       <tbody>
         <tr class="group-header"><td colspan="2">💬 AI &amp; 对话</td></tr>
-        <tr><td><code>/ask</code></td><td>AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发</td></tr>
+        <tr><td><code>/ask</code></td><td>AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发。不知道咋办怎么用？直接问我就好！✨</td></tr>
         <tr><td><code>/choose</code></td><td>随机帮你做选择；也可加 by:me 自己点按钮揭晓命运</td></tr>
         <tr><td><code>/setrole</code></td><td>自定义 AI 人格设定与专属记忆</td></tr>
         <tr><td><code>/rolecheck</code></td><td>查看当前角色设定内容</td></tr>
@@ -1731,8 +1731,8 @@ const I18N_SEL = {
   "#features .section-title": { en: "What can 咋办 do for you?", ja: "咋办にできることは？" },
   ".cards .card:nth-child(1) h3": { en: "AI Chat", ja: "AI チャット" },
   ".cards .card:nth-child(1) p": {
-    en: "GPT-powered chat, image analysis and translation — just say 「咋办这是什么」 or 「咋办什么是XXX」 and I'll come running.",
-    ja: "GPT 駆動でおしゃべり・画像分析・翻訳、「咋办这是什么」「咋办什么是XXX」と言えば飛んでくるよ。"
+    en: "GPT-powered chat, image analysis and translation — just say 「咋办这是什么」 or 「咋办什么是XXX」 and I'll come running.<br>Not sure how to use Zaban? Just ask me! ✨",
+    ja: "GPT 駆動でおしゃべり・画像分析・翻訳、「咋办这是什么」「咋办什么是XXX」と言えば飛んでくるよ。<br>使い方がわからない？そのまま聞いてね！✨"
   },
   ".cards .card:nth-child(2) h3": { en: "Tarot &amp; Fortune", ja: "タロット・運勢" },
   ".cards .card:nth-child(2) p": {
@@ -1813,7 +1813,7 @@ const I18N_GROUPS = {
 
 // Command descriptions: matched by the command name inside <code>
 const I18N_CMDS = {
-  "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\"", ja: "ザバンにゃんに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言ってもトリガー" },
+  "/ask":          { en: "Ask Zaban anything — multi-turn chat, image analysis and translation; also triggered by saying \"咋办\". Not sure how to use Zaban? Just ask me! ✨", ja: "ザバンにゃんに何でも質問 — マルチターン会話・画像分析・翻訳。「咋办」と言ってもトリガー。使い方がわからない？そのまま聞いてね！✨" },
   "/choose":       { en: "Can't decide? Let Zaban choose for you; add by:me to reveal fate yourself", ja: "迷ったらザバンにゃんにおまかせ。by:me で自分で運命をめくることも" },
   "/setrole":      { en: "Set a custom persona for Zaban, or things it should remember", ja: "ザバンにゃんのキャラ設定や、覚えてほしいことを設定" },
   "/rolecheck":    { en: "View your persona settings", ja: "現在のキャラ設定を確認" },
