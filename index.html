@@ -483,7 +483,6 @@ section { border-bottom: 1px solid var(--border); }
 .cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 1fr; /* 所有行强制等高：上下两排卡片高度一致，不随吐槽/正文长度变化 */
   gap: 1px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -521,6 +520,8 @@ section { border-bottom: 1px solid var(--border); }
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  min-height: 2.4rem; /* 0.75rem × 1.6 line-height × 2 lines：固定两行空间，颜文字长短不影响卡片高度 */
+  overflow: hidden;
 }
 .card:hover .card-quip {
   opacity: 1;
