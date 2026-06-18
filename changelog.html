@@ -102,11 +102,26 @@ nav {
 }
 .nav-brand:hover { text-decoration: none; }
 .nav-brand img { height: 28px; width: auto; }
+/* 桌面：链接 + 语言切换并排靠右；移动端折叠进汉堡菜单 */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--ink2);
+  padding: 0.3rem 0.4rem;
+  margin-left: auto;
+}
 nav ul {
   list-style: none;
   display: flex;
   gap: 1.5rem;
-  margin-left: auto;
 }
 nav ul a {
   font-size: 0.8rem;
@@ -344,7 +359,26 @@ footer a:hover { color: var(--gold-light); text-decoration: none; }
 /* ─── RESPONSIVE ─── */
 @media (max-width: 640px) {
   nav { padding: 0 1.25rem; }
-  nav ul { gap: 1rem; }
+  /* 移动端：链接行收进汉堡菜单，点 ☰ 下拉展开 */
+  .nav-toggle { display: block; }
+  .nav-menu {
+    display: none;
+    position: fixed;
+    top: 54px; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    margin-left: 0;
+    padding: 0.5rem 1.25rem 1rem;
+    background: rgba(253,248,240,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(120,90,30,0.08);
+  }
+  .nav-menu.open { display: flex; }
+  .nav-menu ul { flex-direction: column; gap: 0; width: 100%; }
+  .nav-menu ul a { display: block; padding: 0.7rem 0.2rem; font-size: 0.95rem; }
+  .lang-switch { margin-left: 0; margin-top: 0.5rem; align-self: flex-start; }
   .page-header { padding: 2.5rem 1.25rem 2rem; }
   .timeline-wrap { padding: 2.5rem 1.25rem 4rem; }
   .tl-entry { padding-left: 1.5rem; }
@@ -352,8 +386,6 @@ footer a:hover { color: var(--gold-light); text-decoration: none; }
 }
 @media (max-width: 480px) {
   .cmd-grid { grid-template-columns: 1fr 1fr; }
-  .lang-switch { margin-left: 0.75rem; }
-  .lang-switch button { padding: 0.5rem 0.5rem; }
 }
 @media (max-width: 360px) {
   .cmd-grid { grid-template-columns: 1fr; }
@@ -364,16 +396,19 @@ footer a:hover { color: var(--gold-light); text-decoration: none; }
 
 <nav>
   <a class="nav-brand" href="index.html"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
-  <ul>
-    <li><a id="nav-home" href="index.html">← 首页</a></li>
-    <li><a id="nav-privacy" href="privacy.html">隐私</a></li>
-    <li><a id="nav-terms" href="tos.html">条款</a></li>
-  </ul>
-  <div class="lang-switch" id="lang-switch">
-    <button data-lang="zh" class="active">简</button>
-    <button data-lang="tw">繁</button>
-    <button data-lang="en">EN</button>
-    <button data-lang="ja">日</button>
+  <button class="nav-toggle" id="nav-toggle" aria-label="菜单 / Menu" aria-expanded="false" aria-controls="nav-menu">☰</button>
+  <div class="nav-menu" id="nav-menu">
+    <ul>
+      <li><a id="nav-home" href="index.html">首页</a></li>
+      <li><a id="nav-privacy" href="privacy.html">隐私</a></li>
+      <li><a id="nav-terms" href="tos.html">条款</a></li>
+    </ul>
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="zh" class="active">简</button>
+      <button data-lang="tw">繁</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="ja">日</button>
+    </div>
   </div>
 </nav>
 
@@ -412,7 +447,7 @@ const UI = {
     en: "<del>Getting a P-type to do this is honestly a bit much!</del><br>Contents are approximate—the actual features are what count; just a casual read.<br>⚙️ This page is machine-translated; the Chinese original takes precedence.",
     ja: "<del>P型にこの作業をやらせるのはちょっと酷では！</del><br>内容はだいたいです。実際の機能が正。気軽に眺めてね。<br>⚙️ このページは自動翻訳です。内容は中国語の原文を正とします。",
   },
-  navHome:    { zh: "← 首页", en: "← Home", ja: "← ホーム" },
+  navHome:    { zh: "首页", en: "Home", ja: "ホーム" },
   navPrivacy: { zh: "隐私", en: "Privacy", ja: "プライバシー" },
   navTerms:   { zh: "条款", en: "Terms", ja: "利用規約" },
   ftHome:     { zh: "首页", en: "Home", ja: "ホーム" },
@@ -747,6 +782,23 @@ function applyLang(lang) {
 document.querySelectorAll("#lang-switch button").forEach(b =>
   b.addEventListener("click", () => applyLang(b.dataset.lang))
 );
+
+/* 移动端汉堡菜单：点 ☰ 下拉展开 / 收起；点链接后自动收起（切换语言不收起，方便对比） */
+(() => {
+  const tog = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+  if (!tog || !menu) return;
+  tog.addEventListener("click", () => {
+    const open = menu.classList.toggle("open");
+    tog.setAttribute("aria-expanded", open ? "true" : "false");
+    tog.textContent = open ? "✕" : "☰";
+  });
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    menu.classList.remove("open");
+    tog.setAttribute("aria-expanded", "false");
+    tog.textContent = "☰";
+  }));
+})();
 
 /* 初始渲染：与官网共享 localStorage("site_lang") */
 const savedLang = localStorage.getItem("site_lang");

@@ -104,11 +104,26 @@ nav {
   height: 28px;
   width: auto;
 }
+/* 桌面：链接 + 语言切换并排靠右；移动端折叠进汉堡菜单 */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--ink2);
+  padding: 0.3rem 0.4rem;
+  margin-left: auto;
+}
 nav ul {
   list-style: none;
   display: flex;
   gap: 2rem;
-  margin-left: auto;
 }
 nav ul a {
   font-size: 0.82rem;
@@ -777,18 +792,30 @@ footer .paw-pop { color: var(--gold-light); }
 }
 @media (max-width: 720px) {
   nav { padding: 0 1.25rem; }
-  /* Keep the nav on narrow screens: horizontally scrollable link row with hidden scrollbar */
-  nav ul {
-    gap: 1.1rem;
-    margin-left: 1rem; /* the link row may fill the remaining space, collapsing auto margins — keep manual spacing from the brand */
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+  /* 移动端：链接行收进汉堡菜单，点击 ☰ 下拉展开（解决「能滑但没人知道」的问题） */
+  .nav-toggle { display: block; }
+  .nav-menu {
+    display: none;
+    position: fixed;
+    top: 54px; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    margin-left: 0;
+    padding: 0.5rem 1.25rem 1rem;
+    background: rgba(253,248,240,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(120,90,30,0.08);
   }
-  nav ul::-webkit-scrollbar { display: none; }
-  nav ul a { white-space: nowrap; }
-  .lang-switch { margin-left: 0.75rem; }
+  .nav-menu.open { display: flex; }
+  .nav-menu ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  .nav-menu ul a { display: block; padding: 0.7rem 0.2rem; font-size: 0.95rem; }
+  .lang-switch { margin-left: 0; margin-top: 0.5rem; align-self: flex-start; }
   .hero { padding: 3rem 1.25rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; }
   /* Hide the large GIF on mobile but keep the chat card (centered) */
@@ -997,17 +1024,20 @@ footer .paw-pop { color: var(--gold-light); }
 
 <nav>
   <a class="nav-brand" href="https://sanjuroku.github.io/zabanbot/"><img src="zabanwalk.gif" alt="" />咋办Bot</a>
-  <ul>
-    <li><a href="#features">功能</a></li>
-    <li><a href="#commands">指令</a></li>
-    <li><a href="#legal">法律</a></li>
-    <li><a href="changelog.html">更新</a></li>
-  </ul>
-  <div class="lang-switch" id="lang-switch">
-    <button data-lang="zh" class="active">简</button>
-    <button data-lang="tw">繁</button>
-    <button data-lang="en">EN</button>
-    <button data-lang="ja">日</button>
+  <button class="nav-toggle" id="nav-toggle" aria-label="菜单 / Menu" aria-expanded="false" aria-controls="nav-menu">☰</button>
+  <div class="nav-menu" id="nav-menu">
+    <ul>
+      <li><a href="#features">功能</a></li>
+      <li><a href="#commands">指令</a></li>
+      <li><a href="#legal">法律</a></li>
+      <li><a href="changelog.html">更新</a></li>
+    </ul>
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="zh" class="active">简</button>
+      <button data-lang="tw">繁</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="ja">日</button>
+    </div>
   </div>
 </nav>
 
@@ -1928,6 +1958,23 @@ function applyLang(lang) {
 document.querySelectorAll("#lang-switch button").forEach(b =>
   b.addEventListener("click", () => applyLang(b.dataset.lang))
 );
+
+// 移动端汉堡菜单：点 ☰ 下拉展开 / 收起；点链接后自动收起（切换语言不收起，方便对比）
+(() => {
+  const tog = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+  if (!tog || !menu) return;
+  tog.addEventListener("click", () => {
+    const open = menu.classList.toggle("open");
+    tog.setAttribute("aria-expanded", open ? "true" : "false");
+    tog.textContent = open ? "✕" : "☰";
+  });
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    menu.classList.remove("open");
+    tog.setAttribute("aria-expanded", "false");
+    tog.textContent = "☰";
+  }));
+})();
 
 const savedLang = localStorage.getItem("site_lang");
 if (savedLang === "en" || savedLang === "ja" || savedLang === "tw") applyLang(savedLang);
