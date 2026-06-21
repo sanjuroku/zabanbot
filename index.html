@@ -243,6 +243,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 }
 .pill {
   position: relative;
+  top: -1px;  /* nudge the whole pill (with its ears) up 1px */
   font-size: 0.78rem;
   padding: 0.28rem 0.75rem;
   border: 1px solid var(--border-strong);
@@ -264,8 +265,8 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   border-right: none;
   transform: rotate(45deg);
 }
-.pill::before { left: 10px; }
-.pill::after  { right: 10px; }
+.pill::before { left: 13px; }
+.pill::after  { right: 13px; }
 .hero-btns {
   display: flex;
   gap: 0.85rem;
@@ -529,6 +530,24 @@ section { border-bottom: 1px solid var(--border); }
   transform: none;
 }
 
+/* ─── PER-COMMAND EXAMPLE (a 「试试 + light pill chip」 line under each command's description) ─── */
+.cmd-desc { display: block; }
+/* The example sits on its own line below the description, clearly set off from the gray description text */
+.cmd-egline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.45rem;
+  margin-top: 0.5rem;
+}
+.eg-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* The example input chip is the light hero-pill variant — see .cmd-table code.ge-input below. */
+
 /* ─── COMMAND TABLE ─── */
 .cmd-section {
   background: var(--cream);
@@ -593,15 +612,41 @@ section { border-bottom: 1px solid var(--border); }
   opacity: 1;
   transform: none;
 }
+/* Command chips: dark rounded pill. Base for ALL table <code> (command names + example chips); the example chip is
+   then overridden to the light hero-pill variant below. */
 .cmd-table code {
+  position: relative;
+  display: inline-block;
   background: var(--ink2);
   color: var(--gold-light);
-  padding: 0.12rem 0.45rem;
-  border-radius: 3px;
+  padding: 0.18rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 2em;
   font-size: 0.8rem;
-  font-family: 'Consolas', 'SF Mono', monospace;
-  letter-spacing: 0.02em;
+  font-family: var(--sans);
 }
+/* Two cat ears — 45°-rotated squares keeping only the top+left borders, exactly like the hero pills.
+   Ear fill matches the pill so it reads as one shape; only the gold top/left edge outlines it. */
+.cmd-table code::before,
+.cmd-table code::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--ink2);
+  border: 1px solid var(--border-strong);
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.cmd-table code::before { left: 13px; }
+.cmd-table code::after  { right: 13px; }
+/* Example input chip: light hero-pill variant (cream fill, gold text) — keeps it distinct from the dark command pills */
+.cmd-table code.ge-input { background: var(--cream); color: var(--gold-text); }
+.cmd-table code.ge-input::before,
+.cmd-table code.ge-input::after { background: var(--cream); }
 
 /* ─── LEGAL SECTION ─── */
 .legal-strip {
@@ -1148,6 +1193,7 @@ footer .paw-pop { color: var(--gold-light); }
   </div>
 </section>
 
+
 <!-- Mi-chan gacha floating widget -->
 <button class="gg-fab" onclick="ggToggle()" title="mi-chan gacha" aria-label="打开扭蛋机"><i class="gg-ear gg-ear-l"></i><i class="gg-ear gg-ear-r"></i>(=•ω•=)</button>
 <div class="gg-widget" id="gg-widget">
@@ -1200,55 +1246,55 @@ footer .paw-pop { color: var(--gold-light); }
       </thead>
       <tbody>
         <tr class="group-header"><td colspan="2">💬 AI &amp; 对话</td></tr>
-        <tr><td><code>/ask</code></td><td>AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发。不知道咋办怎么用？直接问我就好！✨</td></tr>
-        <tr><td><code>/choose</code></td><td>随机帮你做选择；也可加 by:me 自己点按钮揭晓命运</td></tr>
-        <tr><td><code>/setrole</code></td><td>自定义 AI 人格设定与专属记忆</td></tr>
-        <tr><td><code>/rolecheck</code></td><td>查看当前角色设定内容</td></tr>
-        <tr><td><code>/resetrole</code></td><td>重置 AI 角色为默认</td></tr>
-        <tr><td><code>/summary</code></td><td>生成当前对话历史摘要</td></tr>
-        <tr><td><code>/summarycheck</code></td><td>查看已保存的对话摘要</td></tr>
+        <tr><td><code>/ask</code></td><td><span class="cmd-desc">AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发。不知道咋办怎么用？直接问我就好！✨</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办ask what is Zaban?" data-ja="咋办ask 咋办って何？">咋办什么是咋办</code><code class="ge-input" data-en="咋办ask what triggers do you have?" data-ja="咋办ask トリガーワードは？">咋办ask 你有哪些触发词？</code><code class="ge-input"><span class="eg-quote">（引用消息）</span><span>咋办这是什么</span></code></span></td></tr>
+        <tr><td><code>/choose</code></td><td><span class="cmd-desc">随机帮你做选择；也可加 by:me 自己点按钮揭晓命运</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办choose eat sleep game" data-ja="咋办choose ご飯 寝る ゲーム">咋办帮我选 吃饭 睡觉 打游戏</code><code class="ge-input" data-en="咋办choose McDonald's KFC" data-ja="咋办choose マック ケンタッキー">咋办choose 麦当劳 肯德基</code></span></td></tr>
+        <tr><td><code>/setrole</code></td><td><span class="cmd-desc">自定义 AI 人格设定与专属记忆</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="/setrole I'm the Emperor of the Internet — yell &quot;long live!&quot; every time you reply!" data-ja="/setrole 私はインターネット皇帝。返信のたびに「万歳！」と叫べ！">/setrole 我的身分是互联网皇帝，你每次回复我都要喊一声万岁！</code></span></td></tr>
+        <tr><td><code>/rolecheck</code></td><td><span class="cmd-desc">查看当前角色设定内容</span></td></tr>
+        <tr><td><code>/resetrole</code></td><td><span class="cmd-desc">重置角色设定为默认</span></td></tr>
+        <tr><td><code>/summary</code></td><td><span class="cmd-desc">生成当前对话历史摘要</span></td></tr>
+        <tr><td><code>/summarycheck</code></td><td><span class="cmd-desc">查看已保存的对话摘要</span></td></tr>
         <tr class="group-header"><td colspan="2">🔮 占卜 &amp; 运势</td></tr>
-        <tr><td><code>/fortune</code></td><td>每日运势签到，连签领咋办币与补签卡</td></tr>
-        <tr><td><code>/tarot</code></td><td>塔罗牌占卜（1 / 3 / 5 张牌阵）</td></tr>
-        <tr><td><code>/fortunewall</code></td><td>运势墙：本服大吉 / 大凶「天选之猫」公开榜（纯运气 · 零攀比）</td></tr>
+        <tr><td><code>/fortune</code></td><td><span class="cmd-desc">每日运势签到，连签领咋办币与补签卡</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办签到</code><code class="ge-input">咋办今日运势</code><code class="ge-input">咋办运势</code><code class="ge-input">咋办fortune</code></span></td></tr>
+        <tr><td><code>/tarot</code></td><td><span class="cmd-desc">塔罗牌占卜（1 / 3 / 5 张牌阵）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办tarot my luck this year" data-ja="咋办tarot 今年の運勢">咋办占卜 我的今年财运</code><code class="ge-input" data-en="咋办tarot should I buy this?" data-ja="咋办tarot これ買うべき？">咋办塔罗 我要不要买这个</code><code class="ge-input" data-en="咋办tarot will I get rich this year?" data-ja="咋办tarot 今年お金持ちになれる？">咋办tarot 我今年会发财吗？</code></span></td></tr>
+        <tr><td><code>/fortunewall</code></td><td><span class="cmd-desc">运势墙：本服大吉 / 大凶「天选之猫」公开榜（纯运气 · 零攀比）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办天选之猫</code><code class="ge-input">咋办运势墙</code></span></td></tr>
         <tr class="group-header"><td colspan="2">🎰 扭蛋</td></tr>
-        <tr><td><code>/gacha</code></td><td>咋办扭蛋机，单抽 1 币 / 十连 10 币，SSR / SR / R 三稀有度</td></tr>
+        <tr><td><code>/gacha</code></td><td><span class="cmd-desc">咋办扭蛋机，单抽 1 币 / 十连 10 币，SSR / SR / R 三稀有度</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办扭蛋机</code><code class="ge-input">咋办gacha</code></span></td></tr>
         <tr class="group-header"><td colspan="2">🎬 书影音游</td></tr>
-        <tr><td><code>/neodb</code></td><td>NeoDB 书影音游戏搜索，含评分、封面与条目详情</td></tr>
-        <tr><td><code>/bangumi</code></td><td>Bangumi 动画、书籍、游戏与音乐搜索，含评分与封面</td></tr>
-        <tr><td><code>/steam</code></td><td>Steam 游戏搜索，含当前价格与折扣信息</td></tr>
-        <tr><td><code>/moewiki</code></td><td>萌娘百科条目搜索，含 infobox 自动截图</td></tr>
+        <tr><td><code>/neodb</code></td><td><span class="cmd-desc">NeoDB 书影音游戏搜索，含评分、封面与条目详情</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">/neodb 西湖六吊桥心中未遂</code><code class="ge-input">/neodb The Color Purple</code><code class="ge-input">/neodb The Office</code></span></td></tr>
+        <tr><td><code>/bangumi</code></td><td><span class="cmd-desc">Bangumi 动画、书籍、游戏与音乐搜索，含评分与封面</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="/bangumi JoJo's Bizarre Adventure" data-ja="/bangumi ジョジョの奇妙な冒険">/bangumi JOJO的奇妙冒险</code><code class="ge-input">咋办bangumi JOJO</code></span></td></tr>
+        <tr><td><code>/steam</code></td><td><span class="cmd-desc">Steam 游戏搜索，含当前价格与折扣信息</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="/steam Stardew Valley" data-ja="/steam Stardew Valley">/steam 星露谷</code><code class="ge-input">/steam wingspan</code></span></td></tr>
+        <tr><td><code>/moewiki</code></td><td><span class="cmd-desc">萌娘百科条目搜索，含 infobox 自动截图</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">/moewiki 没有那种世俗的欲望</code><code class="ge-input">咋办moewiki 塞氏翻译法</code></span></td></tr>
         <tr class="group-header"><td colspan="2">🎲 随机 /roll</td></tr>
-        <tr><td><code>/roll number</code></td><td>随机整数（自定范围与次数）</td></tr>
-        <tr><td><code>/roll dish</code></td><td>随机中国料理推荐</td></tr>
-        <tr><td><code>/roll fortune</code></td><td>随机神社签</td></tr>
-        <tr><td><code>/roll wiki</code></td><td>随机维基百科页面（中文 / 英文）</td></tr>
-        <tr><td><code>/roll media</code></td><td>随机 NeoDB 书影音游戏条目</td></tr>
-        <tr><td><code>/roll moewiki</code></td><td>随机萌娘百科条目与 infobox 截图</td></tr>
-        <tr><td><code>/roll bangumi</code></td><td>随机 Bangumi 全媒体条目（动画 / 书籍 / 游戏 / 音乐 / 三次元）</td></tr>
+        <tr><td><code>/roll number</code></td><td><span class="cmd-desc">随机整数（自定范围与次数）</span></td></tr>
+        <tr><td><code>/roll dish</code></td><td><span class="cmd-desc">随机中国料理推荐</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办吃什么</code></span></td></tr>
+        <tr><td><code>/roll fortune</code></td><td><span class="cmd-desc">随机神社签</span></td></tr>
+        <tr><td><code>/roll wiki</code></td><td><span class="cmd-desc">随机维基百科页面（中文 / 英文）</span></td></tr>
+        <tr><td><code>/roll media</code></td><td><span class="cmd-desc">随机 NeoDB 书影音游戏条目</span></td></tr>
+        <tr><td><code>/roll moewiki</code></td><td><span class="cmd-desc">随机萌娘百科条目与 infobox 截图</span></td></tr>
+        <tr><td><code>/roll bangumi</code></td><td><span class="cmd-desc">随机 Bangumi 全媒体条目（动画 / 书籍 / 游戏 / 音乐 / 三次元）</span></td></tr>
         <tr class="group-header"><td colspan="2">🐾 娱乐</td></tr>
-        <tr><td><code>/aww</code></td><td>随机可爱动物图片或视频（Reddit，NSFW 自动过滤）</td></tr>
-        <tr><td><code>/art</code></td><td>随机艺术品欣赏</td></tr>
-        <tr><td><code>/dailyfact</code></td><td>随机冷知识</td></tr>
-        <tr><td><code>/trivia</code></td><td>知识问答小游戏（多分类 · 多难度）</td></tr>
-        <tr><td><code>/triviarank</code></td><td>查看本服务器问答排行榜</td></tr>
-        <tr><td><code>/resettrivia</code></td><td>清空个人问答战绩</td></tr>
+        <tr><td><code>/aww</code></td><td><span class="cmd-desc">随机可爱动物图片或视频（Reddit，NSFW 自动过滤）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办萌物</code><code class="ge-input">咋办aww</code></span></td></tr>
+        <tr><td><code>/art</code></td><td><span class="cmd-desc">随机艺术品欣赏</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办艺术</code><code class="ge-input">咋办art</code></span></td></tr>
+        <tr><td><code>/dailyfact</code></td><td><span class="cmd-desc">随机冷知识</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办冷知识</code><code class="ge-input">咋办dailyfact</code></span></td></tr>
+        <tr><td><code>/trivia</code></td><td><span class="cmd-desc">知识问答小游戏（多分类 · 多难度）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办考考我</code><code class="ge-input">咋办trivia</code></span></td></tr>
+        <tr><td><code>/triviarank</code></td><td><span class="cmd-desc">查看本服务器问答排行榜</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办triviarank</code></span></td></tr>
+        <tr><td><code>/resettrivia</code></td><td><span class="cmd-desc">清空个人问答战绩</span></td></tr>
         <tr class="group-header"><td colspan="2">🛠️ 实用工具</td></tr>
-        <tr><td><code>/imageconvert</code></td><td>图片格式转换（PNG / JPEG / WEBP / BMP）</td></tr>
-        <tr><td><code>/reading</code></td><td>读音查询（中文拼音 / 日文假名 / 英文 IPA）</td></tr>
-        <tr><td><code>/timezone</code></td><td>全球 15 城市时区一览</td></tr>
-        <tr><td><code>/poll</code></td><td>创建 Discord 原生投票</td></tr>
+        <tr><td><code>/imageconvert</code></td><td><span class="cmd-desc">图片格式转换（PNG / JPEG / WEBP / BMP）</span></td></tr>
+        <tr><td><code>/reading</code></td><td><span class="cmd-desc">读音查询（中文拼音 / 日文假名 / 英文 IPA）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办这个咋读 罅隙</code><code class="ge-input">咋办这个怎么读 進捗報告</code><code class="ge-input">/reading library</code></span></td></tr>
+        <tr><td><code>/timezone</code></td><td><span class="cmd-desc">全球 15 城市时区一览</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办时区</code><code class="ge-input">咋办timezone</code></span></td></tr>
+        <tr><td><code>/poll</code></td><td><span class="cmd-desc">创建 Discord 原生投票</span></td></tr>
         <tr class="group-header"><td colspan="2">👤 个人设置</td></tr>
-        <tr><td><code>/hellohowareyou</code></td><td>填写个人资料卡——自我介绍、一键生成精美分享图、炫耀抽到的奖品</td></tr>
-        <tr><td><code>/mycard</code></td><td>同上，只是更简洁的命令名字！</td></tr>
-        <tr><td><code>/language</code></td><td>切换咋办的回复语言（简中 / 繁中 / English / 日本語）</td></tr>
-        <tr><td><code>/trigger</code></td><td>开关关键词「咋办」自动触发 AI 回复</td></tr>
-        <tr><td><code>/reset</code></td><td>清空个人全部数据（对话历史 / 设定 / 统计）</td></tr>
+        <tr><td><code>/hellohowareyou</code></td><td><span class="cmd-desc">填写个人资料卡——自我介绍、一键生成精美分享图、炫耀抽到的奖品</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办我是谁</code><code class="ge-input">咋办hellohowareyou</code></span></td></tr>
+        <tr><td><code>/mycard</code></td><td><span class="cmd-desc">同上，只是更简洁的命令名字！</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办mycard</code></span></td></tr>
+        <tr><td><code>/language</code></td><td><span class="cmd-desc">切换咋办的回复语言（简中 / 繁中 / English / 日本語）</span></td></tr>
+        <tr><td><code>/trigger</code></td><td><span class="cmd-desc">开关关键词「咋办」自动触发回复</span></td></tr>
+        <tr><td><code>/reset</code></td><td><span class="cmd-desc">清空个人全部数据（对话历史 / 设定 / 统计）</span></td></tr>
         <tr class="group-header"><td colspan="2">📌 其他</td></tr>
-        <tr><td><code>/menu</code></td><td>图形化按钮式命令启动器</td></tr>
-        <tr><td><code>/stats</code></td><td>咋办做算术：全服趣味使用统计，看看咋办都一本正经地胡说八道了多少次</td></tr>
-        <tr><td><code>/help</code></td><td>完整指令列表与说明</td></tr>
-        <tr><td><code>/buymeacoffee</code></td><td>支持开发者</td></tr>
+        <tr><td><code>/menu</code></td><td><span class="cmd-desc">图形化按钮式命令启动器</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办菜单</code><code class="ge-input">咋办menu</code></span></td></tr>
+        <tr><td><code>/stats</code></td><td><span class="cmd-desc">咋办做算术：全服趣味使用统计，看看咋办都一本正经地胡说八道了多少次</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办做算术</code><code class="ge-input">咋办stats</code></span></td></tr>
+        <tr><td><code>/help</code></td><td><span class="cmd-desc">完整指令列表与说明</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办帮助</code><code class="ge-input">咋办help</code></span></td></tr>
+        <tr><td><code>/buymeacoffee</code></td><td><span class="cmd-desc">支持开发者</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办buymeacoffee</code><code class="ge-input">咋办vote</code></span></td></tr>
       </tbody>
     </table>
   </div>
@@ -1564,7 +1610,10 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
       }
       const b = document.createElement("span");
       b.className = "meow-bubble";
-      b.textContent = MEOWS[Math.floor(Math.random() * MEOWS.length)];
+      // 繁体下品牌「咋办」随页面一并显示「咋辦」（这条气泡由 JS 生成、绕过 OpenCC 的 DOM 遍历，故手动替换）
+      let _meow = MEOWS[Math.floor(Math.random() * MEOWS.length)];
+      if (currentLang === "tw") _meow = _meow.replace("咋办", "咋辦");
+      b.textContent = _meow;
       b.style.left = x + "px";
       b.style.top  = (y - 40) + "px";
       b.addEventListener("animationend", () => b.remove());
@@ -1654,7 +1703,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     typed.textContent = "";
     ph.style.display = "";
     at(2100, () => { ph.style.display = "none"; typed.textContent = "咋"; });   // caret blinks idle for ~two cycles first
-    at(2450, () => { typed.textContent = "咋办"; });  // the trigger word stays Simplified in all languages
+    at(2450, () => { typed.textContent = currentLang === "tw" ? "咋辦" : "咋办"; });  // 繁体下显示「咋辦」（bot 已支持繁体触发）；其余语言保持简体「咋办」
     at(3150, () => { typed.textContent = ""; ph.style.display = ""; mom.classList.add("show"); }); // send
     at(3900, () => { bot.classList.add("show"); });
     at(6900, play); // pause ~3s, then replay
@@ -1859,9 +1908,17 @@ const I18N_CMDS = {
   "/buymeacoffee": { en: "Support the developer", ja: "開発者を応援" }
 };
 
+// Per-command example label「试试」shown before each input chip. en/ja from this map; zh-TW renders it from「试试」via OpenCC.
+const EG_TAG = { en: "Try", ja: "例" };
+
+// The「（引用消息）」usage hint prefixed to the /ask quote-reply example. Localized: en/ja from this map, zh-TW via OpenCC.
+// The trigger string「咋办这是什么」stays Simplified in en/ja (literal keyword) but converts to「咋辦這是什麼」in zh-TW —
+// the bot normalizes Traditional input back to Simplified, so the converted form still triggers.
+const EG_QUOTE = { en: "(reply to a message) ", ja: "（メッセージに返信して）" };
+
 const PAGE_TITLES = {
   zh: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
-  tw: "咋办Bot /ᐠ｡ꞈ｡ᐟ\\",
+  tw: "咋辦Bot /ᐠ｡ꞈ｡ᐟ\\",
   en: "咋办Bot (Zaban Bot) /ᐠ｡ꞈ｡ᐟ\\",
   ja: "咋办Bot（ザバンにゃんBot）/ᐠ｡ꞈ｡ᐟ\\"
 };
@@ -1887,7 +1944,10 @@ function _loadTwConverter() {
     s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
     s.onload = () => {
       const c = OpenCC.Converter({ from: "cn", to: "twp" });
-      _twConv = t => c(t.replaceAll("咋办", "\\u0000")).replaceAll("\\u0000", "咋办").replaceAll("補籤", "補簽").replaceAll("連籤", "連簽");  // OpenCC 把签到义的「补签/连签」误转成抽签义「補籤/連籤」；对齐 bot utils/i18n.py 的 _S2T_FIXUPS（網站文案多了「连签」一词，故比 bot 多一条）
+      // 品牌名「咋办」现随 OpenCC 一并转为繁体「咋辦」——bot 已支持繁体触发（EchosDiscordBot 的 to_simplified 归一化），故不再保护成简体。
+      // 三个 fixup：補籤/連籤——OpenCC 把签到义误转成抽签义「補籤/連籤」，修回（对齐 bot utils/i18n.py 的 _S2T_FIXUPS，网站多「连签」一词）；
+      // 選單——twp 把命令别名「菜单」按软件 UI 词转成「選單」，但 bot 触发别名是简体「菜单」（「選單」经 bot t2s 还原成「选单」会触发失败），故修回字形级「菜單」保持可触发。
+      _twConv = t => c(t).replaceAll("補籤", "補簽").replaceAll("連籤", "連簽").replaceAll("選單", "菜單");
       // Gacha widget's dynamic labels: wrap the zh strings with a conversion layer
       GG_LBL.tw = {};
       for (const [k, v] of Object.entries(GG_LBL.zh)) {
@@ -1906,6 +1966,8 @@ function _twConvertDom(conv) {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = walker.nextNode())) {
+    // 示例 chip 也一并转繁体（含品牌「咋办」→「咋辦」）：bot 已支持繁体触发（EchosDiscordBot to_simplified 归一化），
+    // 繁体用户复制转换后的「咋辦塔羅」等照样触发，故不再保留简体。（命令别名「菜单」的 twp 词汇转换问题在 _twConv 里用 選單→菜單 修回）
     const t = n.nodeValue;
     if (/[一-鿿]/.test(t)) {
       const c = conv(t);
@@ -1937,12 +1999,34 @@ function applyLang(lang) {
   });
 
   document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
-    const code = row.querySelector("code");
-    const td = row.querySelectorAll("td")[1];
-    if (!code || !td) return;
-    if (td.dataset.zh === undefined) td.dataset.zh = td.innerHTML;
+    const code = row.querySelector("td:first-child code");  // the command name — NOT the example chip in the 2nd cell
+    const desc = row.querySelector(".cmd-desc");
+    if (!code || !desc) return;
+    // Translate only the description span, so the example chip (sibling .cmd-egline) is never clobbered
+    if (desc.dataset.zh === undefined) desc.dataset.zh = desc.innerHTML;
     const tr = I18N_CMDS[code.textContent.trim()];
-    td.innerHTML = base === "zh" ? td.dataset.zh : (tr && tr[base]) || td.dataset.zh;
+    desc.innerHTML = base === "zh" ? desc.dataset.zh : (tr && tr[base]) || desc.dataset.zh;
+  });
+
+  // Per-command example label「试试」(en/ja from EG_TAG; zh-TW converted by OpenCC at the end)
+  document.querySelectorAll(".cmd-egline .eg-tag").forEach(el => {
+    if (el.dataset.zh === undefined) el.dataset.zh = el.textContent;
+    el.textContent = base === "zh" ? el.dataset.zh : (EG_TAG[base] || el.dataset.zh);
+  });
+
+  // The「（引用消息）」hint on the /ask quote-reply chip; localized for en/ja, OpenCC-converted for zh-TW
+  document.querySelectorAll(".cmd-egline .eg-quote").forEach(el => {
+    if (el.dataset.zh === undefined) el.dataset.zh = el.textContent;
+    el.textContent = base === "zh" ? el.dataset.zh : (EG_QUOTE[base] || el.dataset.zh);
+  });
+
+  // Example chips with en/ja variants (steam/bangumi/tarot/setrole/choose/ask): swap to the en/ja string; zh shows the
+  // original. zh-TW starts from the original and is OpenCC-converted at the end (chips without a data-en variant just
+  // get OpenCC-converted for zh-TW too). All of this — including 咋办→咋辦 — relies on the bot normalizing Traditional
+  // input back to Simplified, so the converted「咋辦占卜」「咋辦塔羅」… still trigger.
+  document.querySelectorAll(".cmd-egline code.ge-input[data-en]").forEach(code => {
+    if (code.dataset.zhText === undefined) code.dataset.zhText = code.textContent;
+    code.textContent = (base === "en" || base === "ja") ? (code.dataset[base] || code.dataset.zhText) : code.dataset.zhText;
   });
 
   document.querySelectorAll("#lang-switch button").forEach(b =>
