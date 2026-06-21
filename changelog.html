@@ -599,6 +599,9 @@ const YEARS = [
           { zh: "「咋办」触发升级：现在打「咋办天选之猫」「咋办考考我」「咋办塔罗」「咋办这是什么」等中文别名就能直接调用命令",
             en: "“咋办” trigger upgrade: typing Chinese aliases like “咋办天选之猫”, “咋办考考我”, “咋办塔罗”, “咋办这是什么” now runs commands directly",
             ja: "「咋办」トリガー強化：「咋办天选之猫」「咋办考考我」「咋办塔罗」「咋办这是什么」などの中国語エイリアスでコマンドを直接実行" },
+          { zh: "繁体支持升级：繁体中文用户也能直接用繁体触发词了（如「咋辦塔羅」「咋辦菜單」「咋辦這是什麼」），输入会自动归一化匹配；繁体界面下品牌名也显示为「咋辦」",
+            en: "Traditional Chinese upgrade: Traditional-script users can now trigger with Traditional text too (e.g. 「咋辦塔羅」「咋辦菜單」「咋辦這是什麼」), auto-normalized to match; the brand name now shows as 「咋辦」 in the Traditional UI",
+            ja: "繁体字サポート強化：繁体字ユーザーも繁体字のトリガーが使えるように（例：「咋辦塔羅」「咋辦菜單」「咋辦這是什麼」）、入力は自動で正規化して照合。繁体字UIではブランド名も「咋辦」表示に" },
           { zh: "进服欢迎消息新增走路猫动图，按服务器语言自动切换",
             en: "New server welcome message with a walking-cat GIF that switches by server language",
             ja: "サーバー参加時のウェルカムメッセージに歩く猫GIF、サーバー言語で自動切替" },
@@ -716,8 +719,8 @@ function renderTimeline(base) {
 }
 
 /* ─── 繁体：简体源 + OpenCC（opencc-js，CDN 懒加载）转换页面文本节点 ───
-   「咋办」是品牌名兼触发词：转换时整体保护，所有语言（含繁体）保持简体——只有「咋办」能触发命令。
-   补签/连签 修正对齐 bot utils/i18n.py 的 _S2T_FIXUPS。 */
+   品牌名「咋办」随 OpenCC 一并转为「咋辦」（与首页一致；bot 已支持繁体触发，输入经 to_simplified 归一化兜底）。
+   补签/连签/断签 修正对齐 bot utils/i18n.py 的 _S2T_FIXUPS。 */
 let _twConv = null, _twLoading = null;
 function _loadTw() {
   if (_twConv) return Promise.resolve(_twConv);
@@ -727,7 +730,7 @@ function _loadTw() {
     s.src = "https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js";
     s.onload = () => {
       const c = OpenCC.Converter({ from: "cn", to: "twp" });
-      _twConv = t => c(t.replaceAll("咋办", "")).replaceAll("", "咋办").replaceAll("補籤", "補簽").replaceAll("連籤", "連簽").replaceAll("斷籤", "斷簽");
+      _twConv = t => c(t).replaceAll("補籤", "補簽").replaceAll("連籤", "連簽").replaceAll("斷籤", "斷簽");
       resolve(_twConv);
     };
     s.onerror = () => { _twLoading = null; reject(new Error("opencc-js load failed")); };
