@@ -621,7 +621,10 @@ section { border-bottom: 1px solid var(--border); }
   color: var(--gold-light);
   padding: 0.18rem 0.7rem;
   border: 1px solid var(--border-strong);
-  border-radius: 2em;
+  /* 固定半径而非 2em：长示例会换行成多行气泡，2em 会把圆角撑到 ~24px，
+     顶角曲线把猫耳（::before/::after，固定贴在 top:-4px / 左右 9px）顶得飘出去；
+     固定 13px 让单行仍近似胶囊、多行也只是圆角矩形，猫耳始终贴合顶边 */
+  border-radius: 13px;
   font-size: 0.8rem;
   font-family: var(--sans);
 }
