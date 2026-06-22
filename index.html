@@ -27,6 +27,7 @@
   --gold-bright: #ffc91e;
   --gold-light: #f5d472;
   --gold-pale: #faeec8;
+  --gold-hl: #f3da90; /* copy-chip hover: between --gold-pale and --gold-light — visible but not glaring */
   --muted: #8c7a5e;
   --border: rgba(180,140,60,0.22);
   --border-strong: rgba(180,140,60,0.45);
@@ -59,7 +60,7 @@ body {
 }
 
 /* Link/button hover: head-tilt cursor variant (whole cat leans 18° to the right) */
-a, button, [onclick] {
+a, button, [onclick], .cmd-table code.ge-copy {
   cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg transform='rotate(-18 24 24)'%3E%3Ctext x='24' y='19' font-size='13' font-weight='bold' text-anchor='middle' fill='%23b45309'%3E%E2%88%A7,,,%E2%88%A7%3C/text%3E%3Ctext x='24' y='34' font-size='11' font-weight='bold' text-anchor='middle' textLength='44' lengthAdjust='spacingAndGlyphs' fill='%23b45309'%3E(%3D%E2%80%A2%CF%89%E2%80%A2%3D)%3C/text%3E%3C/g%3E%3C/svg%3E") 24 24, pointer;
 }
 
@@ -1025,7 +1026,7 @@ footer .paw-pop { color: var(--gold-light); }
 
 .gg-w-side { display: flex; flex-direction: column; gap: 0.65rem; }
 .gg-pull-btn {
-  width: 100%; padding: 0.7rem; background: var(--gold); color: #fff8e8;
+  width: 100%; padding: 0.7rem; background: #d9a521; color: #fff8e8; /* a touch lighter than --gold (#c8920a) */
   border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700;
   cursor: pointer; font-family: var(--sans); transition: opacity .15s, transform .15s;
 }
@@ -1062,10 +1063,122 @@ footer .paw-pop { color: var(--gold-light); }
 .gg-footer a { color: var(--gold-text); text-decoration: none; font-weight: 600; }
 .gg-footer a:hover { text-decoration: underline; }
 
+/* ─── Gacha collection grid (pokédex) ─── */
+.gg-dex-bar { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.gg-dex-toggle, .gg-share-btn {
+  flex: 1; padding: 0.5rem 0.6rem;
+  border: 1.5px solid var(--border-strong); border-radius: 8px;
+  font-size: 0.82rem; font-weight: 600; color: var(--ink2);
+  background: var(--cream); cursor: pointer; font-family: var(--sans);
+  transition: background .15s, transform .1s;
+}
+.gg-dex-toggle:hover { background: var(--gold-pale); transform: scale(1.03); }
+.gg-share-btn {
+  background: var(--gold); color: #fff8e8; border-color: var(--gold);
+  animation: gg-share-pulse 1.6s ease-in-out infinite;
+}
+.gg-share-btn:hover { opacity: .9; transform: scale(1.03); }
+@keyframes gg-share-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,146,10,.45); }
+  50%      { box-shadow: 0 0 0 7px rgba(200,146,10,0); }
+}
+.gg-share-btn.is-loading { cursor: progress; opacity: .9; animation: none; }
+.gg-spinner {
+  display: inline-block; width: .85em; height: .85em; vertical-align: -.12em;
+  border: 2px solid var(--gold); border-top-color: transparent; border-radius: 50%;
+  animation: gg-spin .7s linear infinite;
+}
+@keyframes gg-spin { to { transform: rotate(360deg); } }
+.gg-dex {
+  margin-top: 0.85rem;
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+}
+/* display:grid overrides the UA [hidden]{display:none}, so the collapse button would do nothing without this */
+.gg-dex[hidden] { display: none; }
+@media (max-width: 520px) { .gg-dex { grid-template-columns: repeat(5, 1fr); } }
+.gg-dex-cell {
+  aspect-ratio: 1; border-radius: 7px;
+  background: var(--cream); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.gg-dex-cell.got { border-color: var(--border-strong); background: var(--paper); }
+.gg-dex-cell img { width: 100%; height: 100%; object-fit: cover; }
+.gg-dex-cell .gg-dex-q { font-size: 1.1rem; color: var(--muted); opacity: .35; }
+.gg-dex-cell.got::after {
+  content: '✓'; position: absolute; right: 2px; bottom: 0;
+  font-size: 0.6rem; color: var(--gold-text); font-weight: 700;
+  text-shadow: 0 0 2px var(--paper), 0 0 2px var(--paper);
+}
+
+/* ─── Gacha share-image modal ─── */
+.gg-share-mask {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(20,16,14,.6); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center; padding: 1.2rem;
+}
+.gg-share-mask.open { display: flex; }
+.gg-share-card {
+  background: var(--paper); border: 1.5px solid var(--border-strong);
+  border-radius: 16px; padding: 1.1rem; max-width: 460px; width: 100%;
+  max-height: 90vh; overflow: auto; text-align: center;
+  box-shadow: 0 14px 50px rgba(0,0,0,.35);
+}
+.gg-share-card img { max-width: 100%; border-radius: 10px; display: block; margin: 0 auto .9rem; }
+.gg-share-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+.gg-share-actions button {
+  padding: 0.5rem 1.1rem; border-radius: 8px; font-family: var(--sans);
+  font-weight: 600; font-size: 0.85rem; cursor: pointer;
+  border: 1.5px solid var(--border-strong); background: var(--cream); color: var(--ink2);
+  transition: background .15s, transform .1s;
+}
+.gg-share-actions button.primary { background: var(--gold); color: #fff8e8; border-color: var(--gold); }
+.gg-share-actions button:hover { transform: scale(1.04); }
+
+/* ─── Copyable trigger-word example chips ─── */
+.cmd-table code.ge-copy { transition: background .15s, color .15s; }
+/* Ears need the SAME transition as the body, otherwise they snap instantly while the body fades */
+.cmd-table code.ge-copy::before,
+.cmd-table code.ge-copy::after { transition: background .15s; }
+.cmd-table code.ge-copy:hover { background: var(--gold-hl); color: var(--ink2); }
+.cmd-table code.ge-copy:hover::before,
+.cmd-table code.ge-copy:hover::after { background: var(--gold-hl); }
+
+/* Slash-command chips are split into two independently-copyable segments — the /command token and the argument —
+   because a Discord slash command can't be pasted whole: you pick the command from the menu, then paste the argument. */
+.cmd-table code.ge-copy.ge-split:hover,
+.cmd-table code.ge-copy.ge-split { background: var(--cream); color: var(--gold-text); }
+.cmd-table code.ge-copy.ge-split:hover::before,
+.cmd-table code.ge-copy.ge-split:hover::after,
+.cmd-table code.ge-copy.ge-split::before,
+.cmd-table code.ge-copy.ge-split::after { background: var(--cream); }
+.cmd-table code.ge-split .ge-seg {
+  cursor: pointer; border-radius: 7px; padding: 0 .28rem; margin: 0 -.06rem;
+  transition: background .15s, color .15s;
+}
+.cmd-table code.ge-split .ge-seg:hover { background: var(--gold-hl); color: var(--ink2); }
+.cmd-table code.ge-split .ge-arg-sep {
+  display: inline-block; width: 0; height: .9em; vertical-align: -.12em;
+  border-left: 1px solid var(--border-strong); margin: 0 .42rem; opacity: .7;
+}
+.ge-toast {
+  position: absolute; left: 50%; top: -1.7em; transform: translateX(-50%);
+  background: var(--ink2); color: var(--gold-light);
+  font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 8px;
+  white-space: nowrap; pointer-events: none; z-index: 5;
+  animation: ge-toast-pop 1.2s ease-out forwards;
+}
+@keyframes ge-toast-pop {
+  0%       { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  15%, 70% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100%     { opacity: 0; transform: translateX(-50%) translateY(-3px); }
+}
+
 /* ─── Reduced motion: disable all easter-egg animations (kept at the end of the stylesheet so it overrides earlier rules) ─── */
 @media (prefers-reduced-motion: reduce) {
   .cat-pop, .paw-pop, .meow-bubble, .cat-rain { animation: none; }
   .gg-fab:hover, .gg-fab.sleeping::before { animation: none; }
+  .gg-share-btn, .ge-toast { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
@@ -1228,6 +1341,11 @@ footer .paw-pop { color: var(--gold-light); }
         <button class="gg-clear-btn" onclick="ggClearSave()">🗑️ 清除存档</button>
       </div>
     </div>
+    <div class="gg-dex-bar">
+      <button class="gg-dex-toggle" id="gg-dex-toggle" onclick="ggToggleDex()">📖 <span id="gg-dex-toggle-label">查看图鉴</span></button>
+      <button class="gg-share-btn" id="gg-share-btn" onclick="ggMakeShareImage()" style="display:none">🎉 <span id="gg-share-btn-label">集齐分享图</span></button>
+    </div>
+    <div class="gg-dex" id="gg-dex" hidden></div>
   </div>
   <div class="gg-footer">
     <p>喜欢扭蛋机吗？请也来试试看 <a href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">咋办 Bot</a> 的扭蛋机哦！</p>
@@ -1249,7 +1367,7 @@ footer .paw-pop { color: var(--gold-light); }
       </thead>
       <tbody>
         <tr class="group-header"><td colspan="2">💬 AI &amp; 对话</td></tr>
-        <tr><td><code>/ask</code></td><td><span class="cmd-desc">AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发。不知道咋办怎么用？直接问我就好！✨</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办ask what is Zaban?" data-ja="咋办ask 咋办って何？">咋办什么是咋办</code><code class="ge-input" data-en="咋办ask what triggers do you have?" data-ja="咋办ask トリガーワードは？">咋办ask 你有哪些触发词？</code><code class="ge-input"><span class="eg-quote">（引用消息）</span><span>咋办这是什么</span></code></span></td></tr>
+        <tr><td><code>/ask</code></td><td><span class="cmd-desc">AI 多轮对话，支持图片分析与翻译；也可直接说「咋办」触发。不知道咋办怎么用？直接问我就好！✨</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-trigger="咋办什么是" data-en="咋办ask what is Zaban?" data-ja="咋办ask 咋办って何？">咋办什么是咋办</code><code class="ge-input" data-en="咋办ask what triggers do you have?" data-ja="咋办ask トリガーワードは？">咋办ask 你有哪些触发词？</code><code class="ge-input"><span class="eg-quote">（引用消息）</span><span>咋办这是什么</span></code></span></td></tr>
         <tr><td><code>/choose</code></td><td><span class="cmd-desc">随机帮你做选择；也可加 by:me 自己点按钮揭晓命运</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办choose eat sleep game" data-ja="咋办choose ご飯 寝る ゲーム">咋办帮我选 吃饭 睡觉 打游戏</code><code class="ge-input" data-en="咋办choose McDonald's KFC" data-ja="咋办choose マック ケンタッキー">咋办choose 麦当劳 肯德基</code></span></td></tr>
         <tr><td><code>/setrole</code></td><td><span class="cmd-desc">自定义 AI 人格设定与专属记忆</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="/setrole I'm the Emperor of the Internet — yell &quot;long live!&quot; every time you reply!" data-ja="/setrole 私はインターネット皇帝。返信のたびに「万歳！」と叫べ！">/setrole 我的身分是互联网皇帝，你每次回复我都要喊一声万岁！</code></span></td></tr>
         <tr><td><code>/rolecheck</code></td><td><span class="cmd-desc">查看当前角色设定内容</span></td></tr>
@@ -1361,6 +1479,10 @@ const GG_PULL_COST = 100;
 
 let ggData = { gold: 0, pulls: 0, spent: 0, goldPerClick: 1, goldPerClickCost: 10 };
 let ggCol  = [];
+let ggDexOpen = false;
+
+// Image URL for a pool id (mi44 is the only .png in the set)
+function ggImgSrc(s) { return GG_BASE + "mi" + s + (s === "44" ? ".png" : ".jpg"); }
 
 function ggToggle() {
   document.getElementById("gg-widget").classList.toggle("open");
@@ -1395,6 +1517,58 @@ function ggRefresh() {
   document.querySelector(".gg-pull-btn").textContent = L.pull;
   document.querySelector(".gg-passive-note").innerHTML = L.passive(gpc);
   document.querySelector(".gg-clear-btn").textContent = L.clear;
+
+  // Collection grid + share button
+  const dexLbl = document.getElementById("gg-dex-toggle-label");
+  if (dexLbl) dexLbl.textContent = ggDexOpen ? L.dexHide : L.dexShow;
+  const shareBtn = document.getElementById("gg-share-btn");
+  if (shareBtn) {
+    const complete = ggCol.length >= GG_TOTAL;
+    shareBtn.style.display = complete ? "" : "none";
+    // Don't clobber the「生成中…」spinner label while an image is being built (ggRefresh fires every 2s)
+    if (!shareBtn.classList.contains("is-loading")) {
+      const sl = document.getElementById("gg-share-btn-label");
+      if (sl) sl.textContent = L.shareBtn;
+    }
+    if (complete) ggShareImgs(); // warm the CORS image cache so the click responds instantly
+  }
+  if (ggDexOpen) ggRenderDex();
+}
+
+// ── Collection grid (pokédex): caught cats lit up, the rest as silhouettes ──
+function ggToggleDex() {
+  ggDexOpen = !ggDexOpen;
+  document.getElementById("gg-dex").hidden = !ggDexOpen;
+  document.getElementById("gg-dex-toggle-label").textContent = ggDexOpen ? ggLbl().dexHide : ggLbl().dexShow;
+  if (ggDexOpen) ggRenderDex();
+}
+function ggRenderDex() {
+  const dex = document.getElementById("gg-dex");
+  if (!dex) return;
+  dex.innerHTML = GG_POOL.map(s => ggCol.includes(s)
+    ? `<div class="gg-dex-cell got" title="mi-chan #${s}"><img loading="lazy" src="${ggImgSrc(s)}" alt="mi-chan ${s}"></div>`
+    : `<div class="gg-dex-cell" title="???"><span class="gg-dex-q">?</span></div>`
+  ).join("");
+}
+
+// ── Full-collection celebration: gold-cat confetti, then offer a share image ──
+function ggCelebrate() {
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const FACES = ["(=^ω^=)", "/ᐠ｡ꞈ｡ᐟ\\", "(=•ω•=)", "ฅ^・ժ・^ฅ", "✨", "🎉"];
+    for (let i = 0; i < 40; i++) {
+      const c = document.createElement("span");
+      c.className = "cat-rain";
+      c.textContent = FACES[Math.floor(Math.random() * FACES.length)];
+      c.style.left = (Math.random() * 100).toFixed(1) + "vw";
+      c.style.fontSize = (0.8 + Math.random() * 0.9).toFixed(2) + "rem";
+      c.style.setProperty("--rot", (Math.random() * 360 - 180).toFixed(0) + "deg");
+      c.style.animationDuration = (2.4 + Math.random() * 1.8).toFixed(2) + "s";
+      c.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
+      c.addEventListener("animationend", () => c.remove());
+      document.body.appendChild(c);
+    }
+  }
+  setTimeout(ggMakeShareImage, 500);
 }
 
 function ggClick() {
@@ -1442,16 +1616,10 @@ function ggPull() {
   const s = GG_POOL[Math.floor(Math.random() * GG_POOL.length)];
   let src, text;
 
-  if (GG_PEPE.includes(s)) {
-    text = "!!! \\pepecat_" + s + " GET DAZE/ !!!";
-    src  = GG_BASE + "mi" + s + (s === "44" ? ".png" : ".jpg");
-  } else if (s === "38") {
-    text = "!!! \\confused_cat GET DAZE/ !!!";
-    src  = GG_BASE + "mi" + s + ".jpg";
-  } else {
-    text = "!!! \\michan_" + s + " GET DAZE/ !!!";
-    src  = GG_BASE + "mi" + s + ".jpg";
-  }
+  src = ggImgSrc(s);
+  if (GG_PEPE.includes(s))      text = "!!! \\pepecat_" + s + " GET DAZE/ !!!";
+  else if (s === "38")          text = "!!! \\confused_cat GET DAZE/ !!!";
+  else                          text = "!!! \\michan_" + s + " GET DAZE/ !!!";
 
   img.style.display = "none";
   setTimeout(() => {
@@ -1463,9 +1631,11 @@ function ggPull() {
   }, 80);
 
   log.textContent = text;
+  const wasComplete = ggCol.length >= GG_TOTAL;
   if (!ggCol.includes(s)) ggCol.push(s);
   ggRefresh();
   ggSave();
+  if (!wasComplete && ggCol.length >= GG_TOTAL) ggCelebrate();
 }
 
 function ggClearSave() {
@@ -1479,7 +1649,250 @@ function ggClearSave() {
   img.style.display = "none"; img.src = "";
   if (ph) ph.style.display = "";
   document.getElementById("gg-log").textContent = "";
+  if (ggDexOpen) ggRenderDex();
   ggRefresh();
+}
+
+// ── "I caught them all" share image: draw the full collection onto a canvas ──
+// CORS-tagged copies of the dex images, built once and cached so the share button responds instantly on click
+// (the dex <img> tags have no crossOrigin, so they can't be reused on the canvas). Preloaded as soon as the
+// collection completes — see ggRefresh — so by the time the user clicks, decode() usually resolves immediately.
+let _ggShareImgs = null;
+function ggShareImgs() {
+  if (!_ggShareImgs) {
+    _ggShareImgs = GG_POOL.map(s => {
+      const im = new Image();
+      im.crossOrigin = "anonymous";     // raw.githubusercontent.com sends CORS *, so the canvas stays untainted and exportable
+      im.src = ggImgSrc(s);
+      return im;
+    });
+  }
+  return _ggShareImgs;
+}
+// Resolve as soon as an image is drawable. We deliberately avoid im.decode() here: on cross-origin cached images
+// its promise can stay pending forever in some browsers, which used to leave the share button hanging. An already
+// -loaded image (the common case, thanks to the preload) resolves synchronously; otherwise we wait on load/error
+// with a hard timeout so the button is never stuck.
+function ggImgReady(im) {
+  if (im.complete && im.naturalWidth) return Promise.resolve(true);
+  return new Promise(res => {
+    let done = false;
+    const finish = ok => { if (!done) { done = true; res(ok); } };
+    im.addEventListener("load",  () => finish(true),  { once: true });
+    im.addEventListener("error", () => finish(false), { once: true });
+    setTimeout(() => finish(!!(im.complete && im.naturalWidth)), 5000);
+  });
+}
+function ggMakeShareImage() {
+  const btn = document.getElementById("gg-share-btn");
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add("is-loading");
+    btn.innerHTML = '<span class="gg-spinner"></span> <span id="gg-share-btn-label">' + ggLbl().shareGen + '</span>';
+  }
+  const imgs = ggShareImgs();
+  const loaded = imgs.map(ggImgReady);
+  Promise.all([...loaded, (document.fonts && document.fonts.ready) || Promise.resolve()])
+    .then(() => ggDrawShare(imgs))
+    .finally(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove("is-loading");
+        btn.innerHTML = '🎉 <span id="gg-share-btn-label">' + ggLbl().shareBtn + '</span>';
+      }
+    });
+}
+function _ggRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function ggDrawShare(imgs) {
+  const L = ggLbl();
+  const cols = 7, cell = 120, gap = 12, pad = 44;
+  const rows = Math.ceil(GG_TOTAL / cols);
+  const gridW = cols * cell + (cols - 1) * gap;
+  const W = gridW + pad * 2;
+  const topH = 150, botH = 116;
+  const gridH = rows * cell + (rows - 1) * gap;
+  const H = topH + gridH + botH;
+  const cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#fdf8f0"; ctx.fillRect(0, 0, W, H);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#b45309"; ctx.font = "700 46px 'Noto Sans SC', sans-serif";
+  ctx.fillText(L.shareTitle, W / 2, 72);
+  ctx.fillStyle = "#8c7a5e"; ctx.font = "500 24px 'Noto Sans SC', sans-serif";
+  ctx.fillText("/ᐠ｡ꞈ｡ᐟ\\   " + GG_TOTAL + " / " + GG_TOTAL + "   mi-chan", W / 2, 112);
+
+  imgs.forEach((im, i) => {
+    const x = pad + (i % cols) * (cell + gap);
+    const y = topH + Math.floor(i / cols) * (cell + gap);
+    ctx.save();
+    _ggRoundRect(ctx, x, y, cell, cell, 14); ctx.clip();
+    ctx.fillStyle = "#f5ede0"; ctx.fillRect(x, y, cell, cell);
+    if (im && im.complete && im.naturalWidth) {
+      const sc = Math.max(cell / im.naturalWidth, cell / im.naturalHeight);
+      const dw = im.naturalWidth * sc, dh = im.naturalHeight * sc;
+      ctx.drawImage(im, x + (cell - dw) / 2, y + (cell - dh) / 2, dw, dh);
+    }
+    ctx.restore();
+  });
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#8c7a5e"; ctx.font = "500 22px 'Noto Sans SC', sans-serif";
+  ctx.fillText(L.shareStats(ggData.pulls || 0, ggData.spent || 0), W / 2, H - 64);
+  const brand = currentLang === "tw" ? "咋辦Bot" : "咋办Bot";
+  ctx.fillStyle = "#b45309"; ctx.font = "700 24px 'Noto Sans SC', sans-serif";
+  ctx.fillText(brand + " · sanjuroku.github.io/zabanbot", W / 2, H - 30);
+
+  let dataUrl;
+  try { dataUrl = cv.toDataURL("image/png"); }
+  catch (e) { console.warn("分享图导出失败（canvas 被跨域图片污染）", e); return; }
+  ggShowShareModal(dataUrl, L);
+}
+function ggShowShareModal(dataUrl, L) {
+  let mask = document.getElementById("gg-share-mask");
+  if (!mask) {
+    mask = document.createElement("div");
+    mask.className = "gg-share-mask"; mask.id = "gg-share-mask";
+    mask.innerHTML =
+      '<div class="gg-share-card"><div class="gg-share-img-wrap"></div>' +
+      '<div class="gg-share-actions">' +
+      '<button class="primary" id="gg-share-dl"></button>' +
+      '<button id="gg-share-sys"></button>' +
+      '<button id="gg-share-close"></button></div></div>';
+    document.body.appendChild(mask);
+    mask.addEventListener("click", e => { if (e.target === mask) mask.classList.remove("open"); });
+    document.getElementById("gg-share-close").addEventListener("click", () => mask.classList.remove("open"));
+  }
+  const wrap = mask.querySelector(".gg-share-img-wrap");
+  wrap.innerHTML = "";
+  const im = document.createElement("img");
+  im.src = dataUrl; im.alt = "mi-chan gacha complete";
+  wrap.appendChild(im);
+
+  const dl = document.getElementById("gg-share-dl");
+  dl.textContent = L.shareDownload;
+  dl.onclick = () => { const a = document.createElement("a"); a.href = dataUrl; a.download = "zaban-gacha-complete.png"; a.click(); };
+
+  const sys = document.getElementById("gg-share-sys");
+  if (navigator.canShare) {
+    sys.style.display = ""; sys.textContent = L.shareShare;
+    sys.onclick = async () => {
+      try {
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], "zaban-gacha-complete.png", { type: "image/png" });
+        if (navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: "咋办Bot mi-chan gacha" });
+      } catch (e) { /* user cancelled or unsupported */ }
+    };
+  } else { sys.style.display = "none"; }
+
+  document.getElementById("gg-share-close").textContent = L.shareClose;
+  mask.classList.add("open");
+}
+
+// ── Click-to-copy on the trigger-word example chips. Chips with an argument are split into two segments (trigger
+//    + content) so each can be copied on its own — a Discord slash command, and a「咋办XX」trigger, is entered then filled. ──
+const COPY_TOAST = { zh: "已复制 ✓", tw: "已複製 ✓", en: "Copied ✓", ja: "コピー ✓" };
+const COPY_HINT  = { zh: "点击复制", tw: "點擊複製", en: "Click to copy", ja: "クリックでコピー" };
+function ggChipCopyText(code) {
+  const q = code.querySelector(".eg-quote");
+  let t = code.textContent;
+  if (q) t = t.replace(q.textContent, "");
+  return t.trim();
+}
+function ggCopyToast(code) {
+  code.querySelectorAll(".ge-toast").forEach(t => t.remove());
+  const t = document.createElement("span");
+  t.className = "ge-toast";
+  t.textContent = COPY_TOAST[currentLang] || COPY_TOAST.zh;
+  t.addEventListener("animationend", () => t.remove());
+  code.appendChild(t);
+}
+function ggFallbackCopy(text, cb) {
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  ta.remove(); if (cb) cb();
+}
+function ggUpdateCopyTitles() {
+  const hint = COPY_HINT[currentLang] || COPY_HINT.zh;
+  document.querySelectorAll(".ge-copy").forEach(c => c.setAttribute("title", hint));
+}
+function ggEsc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+// The clean, splittable text of a chip. Once a chip is split its textContent loses the delimiter (the segments sit
+// flush), so we reconstruct「trigger + space + argument」from the segments — keeping ggSplitChips idempotent across
+// the repeated calls that每次 language switch triggers.
+function ggChipCanonicalText(code) {
+  const cmd = code.querySelector(".ge-cmd");
+  const arg = code.querySelector(".ge-arg");
+  if (cmd && arg) return cmd.textContent.trim() + " " + arg.textContent.trim();
+  return ggChipCopyText(code);
+}
+// Split a trigger chip into two independently-copyable segments — the trigger keyword and the argument — because
+// neither a Discord slash command nor a「咋办XX」trigger is pasted whole: you enter the trigger, then the content.
+// The split point is the first whitespace, or an explicit data-trigger prefix for chips with no space (e.g.「咋办什么是咋办」).
+// Rebuilt fresh on every language switch because the i18n pass overwrites textContent, wiping any inner spans.
+function ggSplitChips() {
+  document.querySelectorAll(".cmd-egline code.ge-input").forEach(code => {
+    const raw = ggChipCanonicalText(code);
+    let cut = -1;
+    const trig = code.dataset.trigger;
+    if (trig && raw.startsWith(trig) && raw.length > trig.length) cut = trig.length;
+    else { const m = /\s/.exec(raw); if (m) cut = m.index; }
+    const cmd = cut > 0 ? raw.slice(0, cut).trim() : "";
+    const arg = cut > 0 ? raw.slice(cut).trim() : "";
+    if (cmd && arg) {
+      code.classList.add("ge-split");
+      code.innerHTML =
+        '<span class="ge-seg ge-cmd">'  + ggEsc(cmd) + '</span>' +
+        '<span class="ge-arg-sep"></span>' +
+        '<span class="ge-seg ge-arg">'  + ggEsc(arg) + '</span>';
+    } else if (code.classList.contains("ge-split")) {
+      code.classList.remove("ge-split");
+      code.textContent = raw;
+    }
+  });
+}
+function ggDoCopy(text, code) {
+  if (!text) return;
+  if (navigator.clipboard && navigator.clipboard.writeText)
+    navigator.clipboard.writeText(text).then(() => ggCopyToast(code)).catch(() => ggFallbackCopy(text, () => ggCopyToast(code)));
+  else ggFallbackCopy(text, () => ggCopyToast(code));
+}
+function ggInitCopy() {
+  document.querySelectorAll(".cmd-egline code.ge-input").forEach(code => {
+    if (!ggChipCopyText(code)) return;
+    code.classList.add("ge-copy");
+    code.setAttribute("role", "button");
+    code.setAttribute("tabindex", "0");
+    // Delegated so it survives ggSplitChips rebuilding the inner segments: a click on a segment copies just
+    // that segment; a click elsewhere on the chip (or keyboard) copies the whole trigger.
+    code.addEventListener("click", e => {
+      const seg = e.target.closest(".ge-seg");
+      ggDoCopy(seg ? seg.textContent.trim() : ggChipCanonicalText(code), code);
+    });
+    code.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ggDoCopy(ggChipCanonicalText(code), code); }
+    });
+  });
+  // Snapshot each multilingual chip's pristine text BEFORE the first split — once split, textContent loses the
+  // delimiter, and applyLang's lazy capture would otherwise store that broken (de-spaced) string as the zh original.
+  document.querySelectorAll(".cmd-egline code.ge-input[data-en]").forEach(code => {
+    if (code.dataset.zhText === undefined) code.dataset.zhText = code.textContent;
+  });
+  ggSplitChips();
+  ggUpdateCopyTitles();
 }
 
 // Passive income: +goldPerClick gold every 2 seconds
@@ -1732,7 +2145,16 @@ const GG_LBL = {
     pull: "🎰 扭一次（100G）",
     passive: g => `☕ 每 2 秒 +${g}G`,
     clear: "🗑️ 清除存档",
-    confirm: "确定清除存档？Gold、升级和图鉴记录都会消失。"
+    confirm: "确定清除存档？Gold、升级和图鉴记录都会消失。",
+    dexShow: "查看图鉴",
+    dexHide: "收起图鉴",
+    shareBtn: "集齐分享图",
+    shareGen: "生成中…",
+    shareTitle: "全员集齐啦！",
+    shareStats: (p, g) => `共抽 ${p} 次 · 消耗 ${g} Gold`,
+    shareDownload: "⬇️ 下载图片",
+    shareShare: "📤 分享",
+    shareClose: "关闭"
   },
   en: {
     col: "Collection: ",
@@ -1743,7 +2165,16 @@ const GG_LBL = {
     pull: "🎰 Pull once (100G)",
     passive: g => `☕ +${g}G every 2s`,
     clear: "🗑️ Clear save",
-    confirm: "Clear your save? Gold, upgrades and collection will all be lost."
+    confirm: "Clear your save? Gold, upgrades and collection will all be lost.",
+    dexShow: "View dex",
+    dexHide: "Hide dex",
+    shareBtn: "Share image",
+    shareGen: "Generating…",
+    shareTitle: "I caught them all!",
+    shareStats: (p, g) => `${p} pulls · ${g} Gold spent`,
+    shareDownload: "⬇️ Download",
+    shareShare: "📤 Share",
+    shareClose: "Close"
   },
   ja: {
     col: "図鑑：",
@@ -1754,7 +2185,16 @@ const GG_LBL = {
     pull: "🎰 1回まわす（100G）",
     passive: g => `☕ 2秒ごとに +${g}G`,
     clear: "🗑️ セーブ削除",
-    confirm: "セーブを削除しますか？Gold・強化・図鑑の記録がすべて消えます。"
+    confirm: "セーブを削除しますか？Gold・強化・図鑑の記録がすべて消えます。",
+    dexShow: "図鑑を見る",
+    dexHide: "図鑑を閉じる",
+    shareBtn: "コンプ画像",
+    shareGen: "生成中…",
+    shareTitle: "ぜんぶ集めたよ！",
+    shareStats: (p, g) => `${p} 回 · ${g} Gold 消費`,
+    shareDownload: "⬇️ 保存",
+    shareShare: "📤 シェア",
+    shareClose: "閉じる"
   }
 };
 function ggLbl() { return GG_LBL[currentLang] || GG_LBL.zh; }
@@ -2031,11 +2471,13 @@ function applyLang(lang) {
     if (code.dataset.zhText === undefined) code.dataset.zhText = code.textContent;
     code.textContent = (base === "en" || base === "ja") ? (code.dataset[base] || code.dataset.zhText) : code.dataset.zhText;
   });
+  ggSplitChips(); // re-split trigger chips: the textContent swap above wiped any segment spans
 
   document.querySelectorAll("#lang-switch button").forEach(b =>
     b.classList.toggle("active", b.dataset.lang === lang)
   );
   ggRefresh();
+  ggUpdateCopyTitles(); // localize the「点击复制」hint on copyable example chips
   randomizeQuips(); // the i18n rewrite restores the default quip face; re-roll it
 
   if (lang === "tw") {
@@ -2069,6 +2511,7 @@ document.querySelectorAll("#lang-switch button").forEach(b =>
 const savedLang = localStorage.getItem("site_lang");
 if (savedLang === "en" || savedLang === "ja" || savedLang === "tw") applyLang(savedLang);
 
+ggInitCopy();
 ggLoad();
 </script>
 
