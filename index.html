@@ -1296,7 +1296,7 @@ footer .paw-pop { color: var(--gold-light); }
       <div class="card">
         <span class="card-icon">🐱</span>
         <h3>社群 &amp; 分享</h3>
-        <p>运势墙看看本服的「天选之猫」，个人资料卡能生成专属分享图，展示抽到的奖品，可以拿去美美把玩~</p>
+        <p>给朋友一个毛茸茸的抱抱，运势墙看看本服的「天选之猫」，个人资料卡能生成专属分享图，展示抽到的奖品，可以拿去美美把玩~</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 咋办也很费解除了咋办妈以外还会有谁需要这个功能呢</p>
       </div>
       <div class="card">
@@ -1374,6 +1374,7 @@ footer .paw-pop { color: var(--gold-light); }
         <tr><td><code>/resetrole</code></td><td><span class="cmd-desc">重置角色设定为默认</span></td></tr>
         <tr><td><code>/summary</code></td><td><span class="cmd-desc">生成当前对话历史摘要</span></td></tr>
         <tr><td><code>/summarycheck</code></td><td><span class="cmd-desc">查看已保存的对话摘要</span></td></tr>
+        <tr><td><code>/hug</code></td><td><span class="cmd-desc">可以给别人一个毛茸茸的抱抱~或者抱抱自己、抱抱咋办都可以噢！没关系的，已经很厉害了！</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办抱抱</code><code class="ge-input">抱抱咋办</code></span></td></tr>
         <tr class="group-header"><td colspan="2">🔮 占卜 &amp; 运势</td></tr>
         <tr><td><code>/fortune</code></td><td><span class="cmd-desc">每日运势签到，连签领咋办币与补签卡</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办签到</code><code class="ge-input">咋办今日运势</code><code class="ge-input">咋办运势</code><code class="ge-input">咋办fortune</code></span></td></tr>
         <tr><td><code>/tarot</code></td><td><span class="cmd-desc">塔罗牌占卜（1 / 3 / 5 张牌阵）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="咋办tarot my luck this year" data-ja="咋办tarot 今年の運勢">咋办占卜 我的今年财运</code><code class="ge-input" data-en="咋办tarot should I buy this?" data-ja="咋办tarot これ買うべき？">咋办塔罗 我要不要买这个</code><code class="ge-input" data-en="咋办tarot will I get rich this year?" data-ja="咋办tarot 今年お金持ちになれる？">咋办tarot 我今年会发财吗？</code></span></td></tr>
@@ -2262,8 +2263,8 @@ const I18N_SEL = {
   ".cards .card:nth-child(6) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ The rare serious bit", ja: "/ᐠ｡ꞈ｡ᐟ\\ 珍しく真面目なコーナー" },
   ".cards .card:nth-child(7) h3": { en: "Community &amp; Sharing", ja: "コミュニティ＆シェア" },
   ".cards .card:nth-child(7) p": {
-    en: "See your server's \"Chosen Meow\" on the Wall of Fortune, and turn your profile card into a share image that shows off your gacha prizes~",
-    ja: "運勢ボードでサーバーの「選ばれし猫」を見て、自己紹介カードは引いた景品を見せびらかすシェア画像にできるよ~"
+    en: "Send a fluffy hug to a friend, see your server's \"Chosen Meow\" on the Wall of Fortune, and turn your profile card into a share image that shows off your gacha prizes~",
+    ja: "ふわふわのハグを送ったり、運勢ボードでサーバーの「選ばれし猫」を見て、自己紹介カードは引いた景品を見せびらかすシェア画像にできるよ~"
   },
   ".cards .card:nth-child(7) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Even Zaban's stumped — who needs this besides Zaban's mom?", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんも謎、こんな機能ザバンにゃんのかあちゃん以外に誰が使うのにゃ" },
   ".cards .card:nth-child(8) h3": { en: "Text Trigger 「咋办」", ja: "テキストトリガー「咋办」" },
@@ -2315,6 +2316,7 @@ const I18N_CMDS = {
   "/resetrole":    { en: "Clear your persona and restore the default style", ja: "キャラ設定をリセットしてデフォルトに戻す" },
   "/summary":      { en: "Generate a summary of your conversation history", ja: "会話履歴の要約を生成" },
   "/summarycheck": { en: "View your saved conversation summary", ja: "保存された会話要約を確認" },
+  "/hug":          { en: "Send a fluffy hug to someone~ or hug yourself, or hug Zaban — it's okay, you're already doing great!", ja: "ふわふわのハグを送ろう〜自分にも咋办にもハグできるよ！大丈夫、もう十分がんばってるよ！" },
   "/fortune":      { en: "Your daily fortune, read and explained; check-in streaks earn Zacoins and Catch-up Cards", ja: "今日の運勢を占って解説。連続チェックインでザバンコインやリカバリーカードを獲得" },
   "/tarot":        { en: "Draw tarot cards and let Zaban read them (1 / 3 / 5-card spreads)", ja: "タロットを引いて悩みを解説（1 / 3 / 5枚スプレッド）" },
   "/fortunewall":  { en: "The Wall of Fortune: this server's \"Chosen Meow\" leaderboards for Great Blessing / Great Misfortune (pure luck, zero competition)", ja: "運勢ボード：このサーバーの大吉 / 大凶「選ばれし猫」公開ランキング（運次第・比べっこなし）" },
