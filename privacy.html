@@ -291,7 +291,7 @@ footer a, footer button {
     <div class="page-eyebrow">Legal</div>
     <h1>Privacy Policy</h1>
     <p class="sub">This Privacy Policy describes how Echo's Bot (also referred to as "咋办Bot") collects, uses, and protects your information when you interact with the bot on Discord.</p>
-    <p class="sub" style="margin-top:0.5rem;">Last updated: June 17, 2026</p>
+    <p class="sub" style="margin-top:0.5rem;">Last updated: July 2, 2026</p>
   </div>
 </div>
 
@@ -319,7 +319,8 @@ footer a, footer button {
   <h2>2. Data Storage</h2>
   <p>Collected data is stored as follows:</p>
   <ul>
-    <li>Conversation histories, summaries, role settings, and profile card data are stored persistently until deleted by the user or developer.</li>
+    <li>Conversation histories and summaries are retained for a maximum of <strong>30 days of inactivity</strong>: if you do not use <code>/ask</code> for 30 days, your stored conversation history and summary are automatically deleted. You can also delete them at any time with <code>/reset</code>.</li>
+    <li>Role settings and profile card data are stored persistently until deleted by the user or developer.</li>
     <li>Your language preference is stored persistently until you change it via <code>/language</code> or request deletion.</li>
     <li>Trivia statistics are stored persistently until reset by the user.</li>
     <li>Daily fortune check-in data (streak counts, personal records) and gacha data (Zacoin balances, fragment counts, collected items, pity counters) are stored persistently until deleted upon user request.</li>
@@ -332,6 +333,7 @@ footer a, footer button {
         <li>Older than 6 months: only user interaction records are retained.</li>
       </ul>
     </li>
+    <li><strong>Encryption at rest:</strong> all persistently stored data described above (including conversation histories and logs) is kept on an encrypted storage volume on a single access-controlled private server operated by the developer.</li>
   </ul>
 
   <h2>3. Use of Data</h2>
@@ -365,7 +367,7 @@ footer a, footer button {
   <h2>5. Data Deletion</h2>
   <p>You may request deletion of your stored data as follows:</p>
   <ul>
-    <li><strong>Conversation history, summaries, and role settings:</strong> Use the <code>/reset</code> command at any time.</li>
+    <li><strong>Conversation history, summaries, and role settings:</strong> Use the <code>/reset</code> command at any time. Conversation histories and summaries also expire automatically after 30 days of inactivity (see Section 2).</li>
     <li><strong>Trivia statistics:</strong> Use the <code>/resettrivia</code> command at any time.</li>
     <li><strong>Language preference:</strong> You can change it at any time with the <code>/language</code> command. It is not cleared by <code>/reset</code>; to have it deleted, contact the developer directly (see Section 8).</li>
     <li><strong>Profile card data, fortune check-in records, Zacoin balances, and gacha data:</strong> Contact the developer directly (see Section 8) to request deletion. These cannot currently be deleted via bot command. Your showcased gacha item can be changed or removed at any time directly from your profile card. To hide your name from the public Wall of Fortune leaderboard, use the anonymity toggle shown with your fortune result (this takes effect immediately on refresh).</li>
