@@ -1412,7 +1412,7 @@ footer .paw-pop { color: var(--gold-light); }
         <tr><td><code>/mycard</code></td><td><span class="cmd-desc">同上，只是更简洁的命令名字！</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办mycard</code></span></td></tr>
         <tr><td><code>/language</code></td><td><span class="cmd-desc">切换咋办的回复语言（简中 / 繁中 / English / 日本語）</span></td></tr>
         <tr><td><code>/trigger</code></td><td><span class="cmd-desc">开关关键词「咋办」自动触发回复</span></td></tr>
-        <tr><td><code>/reset</code></td><td><span class="cmd-desc">清空个人全部数据（对话历史 / 设定 / 统计）</span></td></tr>
+        <tr><td><code>/reset</code></td><td><span class="cmd-desc">清空对话历史、摘要与角色设定（不可撤销）</span></td></tr>
         <tr class="group-header"><td colspan="2">🛡️ 服务器管理（需「管理服务器」权限）</td></tr>
         <tr><td><code>/msg welcomemsg</code></td><td><span class="cmd-desc">管理新成员欢迎消息——指定发送频道、自定义服务器介绍文案、开关对话演示动图</span></td></tr>
         <tr><td><code>/msg drinkwater</code></td><td><span class="cmd-desc">管理定时喝水提醒——指定发送频道和提醒间隔（1–24 小时）</span></td></tr>
@@ -2352,7 +2352,7 @@ const I18N_CMDS = {
   "/mycard":       { en: "Same as above, just a shorter command name!", ja: "同上、短いコマンド名バージョン！" },
   "/language":     { en: "Switch Zaban's reply language (简中 / 繁中 / English / 日本語)", ja: "ザバンにゃんの返答言語を切り替え（简中 / 繁中 / English / 日本語）" },
   "/trigger":      { en: "Toggle the \"咋办\" keyword auto-response", ja: "「咋办」キーワード自動応答のオン / オフ" },
-  "/reset":        { en: "Clear all your personal data (history / settings / stats)", ja: "個人データを全消去（履歴 / 設定 / 統計）" },
+  "/reset":        { en: "Clear your chat history, summaries and persona (cannot be undone)", ja: "会話履歴・要約・キャラ設定を消去（取り消し不可）" },
   "/msg welcomemsg": { en: "Manage member welcome messages — pick the channel, customize the server intro, toggle the chat demo GIF", ja: "新メンバーのウェルカムメッセージの管理 — 送信チャンネルの指定、サーバー紹介文のカスタマイズ、チャットデモGIFの表示切替" },
   "/msg drinkwater": { en: "Manage scheduled drink-water reminders — set the channel and the interval (1–24 hours)", ja: "定時水分補給リマインダーの管理 — 送信チャンネルと間隔（1〜24時間）の指定" },
   "/menu":         { en: "Graphical button-based command launcher", ja: "ボタン式コマンドランチャー" },
