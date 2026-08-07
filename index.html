@@ -1272,7 +1272,7 @@ footer .paw-pop { color: var(--gold-light); }
       <div class="card">
         <span class="card-icon">🎰</span>
         <h3>扭蛋机</h3>
-        <p>用咋办币抽扭蛋，三种稀有度、十连保底 SR，奖品池里啥都有，充满惊喜。（嘿嘿…嘿嘿……）</p>
+        <p>用咋办币抽扭蛋，三种稀有度、十连保底 SR，奖品池里啥都有，充满惊喜。重复奖品还能制作成心意版送给朋友！</p>
         <p class="card-quip">/ᐠ｡ꞈ｡ᐟ\ 戒戒你好，我是咋办</p>
       </div>
       <div class="card">
@@ -1381,6 +1381,7 @@ footer .paw-pop { color: var(--gold-light); }
         <tr><td><code>/fortunewall</code></td><td><span class="cmd-desc">运势墙：本服大吉 / 大凶「天选之猫」公开榜（纯运气 · 零攀比）</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办天选之猫</code><code class="ge-input">咋办运势墙</code></span></td></tr>
         <tr class="group-header"><td colspan="2">🎰 扭蛋</td></tr>
         <tr><td><code>/gacha</code></td><td><span class="cmd-desc">咋办扭蛋机，单抽 1 币 / 十连 10 币，SSR / SR / R 三稀有度</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办扭蛋机</code><code class="ge-input">咋办gacha</code></span></td></tr>
+        <tr><td><code>/gift</code></td><td><span class="cmd-desc">把 3 个重复奖品制作成心意版送给朋友，带永久「来自你的小心意」标记 🎀</span></td></tr>
         <tr class="group-header"><td colspan="2">🎬 书影音游</td></tr>
         <tr><td><code>/neodb</code></td><td><span class="cmd-desc">NeoDB 书影音游戏搜索，含评分、封面与条目详情</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">/neodb 西湖六吊桥心中未遂</code><code class="ge-input">/neodb The Color Purple</code><code class="ge-input">/neodb The Office</code></span></td></tr>
         <tr><td><code>/bangumi</code></td><td><span class="cmd-desc">Bangumi 动画、书籍、游戏与音乐搜索，含评分与封面</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input" data-en="/bangumi JoJo's Bizarre Adventure" data-ja="/bangumi ジョジョの奇妙な冒険">/bangumi JOJO的奇妙冒险</code><code class="ge-input">咋办bangumi JOJO</code></span></td></tr>
@@ -2236,10 +2237,6 @@ const I18N_SEL = {
     ja: "毎日チェックインで今日の運勢、タロットも引けるよ、きれいなカード付き。チェックインでザバンコインが貯まり、連続でサプライズも。"
   },
   ".cards .card:nth-child(3) h3": { en: "Gacha Machine", ja: "ガチャマシン" },
-  ".cards .card:nth-child(3) p": {
-    en: "Spend Zacoins on the gacha — three rarities, SR guaranteed per ten-pull, and the prize pool has... everything (hehe).",
-    ja: "ザバンコインでガチャ、3レアリティ・10連でSR確定、景品プールには何でもあるよ（ふふ…）。"
-  },
   ".cards .card:nth-child(4) h3": { en: "Books · Movies · Music · Games", ja: "本・映画・音楽・ゲーム" },
   ".cards .card:nth-child(4) p": {
     en: "Look up books, films, music and games on NeoDB and Bangumi with ratings and covers; Steam and Moegirlpedia too.",
@@ -2257,6 +2254,10 @@ const I18N_SEL = {
   },
   ".cards .card:nth-child(1) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Zaban knows a little about everything — including the wrong things", ja: "/ᐠ｡ꞈ｡ᐟ\\ ザバンにゃんは何でもちょっと知ってる、間違いも含めて" },
   ".cards .card:nth-child(2) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Fortune or doom, blessing or curse — meow~", ja: "/ᐠ｡ꞈ｡ᐟ\\ 吉か凶か、福か禍かにゃ～" },
+  ".cards .card:nth-child(3) p": {
+    en: "Spend Zaban Coins on the gacha machine — three rarity tiers, ten-pull guarantees SR, and the prize pool is full of surprises. Duplicate prizes can be crafted into heartfelt gift versions for your friends!",
+    ja: "ザバンコインでガチャを回そう。3段階のレアリティ、10連でSR確定、景品プールは驚きでいっぱい。重複した景品はギフト版にして友達にプレゼントできるよ！"
+  },
   ".cards .card:nth-child(3) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Hi, I'm Zaban, and I'm a gacha addict", ja: "/ᐠ｡ꞈ｡ᐟ\\ こんにちは、ザバンです。ガチャがやめられません" },
   ".cards .card:nth-child(4) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ Ratings are for reference; new obsessions are your own responsibility", ja: "/ᐠ｡ꞈ｡ᐟ\\ 評価は参考まで、沼に落ちても自己責任" },
   ".cards .card:nth-child(5) .card-quip": { en: "/ᐠ｡ꞈ｡ᐟ\\ A world without animals and art? Unthinkable", ja: "/ᐠ｡ꞈ｡ᐟ\\ この世に小動物とアートは欠かせないのだ" },
@@ -2321,6 +2322,7 @@ const I18N_CMDS = {
   "/tarot":        { en: "Draw tarot cards and let Zaban read them (1 / 3 / 5-card spreads)", ja: "タロットを引いて悩みを解説（1 / 3 / 5枚スプレッド）" },
   "/fortunewall":  { en: "The Wall of Fortune: this server's \"Chosen Meow\" leaderboards for Great Blessing / Great Misfortune (pure luck, zero competition)", ja: "運勢ボード：このサーバーの大吉 / 大凶「選ばれし猫」公開ランキング（運次第・比べっこなし）" },
   "/gacha":        { en: "The Zaban gacha machine — 1 coin per pull, ten-pull guarantees SR; SSR / SR / R rarities", ja: "ザバンにゃんガチャ。単発1コイン / 10連10コイン（SR確定）、SSR / SR / R の3レアリティ" },
+  "/gift":         { en: "Craft 3 duplicate prizes into a heartfelt gift version for a friend, with a permanent \"from you\" tag 🎀", ja: "重複した景品3つでギフト版を作って友達にプレゼント、永久に「あなたからの気持ち」タグ付き 🎀" },
   "/neodb":        { en: "Search NeoDB for books, movies, music & games, with ratings and covers", ja: "NeoDB で本・映画・音楽・ゲームを検索、評価とカバー付き" },
   "/bangumi":      { en: "Search Bangumi for anime, books, games & music, with ratings and covers", ja: "Bangumi でアニメ・本・ゲーム・音楽を検索、評価とカバー付き" },
   "/steam":        { en: "Steam game search with current prices and discounts", ja: "Steam ゲーム検索、現在価格と割引情報付き" },
