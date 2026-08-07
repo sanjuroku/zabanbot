@@ -1415,7 +1415,7 @@ footer .paw-pop { color: var(--gold-light); }
         <tr><td><code>/reset</code></td><td><span class="cmd-desc">清空个人全部数据（对话历史 / 设定 / 统计）</span></td></tr>
         <tr class="group-header"><td colspan="2">🛡️ 服务器管理（需「管理服务器」权限）</td></tr>
         <tr><td><code>/msg welcomemsg</code></td><td><span class="cmd-desc">管理新成员欢迎消息——指定发送频道、自定义服务器介绍文案、开关对话演示动图</span></td></tr>
-        <tr><td><code>/msg drinkwater</code></td><td><span class="cmd-desc">定时喝水提醒——指定发送频道和提醒间隔（1–24 小时）</span></td></tr>
+        <tr><td><code>/msg drinkwater</code></td><td><span class="cmd-desc">管理定时喝水提醒——指定发送频道和提醒间隔（1–24 小时）</span></td></tr>
         <tr class="group-header"><td colspan="2">📌 其他</td></tr>
         <tr><td><code>/menu</code></td><td><span class="cmd-desc">图形化按钮式命令启动器</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办菜单</code><code class="ge-input">咋办menu</code></span></td></tr>
         <tr><td><code>/stats</code></td><td><span class="cmd-desc">咋办做算术：全服趣味使用统计，看看咋办都一本正经地胡说八道了多少次</span><span class="cmd-egline"><span class="eg-tag">试试</span><code class="ge-input">咋办做算术</code><code class="ge-input">咋办stats</code></span></td></tr>
@@ -2353,8 +2353,8 @@ const I18N_CMDS = {
   "/language":     { en: "Switch Zaban's reply language (简中 / 繁中 / English / 日本語)", ja: "ザバンにゃんの返答言語を切り替え（简中 / 繁中 / English / 日本語）" },
   "/trigger":      { en: "Toggle the \"咋办\" keyword auto-response", ja: "「咋办」キーワード自動応答のオン / オフ" },
   "/reset":        { en: "Clear all your personal data (history / settings / stats)", ja: "個人データを全消去（履歴 / 設定 / 統計）" },
-  "/msg welcomemsg": { en: "Manage member welcome messages — pick the channel, customize the server intro, toggle the chat demo GIF", ja: "新メンバー歓迎メッセージの管理 — 送信チャンネルの指定、サーバー紹介文のカスタマイズ、会話デモGIFの表示切替" },
-  "/msg drinkwater": { en: "Scheduled drink-water reminders — set the channel and the interval (1–24 hours)", ja: "水分補給リマインダーの定期送信 — チャンネルと間隔（1〜24時間）を設定" },
+  "/msg welcomemsg": { en: "Manage member welcome messages — pick the channel, customize the server intro, toggle the chat demo GIF", ja: "新メンバーのウェルカムメッセージの管理 — 送信チャンネルの指定、サーバー紹介文のカスタマイズ、チャットデモGIFの表示切替" },
+  "/msg drinkwater": { en: "Manage scheduled drink-water reminders — set the channel and the interval (1–24 hours)", ja: "定時水分補給リマインダーの管理 — 送信チャンネルと間隔（1〜24時間）の指定" },
   "/menu":         { en: "Graphical button-based command launcher", ja: "ボタン式コマンドランチャー" },
   "/stats":        { en: "Zaban Crunches the Numbers — fun server-wide tallies of all the earnest nonsense Zaban's been up to", ja: "ザバンにゃんのおさんすう — みんなの利用回数を集計した楽しい数字" },
   "/help":         { en: "Full command list and descriptions", ja: "全コマンド一覧と説明" },
