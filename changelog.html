@@ -237,6 +237,7 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
 .tl-meta {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;          /* 年+月+徽章三件，窄屏放不下时换行而非溢出 */
   gap: 0.7rem;
   margin-bottom: 2rem;
 }
@@ -246,6 +247,15 @@ nav ul a:hover { color: var(--gold-text); text-decoration: none; }
   color: var(--ink2);
   letter-spacing: -0.03em;
   line-height: 1;
+}
+/* 月份：年份的次级限定，故比年份小一档、字重轻、走金色 —— 让「2026」保持锚点地位 */
+.tl-month {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gold-text);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  margin-left: -0.25rem;    /* 与年份贴近，视作同一组日期 */
 }
 .tl-badge {
   font-size: 0.68rem;
@@ -453,14 +463,99 @@ const UI = {
   ftHome:     { zh: "首页", en: "Home", ja: "ホーム" },
   ftPrivacy:  { zh: "隐私政策", en: "Privacy Policy", ja: "プライバシーポリシー" },
   ftTerms:    { zh: "服务条款", en: "Terms of Service", ja: "利用規約" },
-  badge2026:  { zh: "大更新", en: "Major Update", ja: "大型アップデート" },
+  badge2026aug: { zh: "新功能", en: "New Features", ja: "新機能" },
+  badge2026jul: { zh: "优化与隐私", en: "Improvements & Privacy", ja: "改善＆プライバシー" },
+  badge2026jun: { zh: "大更新", en: "Major Update", ja: "大型アップデート" },
   badge2025:  { zh: "初版上线", en: "Launch", ja: "初版リリース" },
+  /* 月份标签：与年份并排显示的小字。en/ja 不能沿用中文「月」，故走 UI 表而非硬编码进 year 字符串。 */
+  mon8: { zh: "8 月", en: "August", ja: "8月" },
+  mon7: { zh: "7 月", en: "July", ja: "7月" },
+  mon6: { zh: "6 月", en: "June", ja: "6月" },
 };
 
 const YEARS = [
   {
     year: "2026",
-    badge: "badge2026",
+    month: "mon8",
+    badge: "badge2026aug",
+    sections: [
+      {
+        type: "cards",
+        h: { zh: "✨ 新增命令", en: "✨ New Commands", ja: "✨ 新コマンド" },
+        items: [
+          { emoji: "🎀", name: "/gift", desc: {
+            zh: "把 3 个重复奖品制作成心意版送给朋友，带永久标记",
+            en: "Craft 3 duplicate prizes into a heartfelt gift version for a friend, with a permanent tag",
+            ja: "重複した景品3つからギフト版を作って友達にプレゼント、永久タグ付き" } },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🎰 扭蛋 & 赠送升级", en: "🎰 Gacha & Gift Upgrades", ja: "🎰 ガチャ＆ギフト強化" },
+        items: [
+          { zh: "炫耀奖品池化：最多可设 10 个展示奖品，每次签到 / 资料卡随机轮换展示",
+            en: "Showcase pool: up to 10 prizes rotate randomly on check-in and profile cards",
+            ja: "ショーケースプール：最大10個の景品を設定、チェックインやプロフカードでランダム表示" },
+          { zh: "新增 <code>/gift</code>：3 个重复奖品可制作成心意版赠送好友，带永久标记",
+            en: "New <code>/gift</code>: craft 3 duplicates into a gift version for a friend, tagged forever",
+            ja: "新コマンド <code>/gift</code>：重複景品3つでギフト版を作成し友達に贈る。永久タグ付き" },
+          { zh: "心意版奖品有专属 🎀 标识，在收集、炫耀、资料卡、分享卡上全面展示",
+            en: "Gift-version prizes get a dedicated 🎀 badge, shown across collection, showcase, profile, and share cards",
+            ja: "ギフト版の景品には専用 🎀 バッジが付き、コレクション・ショーケース・プロフ・シェアカード全体に表示" },
+          { zh: "同一奖品可被多人分别赠送，赠送者名字并列展示",
+            en: "The same prize can be gifted by multiple people; all donor names are listed together",
+            ja: "同じ景品を複数人から贈られた場合、贈り主の名前が並べて表示" },
+          { zh: "收集界面区分自抽数量和心意版数量（如 x2 + 🎀x1）",
+            en: "Collection view now separates self-pulled and gift counts (e.g. x2 + 🎀x1)",
+            ja: "コレクション画面で自分で引いた数とギフト版の数を分けて表示（例：x2 + 🎀x1）" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🎉 其他", en: "🎉 More", ja: "🎉 その他" },
+        items: [
+          { zh: "管理员可使用 <code>/msg drinkwater</code> 设置喝水提醒定时推送",
+            en: "Admins can use <code>/msg drinkwater</code> to set up timed drink-water reminders",
+            ja: "管理者は <code>/msg drinkwater</code> で水分補給リマインダーの定期送信を設定可能" },
+          { zh: "管理员可使用 <code>/msg welcomemsg</code> 自定义进服欢迎消息内容",
+            en: "Admins can use <code>/msg welcomemsg</code> to customize server welcome message content",
+            ja: "管理者は <code>/msg welcomemsg</code> でサーバー参加時のウェルカムメッセージをカスタマイズ可能" },
+        ],
+      },
+    ],
+  },
+  {
+    year: "2026",
+    month: "mon7",
+    badge: "badge2026jul",
+    sections: [
+      {
+        type: "list",
+        h: { zh: "🛠️ 体验优化", en: "🛠️ Experience Improvements", ja: "🛠️ 体験の改善" },
+        items: [
+          { zh: "冷知识敏感配图（昆虫、密集恐惧等）自动加 spoiler 遮罩",
+            en: "Daily-fact images with sensitive content (insects, trypophobia, etc.) are automatically spoilered",
+            ja: "豆知識の敏感な画像（虫・集合体恐怖症など）に自動でスポイラーを適用" },
+          { zh: "NeoDB 超长简介支持展开全文按钮",
+            en: "NeoDB long descriptions now have an Expand button for the full text",
+            ja: "NeoDB の長い紹介文に「全文を見る」ボタンが追加" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🔒 隐私保护", en: "🔒 Privacy", ja: "🔒 プライバシー保護" },
+        items: [
+          { zh: "对话历史 30 天不活跃自动清除，摘要与记录一并删除",
+            en: "Conversation history is auto-purged after 30 days of inactivity, summaries included",
+            ja: "30日間利用のない会話履歴は要約ごと自動で消去" },
+        ],
+      },
+    ],
+  },
+  {
+    year: "2026",
+    month: "mon6",
+    badge: "badge2026jun",
     sections: [
       {
         type: "cards",
@@ -530,6 +625,10 @@ const YEARS = [
             zh: "所有功能汇总的按钮启动器",
             en: "Button launcher for all features",
             ja: "全機能をまとめたボタンランチャー" } },
+          { emoji: "🤗", name: "/hug", desc: {
+            zh: "给朋友一个毛茸茸的抱抱~也可以抱自己、抱咋办；有稀有抱抱彩蛋、路人可加入抱成一团",
+            en: "Send a fluffy hug to a friend~ or hug yourself, hug Zaban; rare-hug surprises, bystanders can pile on",
+            ja: "友達にもふもふのハグを〜自分にも咋办にもOK。レアハグのサプライズ、通りすがりも合流できる" } },
         ],
       },
       {
@@ -591,6 +690,27 @@ const YEARS = [
       },
       {
         type: "list",
+        h: { zh: "🎨 运势 / 塔罗 / 分享卡视觉升级", en: "🎨 Fortune / Tarot / Share Card Visual Upgrades", ja: "🎨 運勢 / タロット / シェアカードのビジュアル強化" },
+        items: [
+          { zh: "运势卡和塔罗卡全新视觉设计，GPT 解读按段落分节、配色标签",
+            en: "Fortune and tarot cards got a full visual redesign — GPT readings now split into color-coded sections",
+            ja: "運勢カードとタロットカードのデザインを一新。GPT解説をセクション分けし、色分けラベル付き" },
+          { zh: "塔罗卡新增牌面图片预览，逆位旋转显示",
+            en: "Tarot cards now show actual card face art, reversed cards are rotated",
+            ja: "タロットカードに実際の牌面アートを表示、逆位置は回転表示" },
+          { zh: "签到有极小概率触发稀有运势卡（动画特效庆祝）",
+            en: "Tiny chance to trigger a rare fortune card on check-in (animated celebration effect)",
+            ja: "チェックインでごく稀にレア運勢カードが出現（アニメーション付き演出）" },
+          { zh: "分享卡支持竖版 / 横版两种排版，可一键切换",
+            en: "Share cards now support portrait / landscape layouts, switchable with one tap",
+            ja: "シェアカードが縦型 / 横型の2レイアウトに対応、ワンタップで切替" },
+          { zh: "分享卡新增自由发挥字体切换（正常文字 / 艺术字），适配 ASCII art 等创意内容",
+            en: "Share card adds a font toggle (normal text / art font) for ASCII art and creative content",
+            ja: "シェアカードにフォント切替（通常テキスト / アートフォント）、ASCIIアートなど創作コンテンツに対応" },
+        ],
+      },
+      {
+        type: "list",
         h: { zh: "🎉 其他", en: "🎉 More", ja: "🎉 その他" },
         items: [
           { zh: "全新经济系统：咋办币 + 碎片 + 扭蛋，靠每日签到积累",
@@ -608,6 +728,9 @@ const YEARS = [
           { zh: "咋办现已上架 <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> 和 <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a>",
             en: "咋办 is now listed on <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> and the <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a>",
             ja: "咋办 は <a href=\"https://top.gg/bot/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Top.gg</a> と <a href=\"https://discord.com/discovery/applications/1247835257189957673\" target=\"_blank\" rel=\"noopener\">Discord App Directory</a> に掲載" },
+          { zh: "Steam 游戏搜索大幅优化，中文搜索更准确",
+            en: "Steam game search significantly improved — Chinese searches are now much more accurate",
+            ja: "Steam ゲーム検索を大幅改善、中国語での検索精度が向上" },
         ],
       },
     ],
@@ -711,8 +834,11 @@ function renderTimeline(base) {
       }
       return '<div class="tl-section"><h2>' + head + '</h2>' + body + '</div>';
     }).join("");
+    const month = y.month ? (UI[y.month][base] || UI[y.month].zh) : "";
     return '<div class="tl-entry"><div class="tl-dot"></div><div class="tl-meta">' +
-      '<span class="tl-year">' + y.year + '</span><span class="tl-badge">' + badge + '</span></div>' +
+      '<span class="tl-year">' + y.year + '</span>' +
+      (month ? '<span class="tl-month">' + month + '</span>' : '') +
+      '<span class="tl-badge">' + badge + '</span></div>' +
       secs + '</div>';
   }).join("");
   document.getElementById("timeline").innerHTML = html;
