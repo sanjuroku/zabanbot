@@ -2078,13 +2078,19 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     "/msg welcomemsg":null, "/msg drinkwater":null,
   };
 
-  const toast    = document.getElementById("stat-toast");
-  const toastTxt = toast ? toast.querySelector(".st-text") : null;
+  /* ★ 元素必须**用时才查**，不能在这里提前抓。
+     这段脚本位于 <body> 中部、而 #stat-toast 挂在 </body> 之前——脚本同步执行时
+     那个 div 还没被解析出来，提前 getElementById 只会拿到 null，之后 showStat
+     每次都静默 return：悬停毫无反应、控制台还一片干净，极难查（2026-09-08 踩过）。
+     改成用时再查后，对 DOM 顺序免疫；只在悬停时调用，getElementById 的开销可忽略。 */
+  function toastEl() { return document.getElementById("stat-toast"); }
 
   /* 显示/隐藏右下角那行小字。
      只改文本 + 切一个 class，位置由 CSS 固定——不量任何 getBoundingClientRect，
      所以在这张 50 行的表上来回扫也不会触发强制重排。 */
   function showStat(emoji, text, value) {
+    const toast = toastEl();
+    const toastTxt = toast ? toast.querySelector(".st-text") : null;
     if (!toast || !toastTxt || !text) return;
     const base = currentLang === "tw" ? "zh" : currentLang;
     const tpl = text[base] || text.zh;
@@ -2092,6 +2098,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     toast.classList.add("is-on");
   }
   function hideStat() {
+    const toast = toastEl();
     if (toast) toast.classList.remove("is-on");
   }
 
