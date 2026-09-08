@@ -1189,51 +1189,35 @@ footer .paw-pop { color: var(--gold-light); }
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── STAT TOAST: 悬停指令行时，右下角淡入一行小字 ─── */
-.stat-toast {
-  position: fixed;
-  bottom: 1.5rem;
-  /* 让开右下角的扭蛋 FAB（56px + 1.5rem 边距），从它左侧向左展开。
-     右下角是被占用的：FAB 在 bottom/right 各 1.5rem，扭蛋面板在 bottom 5.5rem。
-     贴着 FAB 左边同一水平线，两者都不会撞上。 */
-  right: 5.5rem;
-  z-index: 9997;              /* 低于 FAB(9999) 与扭蛋面板(9998)：真重叠时让它们赢 */
+/* ─── ROW STAT: 悬停指令行时，在该行内部右下角淡入一行小字 ─── */
+.cmd-table td:last-child { position: relative; }   /* 小字的定位锚点 */
+.row-stat {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.2rem;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  max-width: min(62vw, 30rem);
-  padding: 0.42rem 0.55rem 0.42rem 0.9rem;
-  border-radius: 999px;
-  background: var(--paper);
-  border: 1px solid var(--border-strong);
-  box-shadow: 0 4px 18px rgba(0,0,0,.10);
-  font-size: 0.74rem;
-  line-height: 1.2;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  line-height: 1;
   color: var(--gold-text);
-  pointer-events: none;       /* 纯展示，不该挡住底下任何东西 */
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .28s ease, transform .28s ease;
-}
-.stat-toast.is-on { opacity: 1; transform: translateY(0); }
-/* 文字可收缩并省略号，猫不参与收缩——否则窄屏下猫会被压扁 */
-.stat-toast .st-text {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  pointer-events: none;      /* 纯展示，不挡示例 chip 的点击 */
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .25s ease, transform .25s ease;
+  /* 它盖在描述文字上方，左侧用渐变把底下的字化掉，避免两层文字叠在一起看不清 */
+  background: linear-gradient(90deg, rgba(245,237,224,0) 0%, var(--cream) 18%);
+  padding: 0.15rem 0 0.15rem 1.6rem;
 }
-.stat-toast .st-cat {
-  height: 22px;
-  width: auto;
-  flex: none;
-}
+.row-stat.is-on { opacity: 1; transform: translateY(0); }
+.row-stat img { height: 18px; width: auto; flex: none; }
 
 /* ─── Reduced motion: disable all easter-egg animations (kept at the end of the stylesheet so it overrides earlier rules) ─── */
 @media (prefers-reduced-motion: reduce) {
   .cat-pop, .paw-pop, .meow-bubble, .cat-rain { animation: none; }
   /* toast 用的是 transition 不是 animation：去掉位移与渐变，仍保留显示/隐藏 */
-  .stat-toast { transition: none; transform: none; }
+  .row-stat { transition: none; transform: none; }
   .gg-fab:hover, .gg-fab.sleeping::before { animation: none; }
   .gg-share-btn, .ge-toast { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
@@ -2078,32 +2062,24 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     "/msg welcomemsg":null, "/msg drinkwater":null,
   };
 
-  /* ★ 元素必须**用时才查**，不能在这里提前抓。
-     这段脚本位于 <body> 中部、而 #stat-toast 挂在 </body> 之前——脚本同步执行时
-     那个 div 还没被解析出来，提前 getElementById 只会拿到 null，之后 showStat
-     每次都静默 return：悬停毫无反应、控制台还一片干净，极难查（2026-09-08 踩过）。
-     改成用时再查后，对 DOM 顺序免疫；只在悬停时调用，getElementById 的开销可忽略。 */
-  function toastEl() { return document.getElementById("stat-toast"); }
+  /* 每个有数据的行，在自己的最后一格里挂一个小字元素（含走路猫）。
+     一行一个而不是共用一个浮层：省掉「把节点搬来搬去」和位置测量，
+     CSS 的 transition 也能自然工作——搬动 DOM 会让过渡时有时无。 */
+  let _shown = null;          // 当前正显示的那个元素
+  let _hovering = null;       // 它对应哪条计数器（语言切换要靠它就地重渲染）
 
-  /* 显示/隐藏右下角那行小字。
-     只改文本 + 切一个 class，位置由 CSS 固定——不量任何 getBoundingClientRect，
-     所以在这张 50 行的表上来回扫也不会触发强制重排。 */
-  function showStat(emoji, text, value) {
-    const toast = toastEl();
-    const toastTxt = toast ? toast.querySelector(".st-text") : null;
-    if (!toast || !toastTxt || !text) return;
+  function fillStat(el, c) {
     const base = currentLang === "tw" ? "zh" : currentLang;
-    const tpl = text[base] || text.zh;
-    toastTxt.textContent = emoji + " " + tpl.replace("{n}", value.toLocaleString());
-    toast.classList.add("is-on");
-  }
-  function hideStat() {
-    const toast = toastEl();
-    if (toast) toast.classList.remove("is-on");
+    const tpl = c.text[base] || c.text.zh;
+    el.querySelector(".rs-text").textContent =
+      c.emoji + " " + tpl.replace("{n}", c.value.toLocaleString());
   }
 
-  /* 当前悬停的行对应哪条计数器；语言切换时要靠它就地重渲染 */
-  let _hovering = null;
+  function hideStat() {
+    if (_shown) _shown.classList.remove("is-on");
+    _shown = null;
+    _hovering = null;
+  }
 
   // ── Wire up hover listeners on cmd-table rows ──
   function wireHovers() {
@@ -2113,37 +2089,46 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
       const code = row.querySelector("td:first-child code");
       if (!code) return;
+      const emoji = CMD_EMOJI[code.textContent.trim()];
+      if (emoji === undefined || emoji === null) return;   // 这行没有对应计数器
+
       const cmdName = code.textContent.trim();
-      const emoji = CMD_EMOJI[cmdName];
+      const cell = row.querySelector("td:last-child");
+      if (!cell) return;
+
+      // 元素在接线时就建好并放进该行，之后只切 class
+      const el = document.createElement("span");
+      el.className = "row-stat";
+      el.setAttribute("aria-hidden", "true");
+      el.innerHTML = '<span class="rs-text"></span>'
+                   + '<img src="zabanwalk.gif" alt="" />';
+      cell.appendChild(el);
 
       row.addEventListener("mouseenter", () => {
-        // 没有对应计数器的行（/help、/menu 等）要主动收起，
-        // 否则从有数据的行滑过去时，小字会赖着显示上一行的数字。
-        if (!_stData || emoji === undefined || emoji === null) {
-          _hovering = null;
-          hideStat();
-          return;
-        }
+        if (!_stData) return;
         const c = cmdName === "/stats"
           ? { emoji: "😼", text: _stData.grand_total.text, value: _stData.grand_total.value }
           : _stData.counters.find(x => x.emoji === emoji);
-        if (!c || !c.value) { _hovering = null; hideStat(); return; }
+        if (!c || !c.value) return;
+        if (_shown && _shown !== el) _shown.classList.remove("is-on");
+        fillStat(el, c);
+        el.classList.add("is-on");
+        _shown = el;
         _hovering = c;
-        showStat(c.emoji, c.text, c.value);
+      });
+
+      row.addEventListener("mouseleave", () => {
+        el.classList.remove("is-on");
+        if (_shown === el) { _shown = null; _hovering = null; }
       });
     });
-
-    /* 淡出挂在整个表格上，而不是每一行。
-       挂在行上的话，行→行之间会先触发上一行的 mouseleave 再触发下一行的
-       mouseenter，小字就会闪一下；挂在容器上则只有真正移出表格时才收起。 */
-    wrap.addEventListener("mouseleave", () => { _hovering = null; hideStat(); });
   }
 
   // ── Language refresh (called from applyLang) ──
   window._stRefreshLang = function(lang) {
     if (_stData) renderGuildCount(_stData.guild_count, lang);
-    // 小字正显示着就地重渲染：showStat 读的是 currentLang，此时它已被 applyLang 更新
-    if (_hovering) showStat(_hovering.emoji, _hovering.text, _hovering.value);
+    // 小字正显示着就地重渲染：fillStat 读的是 currentLang，此时它已被 applyLang 更新
+    if (_shown && _hovering) fillStat(_shown, _hovering);
   };
 
   // ── Fetch ──
@@ -2720,7 +2705,5 @@ ggLoad();
 
 <!-- GoatCounter anonymous analytics: no cookies, no personal data collected -->
 <script data-goatcounter="https://kuroniko07.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<!-- 悬停指令行时右下角淡入的数据小字（内容由 liveStats() 填充） -->
-<div class="stat-toast" id="stat-toast" aria-hidden="true"><span class="st-text"></span><img class="st-cat" src="zabanwalk.gif" alt="" /></div>
 </body>
 </html>
