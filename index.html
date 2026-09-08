@@ -556,7 +556,6 @@ section { border-bottom: 1px solid var(--border); }
   border-bottom: 1px solid var(--border);
 }
 .cmd-wrap {
-  position: relative; /* danmaku layer anchor */
   max-width: 1100px;
   margin: 0 auto;
   padding: 4rem 2.5rem;
@@ -1190,72 +1189,51 @@ footer .paw-pop { color: var(--gold-light); }
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── DANMAKU: flying stat bullets on command-table hover ─── */
-.danmaku-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
-  /* no overflow:hidden — body has overflow-x:hidden to prevent scrollbar */
-}
-.danmaku {
-  position: absolute;
-  left: 100%; /* start at right edge of container */
-  white-space: nowrap;
-  font-size: 0.78rem;
-  font-weight: 500;
+/* ─── STAT TOAST: 悬停指令行时，右下角淡入一行小字 ─── */
+.stat-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  /* 让开右下角的扭蛋 FAB（56px + 1.5rem 边距），从它左侧向左展开。
+     右下角是被占用的：FAB 在 bottom/right 各 1.5rem，扭蛋面板在 bottom 5.5rem。
+     贴着 FAB 左边同一水平线，两者都不会撞上。 */
+  right: 5.5rem;
+  z-index: 9997;              /* 低于 FAB(9999) 与扭蛋面板(9998)：真重叠时让它们赢 */
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: min(62vw, 30rem);
+  padding: 0.42rem 0.55rem 0.42rem 0.9rem;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 4px 18px rgba(0,0,0,.10);
+  font-size: 0.74rem;
+  line-height: 1.2;
   color: var(--gold-text);
+  pointer-events: none;       /* 纯展示，不该挡住底下任何东西 */
   opacity: 0;
-  pointer-events: none;
-  text-shadow: 0 0 8px rgba(200,146,10,0.15);
-  /* 提升到独立合成层：不加的话元素每飞一帧，底下那张 50 行的表格都要跟着重绘一次
-     （还得连模糊 text-shadow 一起重新光栅化）—— 这是「动画卡顿」的主因。提升之后
-     整条弹幕只光栅化一次，之后纯 GPU 位移，表格一帧都不用重画。
-     元素用完即销毁，所以 will-change 天然是短命的，不会常驻拖累合成器。 */
-  will-change: transform, opacity;
-  /* 位移与淡化拆成两条动画，各用各的缓动：位移必须 linear（匀速才像弹幕），
-     淡化用 ease-in-out —— 它在每段首尾导数为 0，能把关键帧之间的硬拐角抹平。
-     写成一条的话两者只能共用一个 timing-function，淡化就会在 43%/67% 处速率突变，
-     肉眼看着就是「淡着淡着顿一下」。 */
-  animation: danmaku-move 9.8s linear      forwards,
-             danmaku-fade 9.8s ease-in-out forwards;
+  transform: translateY(6px);
+  transition: opacity .28s ease, transform .28s ease;
 }
-/* 位移只取 120vw：元素从容器右缘出发，走完「容器右缘→视口左缘 + 自身宽度」就已飞出画面，
-   桌面宽度下约需 90~110vw。位移给太多（原本 200vw）会有近一半时间在画面外空跑，等于把
-   时长浪费在看不见的地方、逼得可见段速度翻倍。
-
-   ★ 淡入淡出必须整段落在「元素完全进入视野」的窗口内，否则等于没做。元素起点在容器右缘，
-   要再走过自身宽度（约 260px）才完全进画面 —— 视口越窄这段占比越大，最坏约到 21%；
-   同理它在 73%~88% 之间开始触到左缘。所以淡入排在 12%→35%（进画面之后才开始亮），
-   淡出排在 55%→82%（触左缘之前就化完）。
-   曾经写成 7% 亮满 / 90% 才开始淡：那时字才走 89px、九成还在屏幕右侧外，淡入全程在画面外
-   跑完，进入视野时已是全亮；淡出同样在出画后才执行 —— 肉眼只看得到「凭空出现、直冲出去」。
-   两段渐变各约 2.8s / 3.2s，比中间的常亮段（2.4s）还长，是刻意让「在淡」这件事被看见。
-   transform 只在首尾声明，中间各帧只管 opacity；CSS 各属性独立插值，位移仍是匀速。
-
-   ★ 时长/位移取 9.8s / 98vw 而非 12s / 120vw：后者末尾有 18% 的「死尾巴」—— 元素早已
-   透明却还在飞，纯属僵尸。截掉之后 animationend 恰好在弹幕消失的那一刻触发，速度不变
-   （98vw/9.8s == 120vw/12s == 10vw/s，曲线只是截断不是压缩）。这一点对「同一行不重复」
-   的锁很关键：锁在 animationend 释放，尾巴留着的话会多锁 2.2 秒 —— 那段时间屏幕上什么
-   都没有，用户重新悬停却静默无反应，像坏了。 */
-@keyframes danmaku-move {
-  from { transform: translateX(0);     }
-  to   { transform: translateX(-98vw); }
+.stat-toast.is-on { opacity: 1; transform: translateY(0); }
+/* 文字可收缩并省略号，猫不参与收缩——否则窄屏下猫会被压扁 */
+.stat-toast .st-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-/* 中间那两个 0.38 / 0.42 的过渡点删掉了：它们本是拿线性插值硬凑渐变形状用的，
-   换成 ease-in-out 之后反而会在自己身上引入新的拐角。缓动自己会把 15%→43%
-   和 67%→100% 两段走成平滑的 S 形。 */
-@keyframes danmaku-fade {
-  0%   { opacity: 0;    }
-  15%  { opacity: 0;    }
-  43%  { opacity: 0.85; }
-  67%  { opacity: 0.85; }
-  100% { opacity: 0;    }
+.stat-toast .st-cat {
+  height: 22px;
+  width: auto;
+  flex: none;
 }
 
 /* ─── Reduced motion: disable all easter-egg animations (kept at the end of the stylesheet so it overrides earlier rules) ─── */
 @media (prefers-reduced-motion: reduce) {
-  .cat-pop, .paw-pop, .meow-bubble, .cat-rain, .danmaku { animation: none; }
+  .cat-pop, .paw-pop, .meow-bubble, .cat-rain { animation: none; }
+  /* toast 用的是 transition 不是 animation：去掉位移与渐变，仍保留显示/隐藏 */
+  .stat-toast { transition: none; transform: none; }
   .gg-fab:hover, .gg-fab.sleeping::before { animation: none; }
   .gg-share-btn, .ge-toast { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
@@ -1438,7 +1416,6 @@ footer .paw-pop { color: var(--gold-light); }
 <!-- Command reference -->
 <div class="cmd-section" id="commands">
   <div class="cmd-wrap" data-reveal>
-    <div class="danmaku-layer" id="danmaku-layer" aria-hidden="true"></div>
     <div class="section-label">Commands</div>
     <div class="section-title">指令速查表</div>
     <table class="cmd-table">
@@ -2051,7 +2028,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
   els.forEach(e => io.observe(e));
 })();
 
-// ── Live stats: guild count line + danmaku easter egg on command hover ──
+// ── Live stats: guild count line + per-command stat toast on hover ──
 (function liveStats() {
   const API = "https://echosdiscordbot.duckdns.org/api/public/stats";
   let _stData = null;
@@ -2082,7 +2059,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
 
   // ── Danmaku: command → counter emoji mapping ──
   // Maps the command name in the table (<code> text) to the counter emoji in the API response.
-  // Commands not in this map won't trigger danmaku (group headers, admin commands, etc.)
+  // Commands not in this map show no toast (group headers, admin commands, etc.)
   const CMD_EMOJI = {
     "/ask":"💬", "/choose":"💭", "/hug":"🤗", "/setrole":"💬", "/rolecheck":"💬",
     "/resetrole":"💬", "/summary":"💬", "/summarycheck":"💬",
@@ -2101,93 +2078,65 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
     "/msg welcomemsg":null, "/msg drinkwater":null,
   };
 
-  const layer = document.getElementById("danmaku-layer");
+  const toast    = document.getElementById("stat-toast");
+  const toastTxt = toast ? toast.querySelector(".st-text") : null;
 
-  /* 同一条内容正在飞时不再发第二条。key 用计数器的 emoji（= 决定文案的那个东西），
-     不用行元素：/ask 与 /setrole 共用 💬 计数器、/hellohowareyou 与 /mycard 共用 👤，
-     按行锁的话它们会并排飞出两条一模一样的字。锁在 animationend 释放。
-
-     这把锁同时取代了原来的 800ms 节流：每个计数器最多贡献 1 条、内容互不重复，
-     屏上条数于是被「有计数器的命令数」硬封顶，鼠标来回猛扫也刷不出重复 ——
-     节流当初防的就是刷屏，刷不出来了就不必再拿它去吞用户真心的悬停。 */
-  const flying = new Set();
-
-  function fireDanmaku(emoji, text, value, y) {
-    if (!layer || !text || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (flying.has(emoji)) return;
-
+  /* 显示/隐藏右下角那行小字。
+     只改文本 + 切一个 class，位置由 CSS 固定——不量任何 getBoundingClientRect，
+     所以在这张 50 行的表上来回扫也不会触发强制重排。 */
+  function showStat(emoji, text, value) {
+    if (!toast || !toastTxt || !text) return;
     const base = currentLang === "tw" ? "zh" : currentLang;
     const tpl = text[base] || text.zh;
-    const msg = emoji + " " + tpl.replace("{n}", value.toLocaleString());
-
-    const el = document.createElement("span");
-    el.className = "danmaku";
-    el.textContent = msg;
-    // Position: vertical center of the hovered row (left:100% in CSS starts it at container's right edge)
-    el.style.top = y + "px";
-    layer.appendChild(el);
-    flying.add(emoji);
-    // 位移与淡化是两条动画，animationend 会各触发一次 —— 只认位移那条，否则清理跑两遍
-    el.addEventListener("animationend", e => {
-      if (e.animationName !== "danmaku-move") return;
-      el.remove();
-      flying.delete(emoji);   // 尾巴已截掉，此刻正是弹幕看不见的那一刻 → 同步解锁
-    });
+    toastTxt.textContent = emoji + " " + tpl.replace("{n}", value.toLocaleString());
+    toast.classList.add("is-on");
+  }
+  function hideStat() {
+    if (toast) toast.classList.remove("is-on");
   }
 
-  /* 行的纵向落点只在首次悬停时量一次，之后缓存。
-     量一次要读两个 getBoundingClientRect，而每次发弹幕都会往 DOM 里插元素 ——
-     「插入(写) → 下次悬停读取(读)」交替就是典型的 layout thrashing，在这张
-     50 行的表上扫过去会一路强制同步重排。缓存的是 row 与 wrap 的差值，与滚动
-     位置无关，所以只需在 resize（布局真的变了）时作废。 */
-  let rowY = new WeakMap();
-  window.addEventListener("resize", () => { rowY = new WeakMap(); });
-
-  function yFor(row, wrap) {
-    let y = rowY.get(row);
-    if (y === undefined) {
-      const wr = wrap.getBoundingClientRect();   // 两次读取必须相邻，
-      const rr = row.getBoundingClientRect();    // 中间不能插入任何 DOM 写操作
-      y = rr.top - wr.top + rr.height / 2 - 8;
-      rowY.set(row, y);
-    }
-    return y;
-  }
+  /* 当前悬停的行对应哪条计数器；语言切换时要靠它就地重渲染 */
+  let _hovering = null;
 
   // ── Wire up hover listeners on cmd-table rows ──
   function wireHovers() {
     const wrap = document.querySelector(".cmd-wrap");
     if (!wrap) return;
+
     document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
       const code = row.querySelector("td:first-child code");
       if (!code) return;
       const cmdName = code.textContent.trim();
       const emoji = CMD_EMOJI[cmdName];
-      if (emoji === undefined || emoji === null) return; // no counter for this command
 
       row.addEventListener("mouseenter", () => {
-        if (!_stData) return;
-        // Find the counter by emoji
-        const c = _stData.counters.find(x => x.emoji === emoji);
-        if (!c || !c.value) return;
-        fireDanmaku(c.emoji, c.text, c.value, yFor(row, wrap));
+        // 没有对应计数器的行（/help、/menu 等）要主动收起，
+        // 否则从有数据的行滑过去时，小字会赖着显示上一行的数字。
+        if (!_stData || emoji === undefined || emoji === null) {
+          _hovering = null;
+          hideStat();
+          return;
+        }
+        const c = cmdName === "/stats"
+          ? { emoji: "😼", text: _stData.grand_total.text, value: _stData.grand_total.value }
+          : _stData.counters.find(x => x.emoji === emoji);
+        if (!c || !c.value) { _hovering = null; hideStat(); return; }
+        _hovering = c;
+        showStat(c.emoji, c.text, c.value);
       });
     });
-    // Also wire /stats to grand_total
-    document.querySelectorAll(".cmd-table tr:not(.group-header)").forEach(row => {
-      const code = row.querySelector("td:first-child code");
-      if (!code || code.textContent.trim() !== "/stats") return;
-      row.addEventListener("mouseenter", () => {
-        if (!_stData) return;
-        const wrap = document.querySelector(".cmd-wrap");
-        fireDanmaku("😼", _stData.grand_total.text, _stData.grand_total.value, yFor(row, wrap));
-      });
-    });
+
+    /* 淡出挂在整个表格上，而不是每一行。
+       挂在行上的话，行→行之间会先触发上一行的 mouseleave 再触发下一行的
+       mouseenter，小字就会闪一下；挂在容器上则只有真正移出表格时才收起。 */
+    wrap.addEventListener("mouseleave", () => { _hovering = null; hideStat(); });
   }
 
   // ── Language refresh (called from applyLang) ──
   window._stRefreshLang = function(lang) {
     if (_stData) renderGuildCount(_stData.guild_count, lang);
+    // 小字正显示着就地重渲染：showStat 读的是 currentLang，此时它已被 applyLang 更新
+    if (_hovering) showStat(_hovering.emoji, _hovering.text, _hovering.value);
   };
 
   // ── Fetch ──
@@ -2723,7 +2672,7 @@ function applyLang(lang) {
     b.classList.toggle("active", b.dataset.lang === lang)
   );
   ggRefresh();
-  if (window._stRefreshLang) window._stRefreshLang(lang); // guild count + danmaku language switch
+  if (window._stRefreshLang) window._stRefreshLang(lang); // guild count + stat toast language switch
   ggUpdateCopyTitles(); // localize the「点击复制」hint on copyable example chips
   randomizeQuips(); // the i18n rewrite restores the default quip face; re-roll it
 
@@ -2764,5 +2713,7 @@ ggLoad();
 
 <!-- GoatCounter anonymous analytics: no cookies, no personal data collected -->
 <script data-goatcounter="https://kuroniko07.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- 悬停指令行时右下角淡入的数据小字（内容由 liveStats() 填充） -->
+<div class="stat-toast" id="stat-toast" aria-hidden="true"><span class="st-text"></span><img class="st-cat" src="zabanwalk.gif" alt="" /></div>
 </body>
 </html>
