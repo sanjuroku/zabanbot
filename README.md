@@ -4,7 +4,7 @@
 
 咋办（Zaban / ザバンにゃん）是一只住在 Discord 里的小黄猫 Bot —— 关注我，每天也学不到什么知识。
 
-这个仓库是它的官网（GitHub Pages）：**https://sanjuroku.github.io/zabanbot/**
+这个仓库是它的官网（GitHub Pages）：**https://zabanbot.moe/**
 
 ## 链接
 
