@@ -1191,10 +1191,18 @@ footer .paw-pop { color: var(--gold-light); }
 
 /* ─── ROW STAT: 悬停指令行时，在该行内部右下角淡入一行小字 ─── */
 .cmd-table td:last-child { position: relative; }   /* 小字的定位锚点 */
+
+/* ★ 只给「真的有数据」的行在底部留一条空带（由 JS 加 has-stat 类）。
+   小字是 absolute、不占流内空间，若不预留就会浮在最后一行内容之上——
+   描述长或示例 chip 多的行必然被盖住。预留之后两者物理上分开，
+   背景才能做成全透明（此前是靠一层渐变遮罩把底下的字化掉，治标不治本）。
+   留在 CSS 里而不是 hover 时才加：hover 才撑开会让整张表跳动。 */
+.cmd-table td.has-stat { padding-bottom: 1.75rem; }
+
 .row-stat {
   position: absolute;
-  right: 0.7rem;
-  bottom: 0.2rem;
+  right: 0.75rem;
+  bottom: 0.4rem;
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -1206,9 +1214,6 @@ footer .paw-pop { color: var(--gold-light); }
   opacity: 0;
   transform: translateY(4px);
   transition: opacity .25s ease, transform .25s ease;
-  /* 它盖在描述文字上方，左侧用渐变把底下的字化掉，避免两层文字叠在一起看不清 */
-  background: linear-gradient(90deg, rgba(245,237,224,0) 0%, var(--cream) 18%);
-  padding: 0.15rem 0 0.15rem 1.6rem;
 }
 .row-stat.is-on { opacity: 1; transform: translateY(0); }
 .row-stat img { height: 18px; width: auto; flex: none; }
@@ -2102,6 +2107,7 @@ document.querySelectorAll(".btn-primary, .btn-secondary").forEach(b =>
       el.setAttribute("aria-hidden", "true");
       el.innerHTML = '<span class="rs-text"></span>'
                    + '<img src="zabanwalk.gif" alt="" />';
+      cell.classList.add("has-stat");   // 撑开底部空带，见 CSS 注释
       cell.appendChild(el);
 
       row.addEventListener("mouseenter", () => {
