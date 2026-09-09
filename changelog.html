@@ -565,6 +565,9 @@ const YEARS = [
           { zh: "<code>/settimezone</code>（设置时区，决定每日签到几点重置）补进了 <code>/help</code> 列表",
             en: "<code>/settimezone</code> (set your timezone — it decides when the daily check-in resets) is now listed in <code>/help</code>",
             ja: "<code>/settimezone</code>（タイムゾーン設定＝毎日のチェックインのリセット時刻を決める）を <code>/help</code> の一覧に追加" },
+          { zh: "知识问答点「显示原文」时，选项也会跟着切回原文（以前只切题目）",
+            en: "In trivia, “Show original” now switches the answer options back to the original text too (it used to switch only the question)",
+            ja: "クイズの「原文を表示」で選択肢も原文に切り替わるように（以前は問題文だけ）" },
         ],
       },
       {
@@ -631,6 +634,9 @@ const YEARS = [
           { zh: "修复有人点了「加入抱抱」之后，被抱的人反而不能「回抱」了",
             en: "Fixed the hug recipient losing the “Hug back” button once someone else joined the hug",
             ja: "誰かが「ハグに参加」した後、ハグされた本人が「ハグを返す」を押せなくなる問題を修正" },
+          { zh: "修复 <code>咋办ask英文内容</code> 这种命令名和内容连在一起没空格时识别不了",
+            en: "Fixed triggers not being recognized when the command name runs straight into English text with no space, e.g. <code>咋办ask英文内容</code>",
+            ja: "<code>咋办ask英文内容</code> のようにコマンド名と英語の内容がスペースなしで繋がると認識できない問題を修正" },
         ],
       },
       {
