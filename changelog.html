@@ -513,7 +513,7 @@ const UI = {
   mon8: { zh: "8 月", en: "August", ja: "8月" },
   mon7: { zh: "7 月", en: "July", ja: "7月" },
   mon6: { zh: "6 月", en: "June", ja: "6月" },
-  badge2026sep: { zh: "多语言 & 稳定性", en: "i18n & Stability", ja: "多言語＆安定性" },
+  badge2026sep: { zh: "多语言 & 稳定性 · 联网搜索", en: "i18n & Stability · Web Search", ja: "多言語＆安定性・ウェブ検索" },
 };
 
 const YEARS = [
@@ -524,6 +524,21 @@ const YEARS = [
     sections: [
       {
         type: "list",
+        h: { zh: "🔍 联网搜索", en: "🔍 Web Search", ja: "🔍 ウェブ検索" },
+        items: [
+          { zh: "<code>/ask</code> 现在会自己判断要不要联网——问天气、新闻、最新消息这类实时问题会自动搜索",
+            en: "<code>/ask</code> now decides on its own whether to go online — questions about weather, news, or anything current trigger a search automatically",
+            ja: "<code>/ask</code> がネット検索の要否を自動判断——天気・ニュースなどリアルタイムな質問は自動で検索" },
+          { zh: "也可以用 <code>search</code> 参数手动控制：<code>True</code> 强制联网 / <code>False</code> 禁止联网（纯离线回答）",
+            en: "You can still override it with the <code>search</code> option: <code>True</code> forces a search, <code>False</code> keeps 咋办 fully offline",
+            ja: "<code>search</code> パラメータで手動制御も可能：<code>True</code> は必ず検索、<code>False</code> は検索なしで回答" },
+          { zh: "文字触发也能搜：<code>咋办搜一下 xxx</code>、<code>咋办查查 xxx</code>、<code>咋办帮我查 xxx</code> 等",
+            en: "Text triggers work too: <code>咋办搜一下 xxx</code>, <code>咋办查查 xxx</code>, <code>咋办帮我查 xxx</code>, and more",
+            ja: "テキストトリガーでも検索可能：<code>咋办搜一下 xxx</code>、<code>咋办查查 xxx</code>、<code>咋办帮我查 xxx</code> など" },
+        ],
+      },
+      {
+        type: "list",
         h: { zh: "🐱 表情互动", en: "🐱 Emoji Interactions", ja: "🐱 絵文字インタラクション" },
         items: [
           { zh: "<code>/ask</code> 聊天时咋办会用猫猫自定义表情回复（约 26 个，根据氛围自然出现）",
@@ -532,6 +547,24 @@ const YEARS = [
           { zh: "夸咋办（「咋办好可爱」等）或发 <code>:3</code> 颜文字 → 咋办会贴走路猫表情",
             en: "Compliment 咋办 or send <code>:3</code> → 咋办 reacts with the walking cat emoji",
             ja: "咋办 を褒めたり <code>:3</code> を送ると → 咋办 が歩く猫の絵文字でリアクション" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "✨ 更好用了", en: "✨ Quality of Life", ja: "✨ 使いやすさの改善" },
+        items: [
+          { zh: "<code>/imageconvert</code> 支持 HEIC / HEIF——iPhone 拍的照片可以直接丢进来转格式",
+            en: "<code>/imageconvert</code> now accepts HEIC / HEIF — photos straight from an iPhone can be converted as-is",
+            ja: "<code>/imageconvert</code> が HEIC / HEIF に対応——iPhone で撮った写真をそのまま変換可能に" },
+          { zh: "<code>/help</code> 里的命令变成可点击的了，点一下自动填入斜杠命令（<code>/roll</code> 的子命令也能点）",
+            en: "Commands in <code>/help</code> are now clickable — tap one to auto-fill the slash command (<code>/roll</code> subcommands included)",
+            ja: "<code>/help</code> 内のコマンドがクリック可能に——タップでスラッシュコマンドを自動入力（<code>/roll</code> のサブコマンドも対応）" },
+          { zh: "十连出货分享现在会把这一发里的稀有奖品<strong>全部</strong>报出来（以前只报最好的那件）",
+            en: "The 10-pull share now lists <strong>every</strong> rare prize from that pull (it used to name only the best one)",
+            ja: "10連の自慢メッセージがそのガチャで出たレア景品を<strong>すべて</strong>表示するように（以前は一番良い1件だけ）" },
+          { zh: "<code>/settimezone</code>（设置时区，决定每日签到几点重置）补进了 <code>/help</code> 列表",
+            en: "<code>/settimezone</code> (set your timezone — it decides when the daily check-in resets) is now listed in <code>/help</code>",
+            ja: "<code>/settimezone</code>（タイムゾーン設定＝毎日のチェックインのリセット時刻を決める）を <code>/help</code> の一覧に追加" },
         ],
       },
       {
@@ -568,6 +601,9 @@ const YEARS = [
           { zh: "清除截图里混入的编辑提示 / 通知模板，infobox 选择器扩充到全部 6 种 class",
             en: "Removed editorial notices from screenshots; infobox selector expanded to cover all 6 class variants",
             ja: "スクショ内の編集通知を除去、infoboxセレクタを全6種のclassに対応" },
+          { zh: "修复部分页面截不到信息框的问题",
+            en: "Fixed the infobox not being captured on certain pages",
+            ja: "一部のページで情報ボックスが取得できない問題を修正" },
         ],
       },
       {
@@ -583,6 +619,30 @@ const YEARS = [
           { zh: "内容审查优化：中文玩笑话的误伤大幅减少",
             en: "Content moderation improved: false positives on Chinese jokes greatly reduced",
             ja: "コンテンツ審査改善：中国語のジョークの誤検知を大幅削減" },
+          { zh: "翻译文学作品里的狩猎 / 战争等描写不再被内容审查误拦",
+            en: "Translating hunting or battle scenes from fiction is no longer blocked by content moderation",
+            ja: "小説の狩猟・戦闘描写などの翻訳がコンテンツ審査で誤ってブロックされないように修正" },
+          { zh: "修复 Steam 限时免费的游戏显示成「已减免 100%，优惠了 0.00」",
+            en: "Fixed free-for-a-limited-time Steam games showing as “100% off, you save 0.00”",
+            ja: "Steam の期間限定無料タイトルが「100% オフ、0.00 お得」と表示される問題を修正" },
+          { zh: "修复短时间内连点两次 <code>/fortune</code> 会重复签到两次",
+            en: "Fixed <code>/fortune</code> checking you in twice if you ran it twice in quick succession",
+            ja: "<code>/fortune</code> を続けて2回実行するとチェックインが二重に走る問題を修正" },
+          { zh: "修复有人点了「加入抱抱」之后，被抱的人反而不能「回抱」了",
+            en: "Fixed the hug recipient losing the “Hug back” button once someone else joined the hug",
+            ja: "誰かが「ハグに参加」した後、ハグされた本人が「ハグを返す」を押せなくなる問題を修正" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "🌐 官网", en: "🌐 Website", ja: "🌐 公式サイト" },
+        items: [
+          { zh: "官网启用新域名 <code>zabanbot.moe</code>，旧地址会自动跳转过来",
+            en: "The site moved to its own domain, <code>zabanbot.moe</code> — the old address redirects here automatically",
+            ja: "公式サイトが新ドメイン <code>zabanbot.moe</code> に移行——旧アドレスは自動でリダイレクトされます" },
+          { zh: "首页会显示咋办已经被多少个服务器领养啦",
+            en: "The homepage now shows how many servers have adopted 咋办",
+            ja: "トップページで 咋办 を迎えてくれたサーバー数を表示するように" },
         ],
       },
     ],
@@ -1037,14 +1097,24 @@ function _loadTw() {
   });
   return _twLoading;
 }
+// 转换前记下原文，切走其他语言时还原：applyLang 只重渲染由 UI 表驱动的文本，
+// 左上角品牌「咋办Bot」这类静态文本没人重写，不还原就会永远卡在繁体。（与 index.html 同机制）
+const _twTouched = [];     // [textNode, original text]
+
+function _twRestore() {
+  for (const [n, o] of _twTouched) n.nodeValue = o;
+  _twTouched.length = 0;
+}
+
 function _twConvertDom(conv) {
+  _twRestore();
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = walker.nextNode())) {
     const t = n.nodeValue;
     if (/[一-鿿]/.test(t)) {
       const c = conv(t);
-      if (c !== t) n.nodeValue = c;
+      if (c !== t) { _twTouched.push([n, t]); n.nodeValue = c; }
     }
   }
 }
@@ -1056,6 +1126,7 @@ function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem("site_lang", lang);
   document.documentElement.lang = lang === "zh" ? "zh-CN" : (lang === "tw" ? "zh-TW" : lang);
+  _twRestore();  // 先把上一轮繁体转换还原，避免静态文本（如左上角品牌）残留繁体
   const base = lang === "tw" ? "zh" : lang;   // 繁体先按简体渲染，再整页转换
 
   document.title = UI.title[base] || UI.title.zh;
