@@ -10,7 +10,7 @@
 
 - 🐱 [邀请咋办进服务器](https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands)
 - ⭐ [在 Top.gg 投票](https://top.gg/bot/1247835257189957673)
-- ☕ [Ko-fi 投喂](https://ko-fi.com/G2G11H5VMC)
+- 🐟 [投喂咋办（Ko-fi）](https://ko-fi.com/G2G11H5VMC)
 
 ## 它会什么
 

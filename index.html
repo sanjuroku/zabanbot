@@ -1270,7 +1270,7 @@ footer .paw-pop { color: var(--gold-light); }
         <a class="btn-primary" href="https://discord.com/oauth2/authorize?client_id=1247835257189957673&permissions=277025770560&scope=bot+applications.commands" target="_blank" rel="noopener">➕ 邀请咋办</a>
         <a class="btn-secondary" href="https://top.gg/bot/1247835257189957673" target="_blank" rel="noopener">⭐ Top.gg 投票</a>
         <a class="btn-secondary" href="https://discord.com/discovery/applications/1247835257189957673" target="_blank" rel="noopener">🧭 Discord 应用目录</a>
-        <a class="btn-secondary" href="https://ko-fi.com/G2G11H5VMC" target="_blank" rel="noopener">☕ Ko-fi</a>
+        <a class="btn-secondary" href="https://ko-fi.com/G2G11H5VMC" target="_blank" rel="noopener" title="Ko-fi">🐟 投喂咋办</a>
       </div>
       <!-- 🐾 放在 #gc-text 外面：三种语言共用它，塞进各自模板会重复三遍 -->
       <div class="hero-guild-count" id="guild-count" hidden>🐾 <span id="gc-text">嘿嘿！咋办现在已经被 <span class="gc-num" id="gc-num">–</span> 个服务器领养了~ :3c</span></div>
@@ -2408,8 +2408,9 @@ const I18N_SEL = {
   ".hero-btns a:nth-child(1)": { en: "➕ Invite 咋办", ja: "➕ 咋办を招待" },
   ".hero-btns a:nth-child(2)": { en: "⭐ Vote on Top.gg", ja: "⭐ Top.gg で投票" },
   // ★ 这里是 nth-child 位置选择器：在 .hero-btns 里增删按钮会顶掉后面所有序号。
-  //   Ko-fi 现在是第 4 个但没有条目（「☕ Ko-fi」无需翻译），所以插入这条是安全的。
   ".hero-btns a:nth-child(3)": { en: "🧭 Discord App Directory", ja: "🧭 Discord アプリディレクトリ" },
+  // 不写“Ko-fi”：很多人不知道那是什么，改成社区熟悉的“投喂咋办”（接页面里“领养”的猫设），平台名放在 title 里。
+  ".hero-btns a:nth-child(4)": { en: "☕ Buy me a coffee", ja: "☕ 応援する" },
   "#chat-name-mom-label": { en: "Zaban's Mom", ja: "ザバンにゃんのかあちゃん" },
   "#chat-placeholder": { en: "Message #zaban-moms-nest", ja: "#ザバンにゃんの実家 へメッセージを送信" },
   "#features .section-title": { en: "What can 咋办 do for you?", ja: "咋办にできることは？" },
