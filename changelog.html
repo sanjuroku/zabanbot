@@ -509,14 +509,37 @@ const UI = {
   badge2026jun: { zh: "大更新", en: "Major Update", ja: "大型アップデート" },
   badge2025:  { zh: "初版上线", en: "Launch", ja: "初版リリース" },
   /* 月份标签：与年份并排显示的小字。en/ja 不能沿用中文「月」，故走 UI 表而非硬编码进 year 字符串。 */
+  mon10: { zh: "10 月", en: "October", ja: "10月" },
   mon9: { zh: "9 月", en: "September", ja: "9月" },
   mon8: { zh: "8 月", en: "August", ja: "8月" },
   mon7: { zh: "7 月", en: "July", ja: "7月" },
   mon6: { zh: "6 月", en: "June", ja: "6月" },
   badge2026sep: { zh: "多语言 & 稳定性 · 联网搜索", en: "i18n & Stability · Web Search", ja: "多言語＆安定性・ウェブ検索" },
+  badge2026oct: { zh: "抽奖 & 时间戳", en: "Giveaways & Timestamps", ja: "抽選＆タイムスタンプ" },
 };
 
 const YEARS = [
+  {
+    year: "2026",
+    month: "mon10",
+    badge: "badge2026oct",
+    sections: [
+      {
+        type: "cards",
+        h: { zh: "✨ 新增命令", en: "✨ New Commands", ja: "✨ 新コマンド" },
+        items: [
+          { emoji: "🎉", name: "/giveaway", desc: {
+            zh: "抽奖小助手：奖品和说明都能配图，回复 / 关键词 / 点表情 / 点按钮报名任选，可以设报名时间、到点自动开奖、补抽；也可以直接发 <code>咋办抽奖</code>",
+            en: "A giveaway helper: add images to the prize and details, let people enter by reply / keyword / reaction / button, set an entry window, draw automatically, and redraw; or just post <code>咋办抽奖</code>",
+            ja: "抽選おたすけ：賞品と詳細に画像OK、参加方法は返信／キーワード／リアクション／ボタンから選べて、参加期間・自動抽選・再抽選も。<code>咋办抽奖</code> と送るだけでも始められるよ" } },
+          { emoji: "🕐", name: "/timestamp", desc: {
+            zh: "用大白话生成 Discord 时间戳——「明天下午3点」「next Friday 5pm」都能听懂，每个人看到的都是自己时区的时间；也可以发 <code>咋办时间戳 &lt;时间&gt;</code>",
+            en: "Turn plain words into a Discord timestamp — “tomorrow 3pm”, “next Friday 5pm” all work, and everyone sees their own timezone; or post <code>咋办时间戳 &lt;time&gt;</code>",
+            ja: "ふつうの言葉で Discord タイムスタンプを作成——「明日午後3時」「next Friday 5pm」もOK、みんな自分のタイムゾーンで見えるよ。<code>咋办时间戳 &lt;時刻&gt;</code> でもOK" } },
+        ],
+      },
+    ],
+  },
   {
     year: "2026",
     month: "mon9",
@@ -568,6 +591,27 @@ const YEARS = [
           { zh: "知识问答点「显示原文」时，选项也会跟着切回原文（以前只切题目）",
             en: "In trivia, “Show original” now switches the answer options back to the original text too (it used to switch only the question)",
             ja: "クイズの「原文を表示」で選択肢も原文に切り替わるように（以前は問題文だけ）" },
+          { zh: "<code>/setrole</code> 设的人格现在咋办会认真照做了（以前常常像没设一样）",
+            en: "Zaban now actually sticks to the persona you set with <code>/setrole</code> (it often used to act as if nothing was set)",
+            ja: "<code>/setrole</code> で設定したキャラを、ザバンにゃんがちゃんと守るように（以前は設定していないかのようになることが多かった）" },
+          { zh: "资料卡新增「🔀 换一个心情」按钮，不用重新打开就能换一件炫耀奖品",
+            en: "Profile cards get a “🔀 Another mood” button — show off a different prize without reopening the card",
+            ja: "プロフカードに「🔀 別の気分にする」ボタンを追加——開き直さずに自慢する景品を切り替えられるように" },
+        ],
+      },
+      {
+        type: "list",
+        h: { zh: "💧 喝水提醒升级", en: "💧 Drink-Water Reminder Upgrade", ja: "💧 水分補給リマインダー強化" },
+        items: [
+          { zh: "可以设在帖子（子区）里了，一个服务器也能按频道开多条",
+            en: "Reminders can now live in threads, and a server can have one per channel",
+            ja: "スレッドにも設定できるように。チャンネルごとに1件ずつ、サーバーで複数設定可能に" },
+          { zh: "<code>/msg drinkwater</code> 选「查看」能看全服一览和下次提醒时间，直接改间隔 / 暂停 / 删除",
+            en: "Pick “View” in <code>/msg drinkwater</code> to see every reminder and its next time, and change the interval, pause or delete right there",
+            ja: "<code>/msg drinkwater</code> の「一覧」で全件と次回の時刻を確認、その場で間隔変更・一時停止・削除ができるように" },
+          { zh: "楼主在自己开的帖子里发 <code>咋办喝水提醒</code> 就能开，不需要管理权限",
+            en: "Thread starters can post <code>咋办喝水提醒</code> in their own thread to set one up — no admin permission needed",
+            ja: "スレッドを立てた本人なら、そのスレッドで <code>咋办喝水提醒</code> と送るだけで設定できるように（管理権限は不要）" },
         ],
       },
       {
@@ -637,6 +681,12 @@ const YEARS = [
           { zh: "修复 <code>咋办ask英文内容</code> 这种命令名和内容连在一起没空格时识别不了",
             en: "Fixed triggers not being recognized when the command name runs straight into English text with no space, e.g. <code>咋办ask英文内容</code>",
             ja: "<code>咋办ask英文内容</code> のようにコマンド名と英語の内容がスペースなしで繋がると認識できない問題を修正" },
+          { zh: "修复 <code>/steam</code> 选地区不起作用、总是显示国区人民币价格",
+            en: "Fixed the <code>/steam</code> region option doing nothing and always showing China-region prices in CNY",
+            ja: "<code>/steam</code> の地域指定が効かず、常に中国区の人民元価格が表示される問題を修正" },
+          { zh: "修复 <code>/steam</code> 部分游戏显示成「未知游戏」",
+            en: "Fixed some games showing up as “Unknown game” in <code>/steam</code>",
+            ja: "<code>/steam</code> で一部のゲームが「不明なゲーム」と表示される問題を修正" },
         ],
       },
       {

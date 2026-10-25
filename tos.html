@@ -282,8 +282,8 @@ footer a, footer button {
   <div class="page-header-inner">
     <div class="page-eyebrow">Legal</div>
     <h1>Terms of Service</h1>
-    <p class="sub">These Terms govern your use of Echo's Bot (also referred to as "咋办bot"), a Discord bot providing GPT-based chatting, game queries, tarot readings, and Reddit content fetching. By using this bot, you agree to comply with these Terms.</p>
-    <p class="sub" style="margin-top:0.5rem;">Last updated: June 17, 2026</p>
+    <p class="sub">These Terms govern your use of Echo's Bot (also referred to as "咋办bot"), a Discord bot providing AI chat, daily fortunes and tarot readings, a virtual gacha machine, book / film / game lookups, giveaways, and other community tools. By using this bot, you agree to comply with these Terms.</p>
+    <p class="sub" style="margin-top:0.5rem;">Last updated: October 25, 2026</p>
   </div>
 </div>
 
@@ -300,11 +300,20 @@ footer a, footer button {
   <p>Echo's Bot includes a virtual currency system ("Zacoins" / 咋办币) and a gacha (randomized reward) system accessible via <code>/gacha</code> and <code>/fortune</code>.</p>
   <ul>
     <li>Zacoins and gacha items are virtual, in-bot rewards with no real-world monetary value.</li>
-    <li>They cannot be transferred between users, exchanged for real currency, or redeemed outside of the bot.</li>
+    <li>They cannot be exchanged for real currency or redeemed outside of the bot.</li>
+    <li>They cannot be transferred between users, with one exception: <code>/gift</code> lets you turn 3 copies of the same prize into a single "gift version" for another user. A gift version is bound to its recipient, permanently shows the giver's name, and cannot be gifted again.</li>
     <li>The developer reserves the right to adjust, reset, or discontinue the virtual currency or gacha system at any time without notice or compensation.</li>
   </ul>
 
-  <h2>4. Restrictions</h2>
+  <h2>4. Giveaways</h2>
+  <p>Echo's Bot offers a giveaway tool (<code>/giveaway</code> and the <code>咋办抽奖</code> trigger) that any user can use to run a giveaway in a server.</p>
+  <ul>
+    <li>The bot only collects entries and picks winners at random. Prizes are offered and delivered entirely by the person who hosts the giveaway; the developer does not provide, guarantee, or deliver any prize and is not responsible for any dispute between hosts and participants.</li>
+    <li>Hosts are responsible for making sure their giveaway complies with Discord's Terms of Service and Community Guidelines, the rules of the server it runs in, and any laws that apply to them.</li>
+    <li>Giveaways must not be used for scams, phishing, collecting personal information, or any other deceptive purpose.</li>
+  </ul>
+
+  <h2>5. Restrictions</h2>
   <p>You must not:</p>
   <ul>
     <li>Use the bot for unlawful, harmful, or malicious purposes.</li>
@@ -313,16 +322,17 @@ footer a, footer button {
     <li>Attempt to jailbreak or manipulate the bot's AI to bypass its content guidelines.</li>
     <li>Use the bot to harass, impersonate, or harm other users.</li>
     <li>Exploit bugs or unintended behaviors to gain Zacoins, gacha items, or any other in-bot advantage.</li>
+    <li>Abuse giveaways, reminders, or other automated features to spam a server or its members.</li>
   </ul>
 
-  <h2>5. Third-Party Services</h2>
+  <h2>6. Third-Party Services</h2>
   <p>Echo's Bot integrates with the following third-party services to provide its features:</p>
   <ul>
-    <li><strong>OpenAI</strong> – Powers AI chat, translation, and tarot interpretation. Your messages are transmitted to OpenAI's API and are subject to <a href="https://openai.com/policies/terms-of-use">OpenAI's Terms of Use</a>.</li>
+    <li><strong>OpenAI</strong> – Powers AI chat (including web search), translation, tarot and fortune readings, time parsing for <code>/timestamp</code>, and content moderation. Your messages are transmitted to OpenAI's API and are subject to <a href="https://openai.com/policies/terms-of-use">OpenAI's Terms of Use</a>.</li>
     <li><strong>Reddit</strong> – Used for the <code>/aww</code> command and <code>/dailyfact</code> to fetch public posts. Only non-NSFW, non-stickied posts with sufficient community engagement are used.</li>
     <li><strong>Steam</strong> – Used for the <code>/steam</code> command to retrieve game pricing information.</li>
     <li><strong>NeoDB</strong> – Used for the <code>/neodb</code> and <code>/roll media</code> commands to retrieve media information.</li>
-    <li><strong>Bangumi (bgm.tv)</strong> – Used for the <code>/bangumi</code> and <code>/roll media</code> commands to retrieve anime, book, game, and music information.</li>
+    <li><strong>Bangumi (bgm.tv)</strong> – Used for the <code>/bangumi</code> and <code>/roll bangumi</code> commands to retrieve anime, book, game, and music information.</li>
     <li><strong>Open Trivia Database</strong> – Used for the <code>/trivia</code> command.</li>
     <li><strong>Wikipedia</strong> – Used for the <code>/roll wiki</code> and <code>/dailyfact</code> commands to retrieve article summaries and thumbnails.</li>
     <li><strong>Futility Closet</strong> – Used for the <code>/dailyfact</code> command to retrieve public RSS feed entries.</li>
@@ -332,27 +342,27 @@ footer a, footer button {
   </ul>
   <p>The developer is not responsible for the availability, accuracy, or policies of these third-party services.</p>
 
-  <h2>6. Intellectual Property</h2>
+  <h2>7. Intellectual Property</h2>
   <p>The bot avatar is created by <a href="https://misskey.io/@ikkiiki1104">@ikkiiki1104@misskey.io</a>. All rights remain with the original artist; it is used with attribution and in good faith. If you are a rights holder and would like any artwork removed, please contact us at <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a> and we will comply promptly.</p>
   <p>The Zabanbot app avatar is based on artwork by <a href="https://misskey.io/@nmsm">@nmsm@misskey.io</a>, used under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.</p>
   <p>These Terms do not grant users any license to copy, redistribute, or create derivative works from these artworks. Content retrieved through third-party services (artworks, images, article excerpts, ratings, etc.) remains the property of its respective owners.</p>
 
-  <h2>7. Availability</h2>
+  <h2>8. Availability</h2>
   <p>The bot's services are offered without any guarantees of uptime, reliability, or continued support. Features may be added, removed, or modified at any time without notice.</p>
 
-  <h2>8. Data Collection</h2>
+  <h2>9. Data Collection</h2>
   <p>Echo's Bot collects and stores certain data to provide its features. For full details on what data is collected, how it is used, and how to request deletion, please refer to our <a href="privacy.html">Privacy Policy</a>.</p>
 
-  <h2>9. Termination</h2>
+  <h2>10. Termination</h2>
   <p>The bot owner reserves the right to block or ban users who violate these Terms or misuse the bot in any way.</p>
 
-  <h2>10. Disclaimer</h2>
+  <h2>11. Disclaimer</h2>
   <p>Echo's Bot is provided "as is" and without warranties of any kind, either express or implied. The developer is not liable for any damages arising from your use of the bot, including any reliance on AI-generated content.</p>
 
-  <h2>11. Changes to the Terms</h2>
+  <h2>12. Changes to the Terms</h2>
   <p>The developer reserves the right to update or modify these Terms at any time without prior notice. Continued use of the bot after changes have been posted constitutes your acceptance of the revised Terms.</p>
 
-  <h2>12. Contact</h2>
+  <h2>13. Contact</h2>
   <p>If you have questions about these Terms, you may contact the developer via email: <a href="mailto:kuroniko07@gmail.com">kuroniko07@gmail.com</a>, or on GitHub: <a href="https://github.com/sanjuroku">github.com/sanjuroku</a>.</p>
 
 </div>
